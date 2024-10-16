@@ -1,0 +1,84 @@
+<!--<form (submit)="createDepartment()">-->
+<!--    <input [(ngModel)]="department.departmentName" placeholder="Name" [ngModelOptions]="{standalone: true}"/>-->
+<!--    <input [(ngModel)]="department.departmentCode" placeholder="Code" [ngModelOptions]="{standalone: true}"/>-->
+<!--    <button type="submit">Create</button>-->
+<!--</form>-->
+
+
+
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-4xl">
+            <div class="-ml-4 sm:mt-8">
+                <a
+                    mat-button
+                    [routerLink]="['/departments/list']"
+                    [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back to Department</span>
+                </a>
+            </div>
+            <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+                Create Departments
+            </div>
+            <!-- Form -->
+            <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
+                <!-- Alert -->
+                <fuse-alert
+                    class="mb-8"
+                    *ngIf="alert"
+                    [type]="alert.type"
+                    [showIcon]="false">
+                    {{alert.message}}
+                </fuse-alert>
+                <form
+                    class="space-y-3"
+                    [formGroup]="departmentForm"
+                    #supportNgForm="ngForm">
+                    <!-- Name -->
+                    <mat-form-field class="w-full">
+                        <input
+                            matInput
+                            [formControlName]="'departmentName'"
+                            [required]="true">
+                        <mat-label>Name</mat-label>
+                        <mat-error *ngIf="departmentForm.get('departmentName').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Email -->
+                    <mat-form-field class="w-full">
+                        <input
+                            matInput
+                            [formControlName]="'departmentCode'"
+                            [required]="true">
+                        <mat-label>Code</mat-label>
+                        <mat-error *ngIf="departmentForm.get('departmentCode').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end">
+                        <button
+                            mat-button
+                            [color]="'accent'"
+                            [disabled]="departmentForm.pristine || departmentForm.untouched"
+                            (click)="clearForm()">
+                            Clear
+                        </button>
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="departmentForm.pristine || departmentForm.invalid"
+                            (click)="createDepartment()">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

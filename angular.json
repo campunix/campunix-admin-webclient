@@ -91,7 +91,7 @@
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
+                                    "with": "src/environments/environment.dev.ts"
                                 }
                             ]
                         }
@@ -102,22 +102,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "admin-routine-webclient:build:production",
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ]
+                            "buildTarget": "admin-routine-webclient:build:production"
                         },
                         "development": {
-                            "buildTarget": "admin-routine-webclient:build:development",
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.dev.ts"
-                                }
-                            ]
+                            "buildTarget": "admin-routine-webclient:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -152,6 +140,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }
