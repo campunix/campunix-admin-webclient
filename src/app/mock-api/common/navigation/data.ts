@@ -15,6 +15,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/departments'
+    },
+    {
+        id   : 'organizations',
+        title: 'Organizations',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/organizations'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -31,6 +38,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/departments'
+    },
+    {
+        id   : 'organizations',
+        title: 'Organization',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/organizations'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -47,6 +61,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/departments'
+    },
+    {
+        id   : 'organizations',
+        title: 'Organizations',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/organizations'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -63,5 +84,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/departments'
+    },
+    {
+        id   : 'organizations',
+        title: 'Organizations',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/organizations'
     }
 ];
