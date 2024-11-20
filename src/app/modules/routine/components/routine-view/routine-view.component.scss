@@ -1,0 +1,97 @@
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    border: 1px solid #000;
+}
+
+.schedule-row {
+    display: flex;
+    border-bottom: 1px solid #000;
+}
+
+.schedule-slot-container
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.schedule-slot-row
+{
+    display: flex;
+    border-bottom: 1px solid #000;
+}
+
+.schedule-row:last-child {
+    border-bottom: none;
+}
+
+.time-header {
+    flex: 1;
+    border-right: 1px solid #000;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+
+.day-semester-side-header {
+    display: flex;
+    width: 20%;
+    font-weight: bold;
+    border-right: 1px solid #000;
+    background-color: #f0f0f0;
+}
+
+.day-header
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #000;
+    background-color: #f0f0f0;
+    width: 20%;
+}
+
+.day-side-header
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.semester-side-header
+{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.semester-cell
+{
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    border-left: 1px solid #000;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100px;
+}
+
+.schedule-cell {
+    flex: 1;
+    padding: 10px;
+    border-right: 1px solid #000;
+    text-align: center;
+    height: 100px;
+}
+
+.schedule-cell:last-child {
+    border-right: none;
+}

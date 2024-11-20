@@ -99,5 +99,20 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/organization/organization.module').then(m => m.OrganizationModule)
             },
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
+                path: 'routine',
+                loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
+            },
+        ]
     }
 ];
