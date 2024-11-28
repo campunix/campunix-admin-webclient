@@ -11,7 +11,7 @@
     </div>
 
     <!-- Main -->
-    <div class="flex flex-auto overflow-y-auto">
+    <div class="flex flex-auto overflow-y-auto p-4">
         <div class="schedule-container">
             <!-- Time Header Row -->
             <div class="schedule-row">
@@ -29,7 +29,7 @@
                     <div class="day-side-header">{{day}}</div>
                     <div class="semester-side-header">
                         <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
-                            <div class="semester-cell">{{semester}}</div>
+                            <div class="semester-cell">{{semester.year}}-{{semester.number}}</div>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
                         <div *ngFor="let slot of slots; index as k" class="schedule-cell">
                             <!-- {{getGeneByCellNumber(i,j,k)}} -->
-                            {{getGeneByCellNumber(i,j,k)?.cell_number}}. {{getGeneByCellNumber(i,j,k)?.course_code}}
+                            {{getGeneByCellNumber(i,j,k)?.course_code}} - {{getGeneByCellNumber(i,j,k)?.course_teacher}}
                         </div>
                     </div>
                 </div>

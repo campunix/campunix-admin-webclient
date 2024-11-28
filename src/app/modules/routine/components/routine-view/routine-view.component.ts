@@ -44,7 +44,8 @@ export class RoutineViewComponent {
         this.isLoading = true;
         this.routineService.getRoutine().subscribe((response: any) => {
             console.log(response);
-            this.genes = response?.genes || [];
+            this.semesters = response?.semesters || [];
+            this.genes = response?.routine?.genes || [];
             this.isLoading = false;
         });
     }
