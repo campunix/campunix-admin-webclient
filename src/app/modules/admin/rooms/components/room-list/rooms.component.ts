@@ -73,7 +73,6 @@ export class RoomsComponent implements OnInit {
 
     trackByFn(index: number, item: any): any
     {
-        debugger
         return item.id || index;
     }
 }

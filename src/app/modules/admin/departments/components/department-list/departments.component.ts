@@ -64,8 +64,6 @@ export class DepartmentsComponent implements OnInit {
     ngOnInit() {
         this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
             this.departments = response?.data?.departments || [];
-            console.log(response.data)
-            console.log(response.data)
             this.isLoading = false;
         });
     }
@@ -82,7 +80,6 @@ export class DepartmentsComponent implements OnInit {
 
     trackByFn(index: number, item: any): any
     {
-        debugger
         return item.departmentID || index;
     }
 }

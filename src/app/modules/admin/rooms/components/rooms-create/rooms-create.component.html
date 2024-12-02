@@ -52,34 +52,30 @@
                         </mat-error>
                     </mat-form-field>
                     <!-- department -->
-
                     <mat-form-field class="w-full">
-                        <input
-                            matInput
+                        <mat-label>Department</mat-label>
+                        <mat-select
                             [formControlName]="'department_id'"
                             [required]="true">
-                        <mat-label>Department</mat-label>
+                            @for (dept of departments; track dept) {
+                                <mat-option [value]="dept.id">{{dept.name}}</mat-option>
+                            }
+                        </mat-select>
                         <mat-error *ngIf="roomForm.get('department_id').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>Department</mat-label>
-                        <mat-select>
-                            @for (dept of departments; track dept) {
-                                <mat-option [value]="dept.id">{{dept.name}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
                     <!-- room type -->
                     <mat-form-field class="w-full">
-                        <input
-                            matInput
+                        <mat-label>Room Type</mat-label>
+                        <mat-select
                             [formControlName]="'room_type'"
                             [required]="true">
-                        <mat-label>Room Type</mat-label>
+                            @for (roomType of roomTypes; track roomType) {
+                                <mat-option [value]="roomType">{{roomType}}</mat-option>
+                            }
+                        </mat-select>
                         <mat-error *ngIf="roomForm.get('room_type').hasError('required')">
                             Required
                         </mat-error>

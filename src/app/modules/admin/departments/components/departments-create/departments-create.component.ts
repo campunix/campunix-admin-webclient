@@ -41,7 +41,6 @@ export class DepartmentsCreateComponent {
     }
 
     createDepartment(): void {
-        debugger;
         this.departmentsService.create(this.departmentForm.value).subscribe((response: Response<Department>) => {
             this.router.navigate(['/departments/list']).then(() => {
                 this.departmentNgForm.resetForm();
