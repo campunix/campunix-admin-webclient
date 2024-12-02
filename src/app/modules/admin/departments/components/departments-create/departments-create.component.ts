@@ -5,6 +5,8 @@ import {DepartmentsService} from "../../services/departments.service";
 import {Router} from "@angular/router";
 import {Response} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {Organization} from "../../../../../models/organization";
+import {OrganizationService} from "../../../organization/services/organization.service";
 
 @Component({
     selector: 'app-departments-create',
@@ -12,26 +14,29 @@ import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular
     styleUrl: './departments-create.component.scss'
 })
 export class DepartmentsCreateComponent {
-    department: Department = {departmentID: 0,departmentName: '', departmentCode: ''};
+    department: Department = {id: 0, name: '', code: '', organization_id: 0, created_by: ''};
+    organizations: Organization[] = [];
     @ViewChild('departmentNgForm') departmentNgForm: NgForm;
 
     alert: any;
     departmentForm: UntypedFormGroup;
 
-    /**
-     * Constructor
-     */
     constructor(
         private _formBuilder: UntypedFormBuilder,
+        private orgService: OrganizationService,
         private departmentsService: DepartmentsService, private router: Router
-    )
-    {}
+    ) {
+    }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.departmentForm = this._formBuilder.group({
-            departmentName   : ['', Validators.required],
-            departmentCode  : ['', [Validators.required]],
+            departmentName: ['', Validators.required],
+            departmentCode: ['', [Validators.required]],
+        });
+
+        // Fetch the org list
+        this.orgService.getAll().subscribe((response: Response<Organization[]>) => {
+            this.organizations = response?.data?.organizations || [];
         });
     }
 
@@ -44,8 +49,7 @@ export class DepartmentsCreateComponent {
         });
     }
 
-    clearForm(): void
-    {
+    clearForm(): void {
         this.departmentNgForm.resetForm();
     }
 }

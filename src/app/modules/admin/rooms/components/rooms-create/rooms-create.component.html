@@ -6,14 +6,14 @@
             <div class="-ml-4 sm:mt-8">
                 <a
                     mat-button
-                    [routerLink]="['/departments/list']"
+                    [routerLink]="['/rooms/list']"
                     [color]="'primary'">
                     <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
                     <span class="ml-2">Back to Department</span>
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
-                Create Departments
+                Create Rooms
             </div>
             <!-- Form -->
             <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
@@ -27,47 +27,69 @@
                 </fuse-alert>
                 <form
                     class="space-y-3"
-                    [formGroup]="departmentForm"
+                    [formGroup]="roomForm"
                     #supportNgForm="ngForm">
                     <!-- Name -->
                     <mat-form-field class="w-full">
                         <input
                             matInput
-                            [formControlName]="'departmentName'"
+                            [formControlName]="'name'"
                             [required]="true">
-                        <mat-label>Name</mat-label>
-                        <mat-error *ngIf="departmentForm.get('departmentName').hasError('required')">
+                        <mat-label>Room Name</mat-label>
+                        <mat-error *ngIf="roomForm.get('name').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
-                    <!-- Email -->
+                    <!-- Code -->
                     <mat-form-field class="w-full">
                         <input
                             matInput
-                            [formControlName]="'departmentCode'"
+                            [formControlName]="'code'"
                             [required]="true">
-                        <mat-label>Code</mat-label>
-                        <mat-error *ngIf="departmentForm.get('departmentCode').hasError('required')">
+                        <mat-label>Room Code</mat-label>
+                        <mat-error *ngIf="roomForm.get('code').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- department -->
+
+                    <mat-form-field class="w-full">
+                        <input
+                            matInput
+                            [formControlName]="'department_id'"
+                            [required]="true">
+                        <mat-label>Department</mat-label>
+                        <mat-error *ngIf="roomForm.get('department_id').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
 
-                    <!-- Organizations -->
                     <mat-form-field>
-                        <mat-label>Organization</mat-label>
+                        <mat-label>Department</mat-label>
                         <mat-select>
-                            @for (organization of organizations; track organization) {
-                                <mat-option [value]="organization.id">{{organization.name}}</mat-option>
+                            @for (dept of departments; track dept) {
+                                <mat-option [value]="dept.id">{{dept.name}}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
 
+                    <!-- room type -->
+                    <mat-form-field class="w-full">
+                        <input
+                            matInput
+                            [formControlName]="'room_type'"
+                            [required]="true">
+                        <mat-label>Room Type</mat-label>
+                        <mat-error *ngIf="roomForm.get('room_type').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
                     <!-- Actions -->
                     <div class="flex items-center justify-end">
                         <button
                             mat-button
                             [color]="'accent'"
-                            [disabled]="departmentForm.pristine || departmentForm.untouched"
+                            [disabled]="roomForm.pristine || roomForm.untouched"
                             (click)="clearForm()">
                             Clear
                         </button>
@@ -75,8 +97,8 @@
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
-                            [disabled]="departmentForm.pristine || departmentForm.invalid"
-                            (click)="createDepartment()">
+                            [disabled]="roomForm.pristine || roomForm.invalid"
+                            (click)="createRoom()">
                             Submit
                         </button>
                     </div>

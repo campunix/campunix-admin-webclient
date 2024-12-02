@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
-import {OrganizationService} from "../../services/organization.service";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
@@ -7,12 +6,13 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
-import {Organization} from "../../../../../models/organization";
+import {Room} from "../../../../../models/room";
+import {RoomsService} from "../../services/rooms.service";
 
 @Component({
-    selector: 'app-organization-list',
-    templateUrl: './organization-list.component.html',
-    styleUrl: './organization-list.component.scss',
+    selector: 'app-rooms',
+    templateUrl: './rooms.component.html',
+    styleUrl: './rooms.component.scss',
     styles: [
         /* language=SCSS */
         `
@@ -35,11 +35,11 @@ import {Organization} from "../../../../../models/organization";
     ],
     animations: fuseAnimations,
 })
-export class OrganizationListComponent implements OnInit {
+export class RoomsComponent implements OnInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
-    organizations: Organization[] = [];
+    rooms: Room[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
         length: 10,
@@ -50,29 +50,30 @@ export class OrganizationListComponent implements OnInit {
         endIndex: 9,
     };
 
-    constructor(private organizationService: OrganizationService, private router: Router) {
+    constructor(private roomsService: RoomsService, private router: Router) {
         this.isLoading = true;
     }
 
     ngOnInit() {
-        this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
-            this.organizations = response?.data?.organizations || [];
+        this.roomsService.getAll().subscribe((response: Response<Room[]>) => {
+            this.rooms = response?.data?.rooms || [];
             this.isLoading = false;
         });
     }
 
-    createOrganization() {
-        this.router.navigate(['/organizations/create']).then(() => {
+    createRoom() {
+        this.router.navigate(['/rooms/create']).then(() => {});
+    }
+
+    deleteRoom(id: number) {
+        this.roomsService.delete(id).subscribe(() => {
+            this.rooms = this.rooms.filter(room => room.id !== id);
         });
     }
 
-    deleteOrganization(id: number) {
-        this.organizationService.delete(id).subscribe(() => {
-            this.organizations = this.organizations.filter(orientation => orientation.id !== id);
-        });
-    }
-
-    trackByFn(index: number, item: any): any {
+    trackByFn(index: number, item: any): any
+    {
+        debugger
         return item.id || index;
     }
 }

@@ -9,6 +9,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
+import {Organization} from "../../../../../models/organization";
+import {OrganizationService} from "../../../organization/services/organization.service";
 
 @Component({
     selector: 'app-departments',
@@ -41,6 +43,7 @@ export class DepartmentsComponent implements OnInit {
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
     departments: Department[] = [];
+
     isLoading: boolean = false;
     pagination: Pagination = {
         length: 10,
@@ -51,13 +54,18 @@ export class DepartmentsComponent implements OnInit {
         endIndex: 9,
     };
 
-    constructor(private departmentService: DepartmentsService, private router: Router) {
+    constructor(
+        private departmentService: DepartmentsService,
+        private router: Router
+    ) {
         this.isLoading = true;
     }
 
     ngOnInit() {
         this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
             this.departments = response?.data?.departments || [];
+            console.log(response.data)
+            console.log(response.data)
             this.isLoading = false;
         });
     }
@@ -68,7 +76,7 @@ export class DepartmentsComponent implements OnInit {
 
     deleteDepartment(id: number) {
         this.departmentService.delete(id).subscribe(() => {
-            this.departments = this.departments.filter(department => department.departmentID !== id);
+            this.departments = this.departments.filter(department => department.id !== id);
         });
     }
 

@@ -3,7 +3,9 @@ export interface Data<T> {
 }
 
 export interface Response<T> {
-    status: string;
-    message: string;
+    status: boolean;
+    code: number;
+    message: string | null;
+    errors: string | null;
     data: Data<T>;
 }
