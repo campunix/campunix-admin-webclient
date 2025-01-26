@@ -14,16 +14,16 @@ export class OrganizationService {
     constructor(private http: HttpClient) {
     }
 
+    create(organization: Organization): Observable<Response<Organization>> {
+        return this.http.post<Response<Organization>>(this.baseUrl, organization);
+    }
+
     getAll(): Observable<Response<Organization[]>> {
         return this.http.get<Response<Organization[]>>(this.baseUrl);
     }
 
     get(id: number): Observable<Response<Organization>> {
         return this.http.get<Response<Organization>>(`${this.baseUrl}/${id}`);
-    }
-
-    create(organization: Organization): Observable<Response<Organization>> {
-        return this.http.post<Response<Organization>>(this.baseUrl, organization);
     }
 
     update(id: number, organization: Organization): Observable<Response<Organization>> {

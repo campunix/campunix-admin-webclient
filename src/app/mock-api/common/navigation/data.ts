@@ -24,6 +24,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/organizations'
     },
     {
+        id   : 'rooms',
+        title: 'Rooms',
+        type : 'basic',
+        icon : 'heroicons_outline:home',
+        link : '/rooms'
+    },
+    {
         id   : 'routine',
         title: 'Routine',
         type : 'basic',
@@ -52,6 +59,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/organizations'
+    },
+    {
+        id   : 'rooms',
+        title: 'Rooms',
+        type : 'basic',
+        icon : 'heroicons_outline:home',
+        link : '/rooms'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -75,6 +89,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/organizations'
+    },
+    {
+        id   : 'rooms',
+        title: 'Rooms',
+        type : 'basic',
+        icon : 'heroicons_outline:home',
+        link : '/rooms'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -98,5 +119,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/organizations'
+    },
+    {
+        id   : 'rooms',
+        title: 'Rooms',
+        type : 'basic',
+        icon : 'heroicons_outline:home',
+        link : '/rooms'
     }
 ];

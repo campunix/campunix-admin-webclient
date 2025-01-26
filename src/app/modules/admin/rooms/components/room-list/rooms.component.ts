@@ -1,7 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Department} from "../../../../../models/department";
-import {DepartmentsService} from "../../services/departments.service";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
@@ -9,13 +6,13 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
-import {Organization} from "../../../../../models/organization";
-import {OrganizationService} from "../../../organization/services/organization.service";
+import {Room} from "../../../../../models/room";
+import {RoomsService} from "../../services/rooms.service";
 
 @Component({
-    selector: 'app-departments',
-    templateUrl: './departments.component.html',
-    styleUrl: './departments.component.scss',
+    selector: 'app-rooms',
+    templateUrl: './rooms.component.html',
+    styleUrl: './rooms.component.scss',
     styles: [
         /* language=SCSS */
         `
@@ -38,12 +35,11 @@ import {OrganizationService} from "../../../organization/services/organization.s
     ],
     animations: fuseAnimations,
 })
-export class DepartmentsComponent implements OnInit {
+export class RoomsComponent implements OnInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
-    departments: Department[] = [];
-
+    rooms: Room[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
         length: 10,
@@ -54,32 +50,29 @@ export class DepartmentsComponent implements OnInit {
         endIndex: 9,
     };
 
-    constructor(
-        private departmentService: DepartmentsService,
-        private router: Router
-    ) {
+    constructor(private roomsService: RoomsService, private router: Router) {
         this.isLoading = true;
     }
 
     ngOnInit() {
-        this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.departments || [];
+        this.roomsService.getAll().subscribe((response: Response<Room[]>) => {
+            this.rooms = response?.data?.rooms || [];
             this.isLoading = false;
         });
     }
 
-    createDepartment() {
-        this.router.navigate(['/departments/create']).then(() => {});
+    createRoom() {
+        this.router.navigate(['/rooms/create']).then(() => {});
     }
 
-    deleteDepartment(id: number) {
-        this.departmentService.delete(id).subscribe(() => {
-            this.departments = this.departments.filter(department => department.id !== id);
+    deleteRoom(id: number) {
+        this.roomsService.delete(id).subscribe(() => {
+            this.rooms = this.rooms.filter(room => room.id !== id);
         });
     }
 
     trackByFn(index: number, item: any): any
     {
-        return item.departmentID || index;
+        return item.id || index;
     }
 }

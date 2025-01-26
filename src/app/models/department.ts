@@ -1,5 +1,7 @@
 export interface Department {
-    departmentID: number;
-    departmentName: string;
-    departmentCode: string;
+    id: number;
+    name: string;
+    code: string;
+    organization_id: number;
+    created_by: string;
 }

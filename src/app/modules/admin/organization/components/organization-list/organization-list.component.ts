@@ -56,7 +56,7 @@ export class OrganizationListComponent implements OnInit {
 
     ngOnInit() {
         this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
-            this.organizations = response?.data?.departments || [];
+            this.organizations = response?.data?.organizations || [];
             this.isLoading = false;
         });
     }
