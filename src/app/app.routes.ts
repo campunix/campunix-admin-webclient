@@ -114,5 +114,20 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/rooms/rooms.module').then(m => m.RoomsModule)
             },
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
+                path: 'routine',
+                loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
+            },
+        ]
     }
 ];
