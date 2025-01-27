@@ -36,10 +36,19 @@
 
                 <div class="schedule-slot-container">
                     <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
-                        <div *ngFor="let slot of slots; index as k" class="schedule-cell">
-                            <!-- {{getGeneByCellNumber(i,j,k)}} -->
+                        <!-- <div *ngFor="let slot of slots; index as k;" class="schedule-cell">
                             {{getGeneByCellNumber(i,j,k)?.course_code}} - {{getGeneByCellNumber(i,j,k)?.course_teacher}}
-                        </div>
+                        </div> -->
+                        <app-routine-cell
+                            *ngFor="let slot of slots; index as k;"
+                            [dayNumber]="i"
+                            [semesterNumber]="j"
+                            [slotNumber]="k"
+                            [totalSemesters]="semesters.length"
+                            [totalSlots]="slots.length"
+                            [genes]="genes"
+                            class="w-100">
+                        </app-routine-cell>
                     </div>
                 </div>
             </div>

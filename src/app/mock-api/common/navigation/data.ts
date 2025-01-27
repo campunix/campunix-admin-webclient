@@ -36,6 +36,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/routine'
+    },
+    {
+        id   : 'syllabus',
+        title: 'Syllabus',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/syllabus'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
