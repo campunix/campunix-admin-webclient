@@ -114,5 +114,20 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
             },
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
+                path: 'syllabus',
+                loadChildren: () => import('app/modules/syllabus/syllabus.module').then(m => m.SyllabusModule)
+            }
+        ]
     }
 ];

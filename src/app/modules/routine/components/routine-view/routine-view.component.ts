@@ -34,7 +34,7 @@ export class RoutineViewComponent {
     ];
 
     genes: any[] = [];
-
+    
     constructor(private readonly routineService: RoutineService)
     {
     }
@@ -50,7 +50,7 @@ export class RoutineViewComponent {
         });
     }
 
-    getGeneByCellNumber(i, j, k) {
+    getGeneByCellNumber(i: number, j: number, k: number) {
         let cellNumber = (i * (this.semesters.length * this.slots.length)) + (j * this.slots.length) + k;
         return this.genes.find(x => x.cell_number == cellNumber);
     }
