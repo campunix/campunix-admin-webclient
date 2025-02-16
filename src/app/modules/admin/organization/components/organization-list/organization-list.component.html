@@ -46,6 +46,7 @@
             <ng-container *ngIf="organizations as organizations">
                 <ng-container *ngIf="organizations.length > 0 && !isLoading; else noDepartments">
                     <div class="grid">
+                        
                         <!-- Header -->
                         <div
                             class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -62,30 +63,27 @@
                             </div>
                         </div>
                         <!-- Rows -->
-                        <ng-container *ngIf="organizations as organizations">
-                            <ng-container *ngFor="let organization of organizations; trackBy: trackByFn">
-                                <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                        <ng-container *ngFor="let organization of organizations; trackBy: trackByFn">
+                            <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
 
-
-                                    <!-- Name -->
-                                    <div class="truncate">
-                                        {{ organization.id }}
-                                    </div>
-
-                                    <!-- Code -->
-                                    <div class="hidden sm:block">
-                                        {{ organization.name }}
-                                    </div>
-
-                                    <div>
-                                        <button (click)="deleteOrganization(organization.id)" mat-icon-button>
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
-                                    </div>
-
+                                <!-- Name -->
+                                <div class="truncate">
+                                    {{ organization.id }}
                                 </div>
 
-                            </ng-container>
+                                <!-- Code -->
+                                <div class="hidden sm:block">
+                                    {{ organization.name }}
+                                </div>
+
+                                <div>
+                                    <button (click)="deleteOrganization(organization.id)" mat-icon-button>
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+
                         </ng-container>
                     </div>
 
@@ -102,8 +100,7 @@
             </ng-container>
 
             <ng-template #noDepartments>
-                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no
-                    Organizations!
+                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Organizations!
                 </div>
             </ng-template>
 

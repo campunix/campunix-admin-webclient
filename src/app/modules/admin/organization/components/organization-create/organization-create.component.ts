@@ -35,11 +35,13 @@ export class OrganizationCreateComponent {
     }
 
     createOrganization(): void {
-        this.organizationService.create(this.organizationForm.value).subscribe((response: Response<Organization>) => {
-            this.router.navigate(['/organizations/list']).then(() => {
-                this.organizationNgForm.resetForm();
+        this.organizationService
+            .create(this.organizationForm.value)
+            .subscribe((response: Response<Organization>) => {
+                this.router.navigate(['/organizations/list']).then(() => {
+                    this.organizationNgForm.resetForm();
+                });
             });
-        });
     }
 
     clearForm(): void {

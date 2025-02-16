@@ -55,15 +55,15 @@ export class OrganizationListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
-            this.organizations = response?.data?.organizations || [];
+        this.organizationService.getAll().subscribe((response: any) => {
+            console.log(response)
+            this.organizations = response?.items || [];
             this.isLoading = false;
         });
     }
 
     createOrganization() {
-        this.router.navigate(['/organizations/create']).then(() => {
-        });
+        this.router.navigate(['/organizations/create']).then(() => {});
     }
 
     deleteOrganization(id: number) {

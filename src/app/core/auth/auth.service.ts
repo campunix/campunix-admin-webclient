@@ -61,12 +61,13 @@ export class AuthService {
 
         const body = new URLSearchParams();
         body.set('grant_type', 'password');
-        body.set('username', 'admin');
-        body.set('password', '1234');
+        body.set('username', credentials.email);
+        body.set('password', credentials.password);
 
         let options = {
             headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
         };
+
         return this._httpClient.post(
             `${environment.apiUrl}/token`,
             body.toString(),
@@ -82,10 +83,19 @@ export class AuthService {
                 // Store the user on the user service
                 // this._userService.user = response.user;
 
+                this.getUser().subscribe((user) => {
+                    this._userService.user = user;
+                });
+
                 // Return a new observable with the response
                 return of(response);
             }),
         );
+    }
+
+    getUser(): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`);
+        return this._httpClient.get(`${environment.apiUrl}/me`, {headers});
     }
 
     /**
