@@ -62,8 +62,8 @@ export class DepartmentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.departmentService.getAll().subscribe((response: any) => {
-            this.departments = response?.items || [];
+        this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
+            this.departments = response?.data?.items || [];
             this.isLoading = false;
         });
     }

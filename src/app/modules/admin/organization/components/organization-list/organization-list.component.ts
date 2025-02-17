@@ -55,9 +55,9 @@ export class OrganizationListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.organizationService.getAll().subscribe((response: any) => {
+        this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
             console.log(response)
-            this.organizations = response?.items || [];
+            this.organizations = response?.data?.items || [];
             this.isLoading = false;
         });
     }

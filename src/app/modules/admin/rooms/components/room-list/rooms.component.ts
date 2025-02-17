@@ -56,7 +56,7 @@ export class RoomsComponent implements OnInit {
 
     ngOnInit() {
         this.roomsService.getAll().subscribe((response: Response<Room[]>) => {
-            this.rooms = response?.data?.rooms || [];
+            this.rooms = response?.data?.items || [];
             this.isLoading = false;
         });
     }
