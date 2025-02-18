@@ -17,6 +17,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/departments'
     },
     {
+        id   : 'teachers',
+        title: 'Teachers',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/teachers'
+    },
+    {
         id   : 'rooms',
         title: 'Rooms',
         type : 'basic',

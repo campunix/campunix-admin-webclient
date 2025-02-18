@@ -98,6 +98,21 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'teachers',
+                loadChildren: () => import('app/modules/admin/teachers/teachers.module').then(m => m.TeachersModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
                 path: 'rooms',
                 loadChildren: () => import('app/modules/admin/rooms/rooms.module').then(m => m.RoomsModule)
             },
