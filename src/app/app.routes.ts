@@ -5,8 +5,8 @@ import {NoAuthGuard} from 'app/core/auth/guards/noAuth.guard';
 import {LayoutComponent} from 'app/layout/layout.component';
 
 export const appRoutes: Route[] = [
-    {path: '', pathMatch: 'full', redirectTo: 'example'},
-    {path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'example'},
+    {path: '', pathMatch: 'full', redirectTo: 'organizations'},
+    {path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'organizations'},
     {
         path: '',
         canActivate: [NoAuthGuard],
@@ -56,18 +56,6 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
-        ]
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
-        component: LayoutComponent,
-        resolve: {
-            initialData: initialDataResolver
-        },
-        children: [
-            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
         ]
     },
     {
