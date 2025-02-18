@@ -15,12 +15,13 @@ export class RoutineCellComponent {
     @Input() slotNumber: number;
 
     selectedGene: any;
+    previousGene: any;
 
     ngOnInit(): void
     {
-
         let cellNumber = (this.dayNumber * (this.totalSemesters * this.totalSlots)) + (this.semesterNumber * this.totalSlots) + this.slotNumber;
         this.selectedGene = this.genes.find(x => x.cell_number == cellNumber);
+        this.previousGene = this.genes.find(x => x.cell_number == cellNumber - 1);
         console.log(cellNumber)
     }
 }

@@ -1,0 +1,23 @@
+.schedule-cell {
+    flex: 1;
+    padding: 10px;
+    border-right: 1px solid #000;
+    text-align: center;
+    height: 150px;
+}
+
+.schedule-cell-double
+{
+    @extend .schedule-cell;
+    flex: 2;
+}
+
+.w-50-p
+{
+    width: 150px;
+}
+
+.w-100-p
+{
+    width: 300px;
+}

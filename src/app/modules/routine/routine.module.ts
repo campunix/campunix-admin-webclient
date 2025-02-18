@@ -15,7 +15,7 @@ import {MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatMenuModule} from "@angular/material/menu";
 import { RoutineViewComponent } from './components/routine-view/routine-view.component';
-import { RoutineCellComponent } from './components/routine-slot/routine-cell.component';
+import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
 
 @NgModule({
     declarations: [
