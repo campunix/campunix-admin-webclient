@@ -128,6 +128,21 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'courses',
+                loadChildren: () => import('app/modules/admin/courses/courses.module').then(m => m.CourseModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
                 path: 'routine',
                 loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
             },

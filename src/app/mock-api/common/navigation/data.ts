@@ -31,6 +31,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/rooms'
     },
     {
+        id   : 'courses',
+        title: 'Courses',
+        type : 'basic',
+        icon : 'heroicons_outline:book-open',
+        link : '/courses'
+    },
+    {
         id   : 'routine',
         title: 'Routine',
         type : 'basic',
@@ -66,7 +73,14 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:home',
         link : '/rooms'
-    }
+    },
+    {
+        id   : 'courses',
+        title: 'Courses',
+        type : 'basic',
+        icon : 'heroicons_outline:book-open',
+        link : '/courses'
+    },
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
@@ -89,7 +103,14 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:home',
         link : '/rooms'
-    }
+    },
+    {
+        id   : 'courses',
+        title: 'Courses',
+        type : 'basic',
+        icon : 'heroicons_outline:book-open',
+        link : '/courses'
+    },
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
@@ -112,5 +133,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:home',
         link : '/rooms'
-    }
+    },
+    {
+        id   : 'courses',
+        title: 'Courses',
+        type : 'basic',
+        icon : 'heroicons_outline:book-open',
+        link : '/courses'
+    },
 ];

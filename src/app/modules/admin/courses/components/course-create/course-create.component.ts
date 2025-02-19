@@ -2,53 +2,53 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Response} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {RoomsService} from "../../services/rooms.service";
-import {Room} from "../../../../../models/room";
+import {CourseService} from "../../services/course.service";
+import {Course} from "../../../../../models/course";
 import {DepartmentsService} from "../../../departments/services/departments.service";
 import {Department} from "../../../../../models/department";
 
 @Component({
-    selector: 'app-rooms-create',
-    templateUrl: './rooms-create.component.html',
-    styleUrl: './rooms-create.component.scss'
+    selector: 'app-course-create',
+    templateUrl: './course-create.component.html',
+    styleUrl: './course-create.component.scss'
 })
-export class RoomsCreateComponent implements OnInit {
-    room: Room = {id: 0, name: '', code: '', department_id: 0, room_type: ''};
+export class CourseCreateComponent implements OnInit {
+    course: Course = {id: 0, title: '', code: '', department_id: 0, course_type: ''};
     departments: Array<Department> = [];
-    roomTypes: Array<string> = [];
+    courseTypes: Array<string> = [];
     @ViewChild('roomNgForm') roomNgForm: NgForm;
 
     alert: any;
-    roomForm: UntypedFormGroup;
+    courseForm: UntypedFormGroup;
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private deptService: DepartmentsService,
-        private roomsService: RoomsService,
+        private courseService: CourseService,
         private router: Router
     ) {
     }
 
     ngOnInit(): void {
-        this.roomForm = this._formBuilder.group({
-            name: ['', Validators.required],
+        this.courseForm = this._formBuilder.group({
+            title: ['', Validators.required],
             code: ['', [Validators.required]],
             department_id: ['', [Validators.required]],
-            room_type: ['', [Validators.required]],
+            course_type: ['', [Validators.required]],
         });
 
         this.deptService.getAll().subscribe((response: Response<Department[]>) => {
             this.departments = response?.data?.items || [];
         });
 
-        this.roomsService.getRoomTypes().subscribe((response: Response<string[]>) => {
-            this.roomTypes = response?.data?.items || [];
+        this.courseService.getCourseTypes().subscribe((response: Response<string[]>) => {
+            this.courseTypes = response?.data?.items || [];
         });
     }
 
-    createRoom(): void {
-        this.roomsService.create(this.roomForm.value).subscribe((response: Response<Room>) => {
-            this.router.navigate(['/rooms/list']).then(() => {
+    createCourse(): void {
+        this.courseService.create(this.courseForm.value).subscribe((response: Response<Course>) => {
+            this.router.navigate(['/courses/list']).then(() => {
                 this.roomNgForm.resetForm();
             });
         });
