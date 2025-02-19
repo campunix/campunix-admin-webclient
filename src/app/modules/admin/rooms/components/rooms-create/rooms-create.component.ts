@@ -39,12 +39,12 @@ export class RoomsCreateComponent implements OnInit {
 
         // Fetch the department list
         this.deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.departments || [];
+            this.departments = response?.data?.items || [];
         });
 
         // Fetch the room types list
         this.roomsService.getRoomTypes().subscribe((response: Response<string[]>) => {
-            this.roomTypes = response?.data?.roomTypes || [];
+            this.roomTypes = response?.data?.items || [];
         });
     }
 

@@ -36,7 +36,7 @@ export class DepartmentsCreateComponent {
 
         // Fetch the org list
         this.orgService.getAll().subscribe((response: Response<Organization[]>) => {
-            this.organizations = response?.data?.organizations || [];
+            this.organizations = response?.data?.items || [];
         });
     }
 
