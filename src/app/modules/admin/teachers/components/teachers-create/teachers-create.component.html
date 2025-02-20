@@ -29,25 +29,40 @@
                     class="space-y-3"
                     [formGroup]="teacherForm"
                     #teacherNgForm="ngForm">
+                    <mat-form-field class="w-full">
+                        <mat-label>Department</mat-label>
+                        <mat-select
+                            [formControlName]="'department_id'"
+                            [required]="true">
+                            @for (dept of departments; track dept) {
+                                <mat-option [value]="dept.id">{{dept.name}}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherForm.get('department_id').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>User</mat-label>
+                        <mat-select
+                            [formControlName]="'user_id'"
+                            [required]="true">
+                            @for (user of users; track user) {
+                                <mat-option [value]="user.id">{{user.name}}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherForm.get('user_id').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
                     <!-- Name -->
                     <mat-form-field class="w-full">
                         <input
                             matInput
-                            [formControlName]="'teacherName'"
+                            [formControlName]="'designation'"
                             [required]="true">
-                        <mat-label>Name</mat-label>
-                        <mat-error *ngIf="teacherForm.get('teacherName').hasError('required')">
-                            Required
-                        </mat-error>
-                    </mat-form-field>
-                    <!-- Subject -->
-                    <mat-form-field class="w-full">
-                        <input
-                            matInput
-                            [formControlName]="'teacherSubject'"
-                            [required]="true">
-                        <mat-label>Subject</mat-label>
-                        <mat-error *ngIf="teacherForm.get('teacherSubject').hasError('required')">
+                        <mat-label>Designation</mat-label>
+                        <mat-error *ngIf="teacherForm.get('designation').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>

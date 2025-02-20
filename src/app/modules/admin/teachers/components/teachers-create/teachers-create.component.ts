@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TeachersService } from '../../services/teachers.service';
 import { Response } from '../../../../../models/response';
 import { Teacher } from 'app/models/teacher';
+import { Department } from 'app/models/department';
 
 @Component({
     selector: 'app-teachers-create',
@@ -16,6 +17,22 @@ export class TeachersCreateComponent {
 
     alert: any;
     teacherForm: UntypedFormGroup;
+    users: any[] = [
+        {
+            id: 1,
+            name: 'John Doe',
+            email: 'john@gmail.com'
+        }
+    ];
+    departments: Department[] = [
+        {
+            id: 1,
+            name: 'Computer Science',
+            code: 'CS',
+            organization_id: 1,
+            created_by: 'John Doe'
+        }
+    ];
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
@@ -25,8 +42,10 @@ export class TeachersCreateComponent {
 
     ngOnInit(): void {
         this.teacherForm = this._formBuilder.group({
-            teacherName: ['', Validators.required],
-            teacherSubject: ['', [Validators.required]],
+            user_id: ['', Validators.required],
+            department_id: ['', Validators.required],
+            designation: ['', Validators.required],
+            status: ['ACTIVE', Validators.required]
         });
     }
 
