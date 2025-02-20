@@ -48,14 +48,19 @@
                     <div class="grid">
                         <!-- Header -->
                         <div
-                            class="inventory-grid z-10 sticky top-0 grid grid-cols-3 gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                            class="inventory-grid z-10 sticky top-0 grid grid-cols-4 gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                             matSort
                             matSortDisableClear>
                             <div [mat-sort-header]="'teacherName'">Name</div>
                             <div
                                 class="hidden sm:block"
-                                [mat-sort-header]="'teacherSubject'">
+                                [mat-sort-header]="'teacherDesignation'">
                                 Designation
+                            </div>
+                            <div
+                                class="hidden sm:block"
+                                [mat-sort-header]="'teacherStatus'">
+                                Status
                             </div>
                             <div>
                                 Action
@@ -64,16 +69,18 @@
                         <!-- Rows -->
                         <ng-container *ngIf="teachers as teachers">
                             <ng-container *ngFor="let teacher of teachers; trackBy: trackByFn">
-                                <div class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b">
+                                <div class="inventory-grid grid grid-cols-4 items-center gap-4 py-3 px-6 md:px-8 border-b">
 
-                                    <!-- Name -->
                                     <div class="truncate">
                                         {{ teacher.full_name }}
                                     </div>
 
-                                    <!-- Subject -->
                                     <div class="hidden sm:block">
                                         {{ teacher.designation }}
+                                    </div>
+
+                                    <div class="hidden sm:block">
+                                        {{ teacher.status }}
                                     </div>
 
                                     <div>
