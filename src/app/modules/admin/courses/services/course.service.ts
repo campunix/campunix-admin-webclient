@@ -15,7 +15,7 @@ export class CourseService {
     }
 
     getCourseTypes(): Observable<Response<string[]>> {
-        return this.http.get<Response<string[]>>(`${this.baseUrl}/course_types/`);
+        return this.http.get<Response<string[]>>(`${this.baseUrl}/courseTypes/`);
     }
 
     getAll(): Observable<Response<Course[]>> {

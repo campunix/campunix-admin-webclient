@@ -15,7 +15,7 @@ export class RoomsService {
     }
 
     getRoomTypes(): Observable<Response<string[]>> {
-        return this.http.get<Response<string[]>>(`${this.baseUrl}/room_types/`);
+        return this.http.get<Response<string[]>>(`${this.baseUrl}/roomTypes/`);
     }
 
     getAll(): Observable<Response<Room[]>> {
