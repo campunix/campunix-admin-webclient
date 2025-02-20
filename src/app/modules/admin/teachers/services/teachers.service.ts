@@ -32,4 +32,12 @@ export class TeachersService {
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
+
+    getAllDesignations(): Observable<Response<string[]>> {
+        return this.http.get<Response<string[]>>(`${this.baseUrl}/teacherDesignations`);
+    }
+
+    getAllStatuses(): Observable<Response<string[]>> {
+        return this.http.get<Response<string[]>>(`${this.baseUrl}/teacherStatus`);
+    }
 }

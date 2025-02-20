@@ -48,21 +48,36 @@
                             [formControlName]="'user_id'"
                             [required]="true">
                             @for (user of users; track user) {
-                                <mat-option [value]="user.id">{{user.name}}</mat-option>
+                                <mat-option [value]="user.id">{{user.full_name}}</mat-option>
                             }
                         </mat-select>
                         <mat-error *ngIf="teacherForm.get('user_id').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
-                    <!-- Name -->
                     <mat-form-field class="w-full">
-                        <input
-                            matInput
+                        <mat-label>User</mat-label>
+                        <mat-select
                             [formControlName]="'designation'"
                             [required]="true">
-                        <mat-label>Designation</mat-label>
+                            @for (designation of designations; track designation) {
+                                <mat-option [value]="designation">{{designation}}</mat-option>
+                            }
+                        </mat-select>
                         <mat-error *ngIf="teacherForm.get('designation').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>User</mat-label>
+                        <mat-select
+                            [formControlName]="'status'"
+                            [required]="true">
+                            @for (status of statuses; track status) {
+                                <mat-option [value]="status">{{status}}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherForm.get('status').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>

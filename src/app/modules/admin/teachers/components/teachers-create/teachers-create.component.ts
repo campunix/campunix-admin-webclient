@@ -5,6 +5,9 @@ import { TeachersService } from '../../services/teachers.service';
 import { Response } from '../../../../../models/response';
 import { Teacher } from 'app/models/teacher';
 import { Department } from 'app/models/department';
+import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
+import { UserService } from 'app/shared/services/user.service';
+import { User } from 'app/models/user';
 
 @Component({
     selector: 'app-teachers-create',
@@ -17,26 +20,16 @@ export class TeachersCreateComponent {
 
     alert: any;
     teacherForm: UntypedFormGroup;
-    users: any[] = [
-        {
-            id: 1,
-            name: 'John Doe',
-            email: 'john@gmail.com'
-        }
-    ];
-    departments: Department[] = [
-        {
-            id: 1,
-            name: 'Computer Science',
-            code: 'CS',
-            organization_id: 1,
-            created_by: 'John Doe'
-        }
-    ];
+    users: any[] = [];
+    departments: Department[] = [];
+    designations: string[] = [];
+    statuses: string[] = [];
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private teachersService: TeachersService,
+        private deptService: DepartmentsService,
+        private userService: UserService,
         private router: Router
     ) { }
 
@@ -45,12 +38,41 @@ export class TeachersCreateComponent {
             user_id: ['', Validators.required],
             department_id: ['', Validators.required],
             designation: ['', Validators.required],
-            status: ['ACTIVE', Validators.required]
+            status: ['', Validators.required]
+        });
+
+        this.getDepartments();
+        this.getAllUsers();
+        this.getAllDesignations();
+        this.getAllStatuses();
+    }
+
+    getDepartments() {
+        this.deptService.getAll().subscribe((response: Response<Department[]>) => {
+            this.departments = response?.data?.items || [];
+        });
+    }
+
+    getAllUsers() {
+        this.userService.getAll().subscribe((response: Response<User[]>) => {
+            this.users = response?.data?.items || [];
+        });
+    }
+
+    getAllDesignations() {
+        this.teachersService.getAllDesignations().subscribe((response: Response<string[]>) => {
+            this.designations = response?.data?.items || [];
+        });
+    }
+
+    getAllStatuses() {
+        this.teachersService.getAllStatuses().subscribe((response: Response<string[]>) => {
+            this.statuses = response?.data?.items || [];
         });
     }
 
     createTeacher(): void {
-        this.teachersService.create(this.teacherForm.value).subscribe((response: Response<Teacher>) => {
+        this.teachersService.create(this.teacherForm.value).subscribe(() => {
             this.router.navigate(['/teachers/list']).then(() => {
                 this.teacherNgForm.resetForm();
             });
