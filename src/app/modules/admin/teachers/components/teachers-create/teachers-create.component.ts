@@ -8,6 +8,7 @@ import { Department } from 'app/models/department';
 import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 import { UserService } from 'app/shared/services/user.service';
 import { User } from 'app/models/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-teachers-create',
@@ -27,10 +28,11 @@ export class TeachersCreateComponent {
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
-        private teachersService: TeachersService,
-        private deptService: DepartmentsService,
-        private userService: UserService,
-        private router: Router
+        private _teachersService: TeachersService,
+        private _deptService: DepartmentsService,
+        private _userService: UserService,
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) { }
 
     ngOnInit(): void {
@@ -48,34 +50,49 @@ export class TeachersCreateComponent {
     }
 
     getDepartments() {
-        this.deptService.getAll().subscribe((response: Response<Department[]>) => {
+        this._deptService.getAll().subscribe((response: Response<Department[]>) => {
             this.departments = response?.data?.items || [];
         });
     }
 
     getAllUsers() {
-        this.userService.getAll().subscribe((response: Response<User[]>) => {
+        this._userService.getAll().subscribe((response: Response<User[]>) => {
             this.users = response?.data?.items || [];
         });
     }
 
     getAllDesignations() {
-        this.teachersService.getAllDesignations().subscribe((response: Response<string[]>) => {
+        this._teachersService.getAllDesignations().subscribe((response: Response<string[]>) => {
             this.designations = response?.data?.items || [];
         });
     }
 
     getAllStatuses() {
-        this.teachersService.getAllStatuses().subscribe((response: Response<string[]>) => {
+        this._teachersService.getAllStatuses().subscribe((response: Response<string[]>) => {
             this.statuses = response?.data?.items || [];
         });
     }
 
     createTeacher(): void {
-        this.teachersService.create(this.teacherForm.value).subscribe(() => {
-            this.router.navigate(['/teachers/list']).then(() => {
-                this.teacherNgForm.resetForm();
-            });
+        this._teachersService.create(this.teacherForm.value).subscribe({
+            next: () => {
+                this._snackBar.open('Teacher created successfully', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+
+                this.router.navigate(['/teachers/list']).then(() => {
+                    this.teacherNgForm.resetForm();
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 

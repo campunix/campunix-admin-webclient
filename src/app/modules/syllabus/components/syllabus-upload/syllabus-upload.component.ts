@@ -25,7 +25,7 @@ export class SyllabusUploadComponent {
     } else {
       this._snackBar.open('Please select a valid XML file', 'Close', {
         duration: 3000,
-        horizontalPosition: 'end',
+        horizontalPosition: 'center',
         verticalPosition: 'bottom'
       });
       event.target.value = '';
@@ -36,7 +36,7 @@ export class SyllabusUploadComponent {
     if (!this.selectedFile) {
       this._snackBar.open('Please select a file first', 'Close', {
         duration: 3000,
-        horizontalPosition: 'end',
+        horizontalPosition: 'center',
         verticalPosition: 'bottom'
       });
       return;
@@ -52,7 +52,7 @@ export class SyllabusUploadComponent {
           this.isUploading = false;
           this._snackBar.open('Upload completed successfully', 'Close', {
             duration: 3000,
-            horizontalPosition: 'end',
+            horizontalPosition: 'center',
             verticalPosition: 'bottom'
           });
         },
@@ -60,7 +60,7 @@ export class SyllabusUploadComponent {
           this.isUploading = false;
           this._snackBar.open('Upload failed: ' + error.message, 'Close', {
             duration: 3000,
-            horizontalPosition: 'end',
+            horizontalPosition: 'center',
             verticalPosition: 'bottom'
           });
         }
