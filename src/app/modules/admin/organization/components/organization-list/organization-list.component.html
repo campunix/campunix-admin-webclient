@@ -9,7 +9,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Organizations</div>
+        <div class="text-4xl font-extrabold tracking-tight"></div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -35,77 +35,87 @@
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
+            <user></user>
         </div>
     </div>
 
-    <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
-
-        <!-- Products list -->
-        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-            <ng-container *ngIf="organizations as organizations">
-                <ng-container *ngIf="organizations.length > 0 && !isLoading; else noDepartments">
-                    <div class="grid">
-                        
-                        <!-- Header -->
-                        <div
-                            class="inventory-grid z-10 sticky top-0 grid grid-cols-3 gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                            matSort
-                            matSortDisableClear>
-                            <div [mat-sort-header]="'name'">Name</div>
-                            <div
-                                class="hidden sm:block"
-                                [mat-sort-header]="'departmentCode'">
-                                Code
-                            </div>
-                            <div>
-                                Action
-                            </div>
-                        </div>
-                        <!-- Rows -->
-                        <ng-container *ngFor="let organization of organizations; trackBy: trackByFn">
-                            <div class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b">
-
-                                <!-- Name -->
-                                <div class="truncate">
-                                    {{ organization.id }}
-                                </div>
-
-                                <!-- Code -->
-                                <div class="hidden sm:block">
-                                    {{ organization.name }}
-                                </div>
-
-                                <div>
-                                    <button (click)="deleteOrganization(organization.id)" mat-icon-button>
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                </div>
-
-                            </div>
-
-                        </ng-container>
+    <div class="organization-container">
+        <div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
+            <!-- Header -->
+            <div class="relative flex-0 py-8 px-4 sm:p-16 overflow-hidden bg-gray-800 dark">
+                <!-- Background - @formatter:off -->
+                <!-- Rings -->
+                <svg class="absolute inset-0 pointer-events-none"
+                    viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+                    <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                        <circle r="234" cx="196" cy="23"></circle>
+                        <circle r="234" cx="790" cy="491"></circle>
+                    </g>
+                </svg>
+                <!-- @formatter:on -->
+                <div class="z-10 relative flex flex-col items-center">
+                    <h2 class="text-xl font-semibold">Organizations</h2>
+                    <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
+                        Choose an organization and find departments
                     </div>
-
-                    <mat-paginator
-                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                        [ngClass]="{'pointer-events-none': isLoading}"
-                        [length]="pagination.length"
-                        [pageIndex]="pagination.page"
-                        [pageSize]="pagination.size"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
-                        [showFirstLastButtons]="true"></mat-paginator>
-
-                </ng-container>
-            </ng-container>
-
-            <ng-template #noDepartments>
-                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Organizations!
                 </div>
-            </ng-template>
+            </div>
 
+            <!-- Main -->
+            <div class="flex flex-auto p-6 sm:p-10">
+
+                <div class="flex flex-col flex-auto w-full max-w-xs sm:max-w-5xl mx-auto">
+                    <!-- Courses -->
+                    <ng-container *ngIf="organizations.length; else noOrganizations">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 sm:mt-10">
+                            <ng-container *ngFor="let organization of organizations; trackBy: organization">
+                                <!-- Course -->
+                                <div class="flex flex-col h-96 shadow rounded-2xl overflow-hidden bg-card">
+                                    <div class="flex flex-col p-6">
+                                        <!-- Course title & description -->
+                                        <div class="mt-4 text-lg font-medium">{{organization.name}}</div>
+                                        <div class="mt-0.5 line-clamp-2 text-secondary">{{organization.description}}</div>
+                                        <div class="w-12 h-1 my-6 border-t-2"></div>
+                                    </div>
+                                    <!-- Footer -->
+                                    <div class="flex flex-col w-full mt-auto footer-border-top">
+                                        
+                                        <!-- Course launch button -->
+                                        <div class="px-6 py-4 text-right bg-gray-50 dark:bg-transparent">
+                                            <a
+                                                mat-stroked-button
+                                                (click)="navigateToDepartments(organization.id)">
+                                                <span class="inline-flex items-center">
+
+                                                    <!-- Started -->
+                                                    <ng-container>
+                                                        <span>Continue</span>
+                                                    </ng-container>
+
+                                                    <mat-icon
+                                                        class="ml-1.5 icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:arrow-small-right'"></mat-icon>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                    <!-- No courses -->
+                    <ng-template #noOrganizations>
+                        <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                            <mat-icon
+                                class="icon-size-24"
+                                [svgIcon]="'heroicons_outline:document-search'"></mat-icon>
+                            <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">No organizations found!</div>
+                        </div>
+                    </ng-template>
+                </div>
+
+            </div>
         </div>
-
     </div>
-
 </div>
