@@ -51,7 +51,7 @@ export class TeachersCreateComponent {
 
     getDepartments() {
         this._deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
+            this.departments = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 
@@ -63,13 +63,13 @@ export class TeachersCreateComponent {
 
     getAllDesignations() {
         this._teachersService.getAllDesignations().subscribe((response: Response<string[]>) => {
-            this.designations = response?.data?.items || [];
+            this.designations = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 
     getAllStatuses() {
         this._teachersService.getAllStatuses().subscribe((response: Response<string[]>) => {
-            this.statuses = response?.data?.items || [];
+            this.statuses = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 

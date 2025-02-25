@@ -41,12 +41,10 @@ export class CourseComponent implements OnInit {
     courses: Course[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
     constructor(private courseService: CourseService, private router: Router) {
@@ -55,7 +53,7 @@ export class CourseComponent implements OnInit {
 
     ngOnInit() {
         this.courseService.getAll().subscribe((response: Response<Course[]>) => {
-            this.courses = response?.data?.items || [];
+            this.courses = Array.isArray(response.data.items) ? response.data.items.flat() : [];
             this.isLoading = false;
         });
     }

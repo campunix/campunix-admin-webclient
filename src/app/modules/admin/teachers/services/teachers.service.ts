@@ -13,8 +13,8 @@ export class TeachersService {
 
     constructor(private http: HttpClient) { }
 
-    getAll(): Observable<Response<Teacher[]>> {
-        return this.http.get<Response<Teacher[]>>(this.baseUrl);
+    getAll(page: number, pageSize: number): Observable<Response<Teacher[]>> {
+        return this.http.get<Response<Teacher[]>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
     }
 
     get(id: number): Observable<Response<Teacher>> {

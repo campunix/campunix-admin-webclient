@@ -38,11 +38,11 @@ export class CourseCreateComponent implements OnInit {
         });
 
         this.deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
+            this.departments = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
 
         this.courseService.getCourseTypes().subscribe((response: Response<string[]>) => {
-            this.courseTypes = response?.data?.items || [];
+            this.courseTypes = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 

@@ -38,11 +38,11 @@ export class RoomsCreateComponent implements OnInit {
         });
 
         this.deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
+            this.departments = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
 
         this.roomsService.getRoomTypes().subscribe((response: Response<string[]>) => {
-            this.roomTypes = response?.data?.items || [];
+            this.roomTypes = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 

@@ -42,12 +42,10 @@ export class RoomsComponent implements OnInit {
     rooms: Room[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
     constructor(private roomsService: RoomsService, private router: Router) {
@@ -56,7 +54,7 @@ export class RoomsComponent implements OnInit {
 
     ngOnInit() {
         this.roomsService.getAll().subscribe((response: Response<Room[]>) => {
-            this.rooms = response?.data?.items || [];
+            this.rooms = Array.isArray(response.data.items) ? response.data.items.flat() : [];
             this.isLoading = false;
         });
     }

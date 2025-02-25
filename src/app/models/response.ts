@@ -1,5 +1,9 @@
 export interface Data<T> {
-    [key: string]: T;
+    items: T[];
+    current_page: number | null;
+    total_pages: number | null;
+    page_size: number | null;
+    total_items: number | null;
 }
 
 export interface Response<T> {
