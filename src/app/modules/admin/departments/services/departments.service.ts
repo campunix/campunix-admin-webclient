@@ -19,8 +19,8 @@ export class DepartmentsService {
         return this.http.get<Response<ListResponse<Department>>>(this.baseUrl);
     }
 
-    getAllPaginated(page: number, pageSize: number): Observable<Response<PaginatedResponse<Department>>> {
-        return this.http.get<Response<PaginatedResponse<Department>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
+    getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Department>>> {
+        return this.http.get<Response<PaginatedResponse<Department>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     get(id: number): Observable<Response<SingleItemResponse<Department>>> {

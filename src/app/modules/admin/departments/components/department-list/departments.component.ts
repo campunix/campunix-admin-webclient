@@ -64,21 +64,25 @@ export class DepartmentsComponent implements OnInit {
 
     ngOnInit() {
         this.loadDepartments();
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadDepartments(searchQuery);
+        });
     }
 
     onPageChange(event: PageEvent) {
         this.pagination.currentPage = event.pageIndex;
         this.pagination.pageSize = event.pageSize;
-        this.loadDepartments();
+        this.loadDepartments(this.searchInputControl.value);
     }
 
-    loadDepartments() {
+    loadDepartments(searchQuery: string = '') {
         this.isLoading = true;
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
         this.departmentService
-            .getAllPaginated(page, pageSize)
+            .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {

@@ -38,7 +38,7 @@ export class TeachersComponent implements OnInit {
         this.loadTeachers();
 
         this.searchInputControl.valueChanges.subscribe((searchQuery) => {
-            this.pagination.currentPage = 0; // Reset to first page on search
+            this.pagination.currentPage = 0;
             this.loadTeachers(searchQuery);
         });
     }
@@ -54,7 +54,6 @@ export class TeachersComponent implements OnInit {
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
-        // Pass the search query to the service
         this.teachersService
             .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
