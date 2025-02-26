@@ -8,6 +8,7 @@ import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Room} from "../../../../../models/room";
 import {RoomsService} from "../../services/rooms.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-rooms',
@@ -48,7 +49,7 @@ export class RoomsComponent implements OnInit {
         totalItems: 0
     };
 
-    constructor(private roomsService: RoomsService, private router: Router) {
+    constructor(private roomsService: RoomsService, private router: Router, private _snackBar: MatSnackBar) {
         this.isLoading = true;
     }
 
@@ -95,8 +96,22 @@ export class RoomsComponent implements OnInit {
     }
 
     deleteRoom(id: number) {
-        this.roomsService.delete(id).subscribe(() => {
-            this.rooms = this.rooms.filter(room => room.id !== id);
+        this.roomsService.delete(id).subscribe({
+            next: (response) => {
+                this.rooms = this.rooms.filter(teacher => teacher.id !== id);
+                this._snackBar.open('Room deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 
