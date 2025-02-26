@@ -11,6 +11,7 @@ import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Organization} from "../../../../../models/organization";
 import {OrganizationService} from "../../../organization/services/organization.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-departments',
@@ -55,7 +56,8 @@ export class DepartmentsComponent implements OnInit {
 
     constructor(
         private departmentService: DepartmentsService,
-        private router: Router
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) {
         this.isLoading = true;
     }
@@ -103,8 +105,22 @@ export class DepartmentsComponent implements OnInit {
     }
 
     deleteDepartment(id: number) {
-        this.departmentService.delete(id).subscribe(() => {
-            this.departments = this.departments.filter(department => department.id !== id);
+        this.departmentService.delete(id).subscribe({
+            next: (response) => {
+                this.departments = this.departments.filter(teacher => teacher.id !== id);
+                this._snackBar.open('Department deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 

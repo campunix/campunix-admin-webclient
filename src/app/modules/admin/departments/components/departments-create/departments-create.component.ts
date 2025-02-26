@@ -7,6 +7,7 @@ import {ListResponse, Response, SingleItemResponse} from "../../../../../models/
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Organization} from "../../../../../models/organization";
 import {OrganizationService} from "../../../organization/services/organization.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-departments-create',
@@ -24,14 +25,17 @@ export class DepartmentsCreateComponent {
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private orgService: OrganizationService,
-        private departmentsService: DepartmentsService, private router: Router
+        private departmentsService: DepartmentsService,
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) {
     }
 
     ngOnInit(): void {
         this.departmentForm = this._formBuilder.group({
-            departmentName: ['', Validators.required],
-            departmentCode: ['', [Validators.required]],
+            name: ['', Validators.required],
+            code: ['', [Validators.required]],
+            organization_id: ['', Validators.required],
         });
 
         // Fetch the org list
@@ -41,10 +45,25 @@ export class DepartmentsCreateComponent {
     }
 
     createDepartment(): void {
-        this.departmentsService.create(this.departmentForm.value).subscribe((response: Response<SingleItemResponse<Department>>) => {
-            this.router.navigate(['/departments/list']).then(() => {
-                this.departmentNgForm.resetForm();
-            });
+        this.departmentsService.create(this.departmentForm.value).subscribe({
+            next: () => {
+                this._snackBar.open('Department created successfully', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+
+                this.router.navigate(['/departments/list']).then(() => {
+                    this.departmentNgForm.resetForm();
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 
