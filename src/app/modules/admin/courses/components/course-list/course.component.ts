@@ -8,6 +8,7 @@ import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Course} from "../../../../../models/course";
 import {CourseService} from "../../services/course.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-course',
@@ -47,7 +48,7 @@ export class CourseComponent implements OnInit {
         totalItems: 0
     };
 
-    constructor(private courseService: CourseService, private router: Router) {
+    constructor(private courseService: CourseService, private router: Router, private _snackBar: MatSnackBar) {
         this.isLoading = true;
     }
 
@@ -89,17 +90,31 @@ export class CourseComponent implements OnInit {
     }
 
     createCourse() {
-        this.router.navigate(['/courses/create']).then(() => {});
-    }
-
-    deleteCourse(id: number) {
-        this.courseService.delete(id).subscribe(() => {
-            this.courses = this.courses.filter(course => course.id !== id);
+        this.router.navigate(['/courses/create']).then(() => {
         });
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    deleteCourse(id: number) {
+        this.courseService.delete(id).subscribe({
+            next: (response) => {
+                this.courses = this.courses.filter(teacher => teacher.id !== id);
+                this._snackBar.open('Course deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
+        });
+    }
+
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 }

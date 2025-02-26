@@ -6,6 +6,7 @@ import {CourseService} from "../../services/course.service";
 import {Course} from "../../../../../models/course";
 import {DepartmentsService} from "../../../departments/services/departments.service";
 import {Department} from "../../../../../models/department";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-course-create',
@@ -16,7 +17,7 @@ export class CourseCreateComponent implements OnInit {
     course: Course = {id: 0, title: '', code: '', department_id: 0, course_type: ''};
     departments: Array<Department> = [];
     courseTypes: Array<string> = [];
-    @ViewChild('roomNgForm') roomNgForm: NgForm;
+    @ViewChild('courseNgForm') courseNgForm: NgForm;
 
     alert: any;
     courseForm: UntypedFormGroup;
@@ -25,7 +26,8 @@ export class CourseCreateComponent implements OnInit {
         private _formBuilder: UntypedFormBuilder,
         private deptService: DepartmentsService,
         private courseService: CourseService,
-        private router: Router
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) {
     }
 
@@ -47,14 +49,29 @@ export class CourseCreateComponent implements OnInit {
     }
 
     createCourse(): void {
-        this.courseService.create(this.courseForm.value).subscribe((response: Response<SingleItemResponse<Course>>) => {
-            this.router.navigate(['/courses/list']).then(() => {
-                this.roomNgForm.resetForm();
-            });
+        this.courseService.create(this.courseForm.value).subscribe({
+            next: () => {
+                this._snackBar.open('Course created successfully', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+
+                this.router.navigate(['/courses/list']).then(() => {
+                    this.courseNgForm.resetForm();
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 
     clearForm(): void {
-        this.roomNgForm.resetForm();
+        this.courseNgForm.resetForm();
     }
 }
