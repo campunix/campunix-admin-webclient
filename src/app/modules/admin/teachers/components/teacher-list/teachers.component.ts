@@ -36,21 +36,27 @@ export class TeachersComponent implements OnInit {
 
     ngOnInit() {
         this.loadTeachers();
+
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0; // Reset to first page on search
+            this.loadTeachers(searchQuery);
+        });
     }
 
     onPageChange(event: PageEvent) {
         this.pagination.currentPage = event.pageIndex;
         this.pagination.pageSize = event.pageSize;
-        this.loadTeachers();
+        this.loadTeachers(this.searchInputControl.value);
     }
 
-    loadTeachers() {
+    loadTeachers(searchQuery: string = '') {
         this.isLoading = true;
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
+        // Pass the search query to the service
         this.teachersService
-            .getAllPaginated(page, pageSize)
+            .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {
@@ -70,6 +76,7 @@ export class TeachersComponent implements OnInit {
                 error: () => this.isLoading = false
             });
     }
+
 
     createTeacher() {
         this.router.navigate(['/teachers/create']).then(() => {

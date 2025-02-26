@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../../environments/environment';
 import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from '../../../../models/response';
-import { Teacher } from 'app/models/teacher';
+import {Teacher} from 'app/models/teacher';
 
 @Injectable({
     providedIn: 'root',
@@ -11,10 +11,11 @@ import { Teacher } from 'app/models/teacher';
 export class TeachersService {
     private baseUrl = `${environment.apiUrl}/teachers`;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-    getAllPaginated(page: number, pageSize: number): Observable<Response<PaginatedResponse<Teacher>>> {
-        return this.http.get<Response<PaginatedResponse<Teacher>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
+    getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Teacher>>> {
+        return this.http.get<Response<PaginatedResponse<Teacher>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     get(id: number): Observable<Response<SingleItemResponse<Teacher>>> {
