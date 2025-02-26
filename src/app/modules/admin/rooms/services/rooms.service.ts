@@ -23,8 +23,8 @@ export class RoomsService {
         return this.http.get<Response<ListResponse<Room>>>(this.baseUrl);
     }
 
-    getAllPaginated(page: number, pageSize: number): Observable<Response<PaginatedResponse<Room>>> {
-        return this.http.get<Response<PaginatedResponse<Room>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
+    getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Room>>> {
+        return this.http.get<Response<PaginatedResponse<Room>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     get(id: number): Observable<Response<SingleItemResponse<Room>>> {

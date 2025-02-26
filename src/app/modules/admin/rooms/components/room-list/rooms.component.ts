@@ -55,21 +55,26 @@ export class RoomsComponent implements OnInit {
 
     ngOnInit() {
         this.loadRooms();
+
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadRooms(searchQuery);
+        });
     }
 
     onPageChange(event: PageEvent) {
         this.pagination.currentPage = event.pageIndex;
         this.pagination.pageSize = event.pageSize;
-        this.loadRooms();
+        this.loadRooms(this.searchInputControl.value);
     }
 
-    loadRooms() {
+    loadRooms(searchQuery: string = '') {
         this.isLoading = true;
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
         this.roomsService
-            .getAllPaginated(page, pageSize)
+            .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {
