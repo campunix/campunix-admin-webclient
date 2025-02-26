@@ -23,8 +23,8 @@ export class CourseService {
         return this.http.get<Response<ListResponse<Course>>>(this.baseUrl);
     }
 
-    getAllPaginated(page: number, pageSize: number): Observable<Response<PaginatedResponse<Course>>> {
-        return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
+    getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Course>>> {
+        return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     get(id: number): Observable<Response<SingleItemResponse<Course>>> {

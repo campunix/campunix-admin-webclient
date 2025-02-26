@@ -54,21 +54,26 @@ export class CourseComponent implements OnInit {
 
     ngOnInit() {
         this.loadCourses();
+
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadCourses(searchQuery);
+        });
     }
 
     onPageChange(event: PageEvent) {
         this.pagination.currentPage = event.pageIndex;
         this.pagination.pageSize = event.pageSize;
-        this.loadCourses();
+        this.loadCourses(this.searchInputControl.value);
     }
 
-    loadCourses() {
+    loadCourses(searchQuery: string = '') {
         this.isLoading = true;
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
         this.courseService
-            .getAllPaginated(page, pageSize)
+            .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {
