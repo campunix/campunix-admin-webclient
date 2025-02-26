@@ -33,10 +33,10 @@
                     <mat-form-field class="w-full">
                         <input
                             matInput
-                            [formControlName]="'departmentName'"
+                            [formControlName]="'name'"
                             [required]="true">
                         <mat-label>Name</mat-label>
-                        <mat-error *ngIf="departmentForm.get('departmentName').hasError('required')">
+                        <mat-error *ngIf="departmentForm.get('name').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
@@ -44,22 +44,27 @@
                     <mat-form-field class="w-full">
                         <input
                             matInput
-                            [formControlName]="'departmentCode'"
+                            [formControlName]="'code'"
                             [required]="true">
                         <mat-label>Code</mat-label>
-                        <mat-error *ngIf="departmentForm.get('departmentCode').hasError('required')">
+                        <mat-error *ngIf="departmentForm.get('code').hasError('required')">
                             Required
                         </mat-error>
                     </mat-form-field>
 
                     <!-- Organizations -->
-                    <mat-form-field>
+                    <mat-form-field class="w-full">
                         <mat-label>Organization</mat-label>
-                        <mat-select>
+                        <mat-select
+                            [formControlName]="'organization_id'"
+                            [required]="true">
                             @for (organization of organizations; track organization) {
-                                <mat-option [value]="organization.id">{{organization.name}}</mat-option>
+                                <mat-option [value]="organization.id">{{ organization.name }}</mat-option>
                             }
                         </mat-select>
+                        <mat-error *ngIf="departmentForm.get('organization_id').hasError('required')">
+                            Required
+                        </mat-error>
                     </mat-form-field>
 
                     <!-- Actions -->

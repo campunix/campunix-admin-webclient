@@ -1,14 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TeachersService } from '../../services/teachers.service';
-import { Response } from '../../../../../models/response';
-import { Teacher } from 'app/models/teacher';
-import { Department } from 'app/models/department';
-import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
-import { UserService } from 'app/shared/services/user.service';
-import { User } from 'app/models/user';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, ViewChild} from '@angular/core';
+import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {TeachersService} from '../../services/teachers.service';
+import {ListResponse, Response} from '../../../../../models/response';
+import {Teacher} from 'app/models/teacher';
+import {Department} from 'app/models/department';
+import {DepartmentsService} from 'app/modules/admin/departments/services/departments.service';
+import {UserService} from 'app/shared/services/user.service';
+import {User} from 'app/models/user';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-teachers-create',
@@ -16,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     styleUrls: ['./teachers-create.component.scss']
 })
 export class TeachersCreateComponent {
-    teacher: Teacher = { id: 0, full_name: '', designation: '', email: '', status: '' };
+    teacher: Teacher = {id: 0, full_name: '', designation: '', email: '', status: ''};
     @ViewChild('teacherNgForm') teacherNgForm: NgForm;
 
     alert: any;
@@ -33,7 +33,8 @@ export class TeachersCreateComponent {
         private _userService: UserService,
         private router: Router,
         private _snackBar: MatSnackBar
-    ) { }
+    ) {
+    }
 
     ngOnInit(): void {
         this.teacherForm = this._formBuilder.group({
@@ -50,26 +51,26 @@ export class TeachersCreateComponent {
     }
 
     getDepartments() {
-        this._deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
+        this._deptService.getAll().subscribe(response => {
+            this.departments = response?.data?.items ?? [];
         });
     }
 
     getAllUsers() {
-        this._userService.getAll().subscribe((response: Response<User[]>) => {
-            this.users = response?.data?.items || [];
+        this._userService.getAll().subscribe((response: Response<ListResponse<User>>) => {
+            this.users = response?.data?.items ?? [];
         });
     }
 
     getAllDesignations() {
-        this._teachersService.getAllDesignations().subscribe((response: Response<string[]>) => {
-            this.designations = response?.data?.items || [];
+        this._teachersService.getAllDesignations().subscribe((response: Response<ListResponse<string>>) => {
+            this.designations = response.data.items ?? [];
         });
     }
 
     getAllStatuses() {
-        this._teachersService.getAllStatuses().subscribe((response: Response<string[]>) => {
-            this.statuses = response?.data?.items || [];
+        this._teachersService.getAllStatuses().subscribe((response: Response<ListResponse<string>>) => {
+            this.statuses = response.data.items ?? [];
         });
     }
 

@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
-import { TeachersService } from '../../services/teachers.service';
-import { Response } from '../../../../../models/response';
-import { fuseAnimations } from '../../../../../../@fuse/animations';
-import { Pagination } from '../../../../../models/pagination';
-import { Teacher } from 'app/models/teacher';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {PageEvent} from '@angular/material/paginator';
+import {Router} from '@angular/router';
+import {TeachersService} from '../../services/teachers.service';
+import {fuseAnimations} from '../../../../../../@fuse/animations';
+import {Pagination} from '../../../../../models/pagination';
+import {Teacher} from 'app/models/teacher';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-teachers',
@@ -17,19 +15,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     animations: fuseAnimations,
 })
 export class TeachersComponent implements OnInit {
-    @ViewChild(MatPaginator) private _paginator: MatPaginator;
-    @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
     teachers: Teacher[] = [];
 
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
     constructor(
@@ -41,14 +35,51 @@ export class TeachersComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.teachersService.getAll().subscribe((response: Response<Teacher[]>) => {
-            this.teachers = response?.data?.items || [];
-            this.isLoading = false;
+        this.loadTeachers();
+
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadTeachers(searchQuery);
         });
     }
 
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadTeachers(this.searchInputControl.value);
+    }
+
+    loadTeachers(searchQuery: string = '') {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.teachersService
+            .getAllPaginated(page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.teachers = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.teachers = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
+    }
+
+
     createTeacher() {
-        this.router.navigate(['/teachers/create']).then(() => { });
+        this.router.navigate(['/teachers/create']).then(() => {
+        });
     }
 
     deleteTeacher(id: number) {
@@ -56,16 +87,16 @@ export class TeachersComponent implements OnInit {
             next: (response) => {
                 this.teachers = this.teachers.filter(teacher => teacher.id !== id);
                 this._snackBar.open('Teacher deleted', 'Close', {
-                  duration: 3000,
-                  horizontalPosition: 'center',
-                  verticalPosition: 'bottom'
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
                 });
             },
             error: (error) => {
                 this._snackBar.open('Failed: ' + error.message, 'Close', {
-                  duration: 3000,
-                  horizontalPosition: 'center',
-                  verticalPosition: 'bottom'
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
                 });
             }
         });
