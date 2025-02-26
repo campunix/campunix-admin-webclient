@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrganizationService} from "../../services/organization.service";
-import {Response} from "../../../../../models/response";
+import {ListResponse, PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -53,14 +53,15 @@ export class OrganizationListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
-            this.organizations = Array.isArray(response.data.items) ? response.data.items.flat() : [];
+        this.organizationService.getAll().subscribe((response: Response<ListResponse<Organization>>) => {
+            this.organizations = response.data.items ?? [];
             this.isLoading = false;
         });
     }
 
     createOrganization() {
-        this.router.navigate(['/organizations/create']).then(() => {});
+        this.router.navigate(['/organizations/create']).then(() => {
+        });
     }
 
     deleteOrganization(id: number) {

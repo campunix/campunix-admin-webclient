@@ -1,15 +1,22 @@
-export interface Data<T> {
-    items: T[];
-    current_page: number | null;
-    total_pages: number | null;
-    page_size: number | null;
-    total_items: number | null;
-}
-
 export interface Response<T> {
     status: boolean;
     code: number;
     message: string | null;
     errors: string | null;
-    data: Data<T>;
+    data: T;
+}
+
+export interface SingleItemResponse<T> {
+    [key: string]: T;
+}
+
+export interface ListResponse<T> {
+    items: T[];
+}
+
+export interface PaginatedResponse<T> extends ListResponse<T> {
+    current_page: number;
+    total_pages: number;
+    page_size: number;
+    total_items: number;
 }

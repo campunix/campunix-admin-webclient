@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Department} from "../../../../models/department";
 import {environment} from "../../../../../environments/environment";
-import {Response} from "../../../../models/response";
+import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "../../../../models/response";
+import {Teacher} from "../../../../models/teacher";
 
 @Injectable({
     providedIn: 'root',
@@ -14,20 +15,24 @@ export class DepartmentsService {
     constructor(private http: HttpClient) {
     }
 
-    getAll(): Observable<Response<Department[]>> {
-        return this.http.get<Response<Department[]>>(this.baseUrl);
+    getAll(): Observable<Response<ListResponse<Department>>> {
+        return this.http.get<Response<ListResponse<Department>>>(this.baseUrl);
     }
 
-    get(id: number): Observable<Response<Department>> {
-        return this.http.get<Response<Department>>(`${this.baseUrl}/${id}`);
+    getAllPaginated(page: number, pageSize: number): Observable<Response<PaginatedResponse<Department>>> {
+        return this.http.get<Response<PaginatedResponse<Department>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}`);
     }
 
-    create(department: Department): Observable<Response<Department>> {
-        return this.http.post<Response<Department>>(this.baseUrl, department);
+    get(id: number): Observable<Response<SingleItemResponse<Department>>> {
+        return this.http.get<Response<SingleItemResponse<Department>>>(`${this.baseUrl}/${id}`);
     }
 
-    update(id: number, department: Department): Observable<Response<Department>> {
-        return this.http.put<Response<Department>>(`${this.baseUrl}/${id}`, department);
+    create(department: Department): Observable<Response<SingleItemResponse<Department>>> {
+        return this.http.post<Response<SingleItemResponse<Department>>>(this.baseUrl, department);
+    }
+
+    update(id: number, department: Department): Observable<Response<SingleItemResponse<Department>>> {
+        return this.http.put<Response<SingleItemResponse<Department>>>(`${this.baseUrl}/${id}`, department);
     }
 
     delete(id: number): Observable<void> {

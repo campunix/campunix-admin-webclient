@@ -3,7 +3,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from 'environments/environment';
 import {User} from 'app/models/user';
-import {Response} from "app/models/response";
+import {ListResponse, Response} from "app/models/response";
+import {Department} from "../../models/department";
 
 @Injectable({
     providedIn: 'root',
@@ -13,8 +14,8 @@ export class UserService {
 
     constructor(private http: HttpClient) {}
 
-    getAll(): Observable<Response<User[]>> {
+    getAll(): Observable<Response<ListResponse<User>>> {
         let params = new HttpParams().set('paginate', 'false');
-        return this.http.get<Response<User[]>>(this.baseUrl, { params });
+        return this.http.get<Response<ListResponse<User>>>(this.baseUrl, { params });
     }
 }

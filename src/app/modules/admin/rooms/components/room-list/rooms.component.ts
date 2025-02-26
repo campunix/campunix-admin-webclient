@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Response} from "../../../../../models/response";
+import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
@@ -53,14 +53,45 @@ export class RoomsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.roomsService.getAll().subscribe((response: Response<Room[]>) => {
-            this.rooms = Array.isArray(response.data.items) ? response.data.items.flat() : [];
-            this.isLoading = false;
-        });
+        this.loadRooms();
+    }
+
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadRooms();
+    }
+
+    loadRooms() {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.roomsService
+            .getAllPaginated(page, pageSize)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.rooms = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.rooms = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
     }
 
     createRoom() {
-        this.router.navigate(['/rooms/create']).then(() => {});
+        this.router.navigate(['/rooms/create']).then(() => {
+        });
     }
 
     deleteRoom(id: number) {
@@ -69,8 +100,7 @@ export class RoomsComponent implements OnInit {
         });
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 }

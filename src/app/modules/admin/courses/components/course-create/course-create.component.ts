@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {Response} from "../../../../../models/response";
+import {ListResponse, Response, SingleItemResponse} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {CourseService} from "../../services/course.service";
 import {Course} from "../../../../../models/course";
@@ -37,17 +37,17 @@ export class CourseCreateComponent implements OnInit {
             course_type: ['', [Validators.required]],
         });
 
-        this.deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = Array.isArray(response.data.items) ? response.data.items.flat() : [];
+        this.deptService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
+            this.departments = response.data.items ?? [];
         });
 
-        this.courseService.getCourseTypes().subscribe((response: Response<string[]>) => {
-            this.courseTypes = Array.isArray(response.data.items) ? response.data.items.flat() : [];
+        this.courseService.getCourseTypes().subscribe((response: Response<ListResponse<string>>) => {
+            this.courseTypes = response.data.items ?? [];
         });
     }
 
     createCourse(): void {
-        this.courseService.create(this.courseForm.value).subscribe((response: Response<Course>) => {
+        this.courseService.create(this.courseForm.value).subscribe((response: Response<SingleItemResponse<Course>>) => {
             this.router.navigate(['/courses/list']).then(() => {
                 this.roomNgForm.resetForm();
             });

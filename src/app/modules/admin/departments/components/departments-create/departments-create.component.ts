@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {Department} from "../../../../../models/department";
 import {DepartmentsService} from "../../services/departments.service";
 import {Router} from "@angular/router";
-import {Response} from "../../../../../models/response";
+import {ListResponse, Response, SingleItemResponse} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Organization} from "../../../../../models/organization";
 import {OrganizationService} from "../../../organization/services/organization.service";
@@ -35,13 +35,13 @@ export class DepartmentsCreateComponent {
         });
 
         // Fetch the org list
-        this.orgService.getAll().subscribe((response: Response<Organization[]>) => {
+        this.orgService.getAll().subscribe((response: Response<ListResponse<Organization>>) => {
             this.organizations = Array.isArray(response.data.items) ? response.data.items.flat() : [];
         });
     }
 
     createDepartment(): void {
-        this.departmentsService.create(this.departmentForm.value).subscribe((response: Response<Department>) => {
+        this.departmentsService.create(this.departmentForm.value).subscribe((response: Response<SingleItemResponse<Department>>) => {
             this.router.navigate(['/departments/list']).then(() => {
                 this.departmentNgForm.resetForm();
             });

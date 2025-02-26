@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Response} from "../../../../../models/response";
+import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
@@ -52,10 +52,40 @@ export class CourseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.courseService.getAll().subscribe((response: Response<Course[]>) => {
-            this.courses = Array.isArray(response.data.items) ? response.data.items.flat() : [];
-            this.isLoading = false;
-        });
+        this.loadCourses();
+    }
+
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadCourses();
+    }
+
+    loadCourses() {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.courseService
+            .getAllPaginated(page, pageSize)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.courses = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.courses = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
     }
 
     createCourse() {

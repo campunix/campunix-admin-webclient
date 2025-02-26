@@ -2,10 +2,10 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation
 import {CommonModule} from '@angular/common';
 import {Department} from "../../../../../models/department";
 import {DepartmentsService} from "../../services/departments.service";
-import {Response} from "../../../../../models/response";
+import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
@@ -39,6 +39,7 @@ import {OrganizationService} from "../../../organization/services/organization.s
     animations: fuseAnimations,
 })
 export class DepartmentsComponent implements OnInit {
+
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
@@ -60,14 +61,45 @@ export class DepartmentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = Array.isArray(response.data.items) ? response.data.items.flat() : [];
-            this.isLoading = false;
-        });
+        this.loadDepartments();
+    }
+
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadDepartments();
+    }
+
+    loadDepartments() {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.departmentService
+            .getAllPaginated(page, pageSize)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.departments = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.departments = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
     }
 
     createDepartment() {
-        this.router.navigate(['/departments/create']).then(() => {});
+        this.router.navigate(['/departments/create']).then(() => {
+        });
     }
 
     deleteDepartment(id: number) {
@@ -76,8 +108,7 @@ export class DepartmentsComponent implements OnInit {
         });
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.departmentID || index;
     }
 }

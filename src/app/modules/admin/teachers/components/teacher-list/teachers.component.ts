@@ -50,11 +50,11 @@ export class TeachersComponent implements OnInit {
         const pageSize = this.pagination.pageSize;
 
         this.teachersService
-            .getAll(page, pageSize)
+            .getAllPaginated(page, pageSize)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {
-                        this.teachers = Array.isArray(response.data.items) ? response.data.items.flat() : [];
+                        this.teachers = response.data.items ?? [];
 
                         this.pagination = {
                             currentPage: response.data.current_page - 1,
