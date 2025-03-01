@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Response} from "../../../../models/response";
+import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "../../../../models/response";
 import {Course} from "../../../../models/course";
+import {Room} from "../../../../models/room";
 
 @Injectable({
     providedIn: 'root',
@@ -14,24 +15,28 @@ export class CourseService {
     constructor(private http: HttpClient) {
     }
 
-    getCourseTypes(): Observable<Response<string[]>> {
-        return this.http.get<Response<string[]>>(`${this.baseUrl}/courseTypes/`);
+    getCourseTypes(): Observable<Response<ListResponse<string>>> {
+        return this.http.get<Response<ListResponse<string>>>(`${this.baseUrl}/courseTypes/`);
     }
 
-    getAll(): Observable<Response<Course[]>> {
-        return this.http.get<Response<Course[]>>(this.baseUrl);
+    getAll(): Observable<Response<ListResponse<Course>>> {
+        return this.http.get<Response<ListResponse<Course>>>(this.baseUrl);
     }
 
-    get(id: number): Observable<Response<Course>> {
-        return this.http.get<Response<Course>>(`${this.baseUrl}/${id}`);
+    getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Course>>> {
+        return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
-    create(course: Course): Observable<Response<Course>> {
-        return this.http.post<Response<Course>>(this.baseUrl, course);
+    get(id: number): Observable<Response<SingleItemResponse<Course>>> {
+        return this.http.get<Response<SingleItemResponse<Course>>>(`${this.baseUrl}/${id}`);
     }
 
-    update(id: number, course: Course): Observable<Response<Course>> {
-        return this.http.put<Response<Course>>(`${this.baseUrl}/${id}`, course);
+    create(course: Course): Observable<Response<SingleItemResponse<Course>>> {
+        return this.http.post<Response<SingleItemResponse<Course>>>(this.baseUrl, course);
+    }
+
+    update(id: number, course: Course): Observable<Response<SingleItemResponse<Course>>> {
+        return this.http.put<Response<SingleItemResponse<Course>>>(`${this.baseUrl}/${id}`, course);
     }
 
     delete(id: number): Observable<void> {

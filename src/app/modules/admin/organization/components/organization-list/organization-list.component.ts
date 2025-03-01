@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrganizationService} from "../../services/organization.service";
-import {Response} from "../../../../../models/response";
+import {ListResponse, PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -42,12 +42,10 @@ export class OrganizationListComponent implements OnInit {
     organizations: Organization[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
     constructor(private organizationService: OrganizationService, private router: Router) {
@@ -55,15 +53,15 @@ export class OrganizationListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.organizationService.getAll().subscribe((response: Response<Organization[]>) => {
-            console.log(response)
-            this.organizations = response?.data?.items || [];
+        this.organizationService.getAll().subscribe((response: Response<ListResponse<Organization>>) => {
+            this.organizations = response.data.items ?? [];
             this.isLoading = false;
         });
     }
 
     createOrganization() {
-        this.router.navigate(['/organizations/create']).then(() => {});
+        this.router.navigate(['/organizations/create']).then(() => {
+        });
     }
 
     navigateToDepartments(organizationId: number) {

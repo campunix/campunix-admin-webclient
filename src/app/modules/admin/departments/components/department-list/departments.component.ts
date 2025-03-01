@@ -2,15 +2,16 @@ import {ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation
 import {CommonModule} from '@angular/common';
 import {Department} from "../../../../../models/department";
 import {DepartmentsService} from "../../services/departments.service";
-import {Response} from "../../../../../models/response";
+import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Organization} from "../../../../../models/organization";
 import {OrganizationService} from "../../../organization/services/organization.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-departments',
@@ -39,6 +40,7 @@ import {OrganizationService} from "../../../organization/services/organization.s
     animations: fuseAnimations,
 })
 export class DepartmentsComponent implements OnInit {
+
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
@@ -46,40 +48,87 @@ export class DepartmentsComponent implements OnInit {
 
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
     constructor(
         private departmentService: DepartmentsService,
-        private router: Router
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) {
         this.isLoading = true;
     }
 
     ngOnInit() {
-        this.departmentService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
-            this.isLoading = false;
+        this.loadDepartments();
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadDepartments(searchQuery);
         });
+    }
+
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadDepartments(this.searchInputControl.value);
+    }
+
+    loadDepartments(searchQuery: string = '') {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.departmentService
+            .getAllPaginated(page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.departments = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.departments = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
     }
 
     createDepartment() {
-        this.router.navigate(['/departments/create']).then(() => {});
-    }
-
-    deleteDepartment(id: number) {
-        this.departmentService.delete(id).subscribe(() => {
-            this.departments = this.departments.filter(department => department.id !== id);
+        this.router.navigate(['/departments/create']).then(() => {
         });
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    deleteDepartment(id: number) {
+        this.departmentService.delete(id).subscribe({
+            next: (response) => {
+                this.departments = this.departments.filter(teacher => teacher.id !== id);
+                this._snackBar.open('Department deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
+        });
+    }
+
+    trackByFn(index: number, item: any): any {
         return item.departmentID || index;
     }
 }

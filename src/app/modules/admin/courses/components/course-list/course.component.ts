@@ -1,13 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Response} from "../../../../../models/response";
+import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Course} from "../../../../../models/course";
 import {CourseService} from "../../services/course.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-course',
@@ -41,37 +42,84 @@ export class CourseComponent implements OnInit {
     courses: Course[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
-        length: 10,
-        size: 10,
-        page: 0,
-        lastPage: 10,
-        startIndex: 0,
-        endIndex: 9,
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
     };
 
-    constructor(private courseService: CourseService, private router: Router) {
+    constructor(private courseService: CourseService, private router: Router, private _snackBar: MatSnackBar) {
         this.isLoading = true;
     }
 
     ngOnInit() {
-        this.courseService.getAll().subscribe((response: Response<Course[]>) => {
-            this.courses = response?.data?.items || [];
-            this.isLoading = false;
+        this.loadCourses();
+
+        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.pagination.currentPage = 0;
+            this.loadCourses(searchQuery);
         });
+    }
+
+    onPageChange(event: PageEvent) {
+        this.pagination.currentPage = event.pageIndex;
+        this.pagination.pageSize = event.pageSize;
+        this.loadCourses(this.searchInputControl.value);
+    }
+
+    loadCourses(searchQuery: string = '') {
+        this.isLoading = true;
+        const page = this.pagination.currentPage + 1;
+        const pageSize = this.pagination.pageSize;
+
+        this.courseService
+            .getAllPaginated(page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.courses = response.data.items ?? [];
+
+                        this.pagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.courses = [];
+                    }
+                    this.isLoading = false;
+                },
+                error: () => this.isLoading = false
+            });
     }
 
     createCourse() {
-        this.router.navigate(['/courses/create']).then(() => {});
-    }
-
-    deleteCourse(id: number) {
-        this.courseService.delete(id).subscribe(() => {
-            this.courses = this.courses.filter(course => course.id !== id);
+        this.router.navigate(['/courses/create']).then(() => {
         });
     }
 
-    trackByFn(index: number, item: any): any
-    {
+    deleteCourse(id: number) {
+        this.courseService.delete(id).subscribe({
+            next: (response) => {
+                this.courses = this.courses.filter(teacher => teacher.id !== id);
+                this._snackBar.open('Course deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
+        });
+    }
+
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 }

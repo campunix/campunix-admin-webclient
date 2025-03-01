@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { Organization } from "../../../../models/organization";
 import {environment} from "../../../../../environments/environment";
-import {Response} from "../../../../models/response";
+import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "../../../../models/response";
 
 @Injectable({
     providedIn: 'root',
@@ -14,20 +14,20 @@ export class OrganizationService {
     constructor(private http: HttpClient) {
     }
 
-    create(organization: Organization): Observable<Response<Organization>> {
-        return this.http.post<Response<Organization>>(this.baseUrl, organization);
+    create(organization: Organization): Observable<Response<SingleItemResponse<Organization>>> {
+        return this.http.post<Response<SingleItemResponse<Organization>>>(this.baseUrl, organization);
     }
 
-    getAll(): Observable<Response<Organization[]>> {
-        return this.http.get<Response<Organization[]>>(this.baseUrl);
+    getAll(): Observable<Response<ListResponse<Organization>>> {
+        return this.http.get<Response<ListResponse<Organization>>>(this.baseUrl);
     }
 
-    get(id: number): Observable<Response<Organization>> {
-        return this.http.get<Response<Organization>>(`${this.baseUrl}/${id}`);
+    get(id: number): Observable<Response<SingleItemResponse<Organization>>> {
+        return this.http.get<Response<SingleItemResponse<Organization>>>(`${this.baseUrl}/${id}`);
     }
 
-    update(id: number, organization: Organization): Observable<Response<Organization>> {
-        return this.http.put<Response<Organization>>(`${this.baseUrl}/${id}`, organization);
+    update(id: number, organization: Organization): Observable<Response<SingleItemResponse<Organization>>> {
+        return this.http.put<Response<SingleItemResponse<Organization>>>(`${this.baseUrl}/${id}`, organization);
     }
 
     delete(id: number): Observable<void> {

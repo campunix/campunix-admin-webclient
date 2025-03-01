@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {Response} from "../../../../../models/response";
+import {ListResponse, Response, SingleItemResponse} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {RoomsService} from "../../services/rooms.service";
 import {Room} from "../../../../../models/room";
 import {DepartmentsService} from "../../../departments/services/departments.service";
 import {Department} from "../../../../../models/department";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-rooms-create',
@@ -25,7 +26,8 @@ export class RoomsCreateComponent implements OnInit {
         private _formBuilder: UntypedFormBuilder,
         private deptService: DepartmentsService,
         private roomsService: RoomsService,
-        private router: Router
+        private router: Router,
+        private _snackBar: MatSnackBar
     ) {
     }
 
@@ -37,20 +39,35 @@ export class RoomsCreateComponent implements OnInit {
             room_type: ['', [Validators.required]],
         });
 
-        this.deptService.getAll().subscribe((response: Response<Department[]>) => {
-            this.departments = response?.data?.items || [];
+        this.deptService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
+            this.departments = response.data.items ?? [];
         });
 
-        this.roomsService.getRoomTypes().subscribe((response: Response<string[]>) => {
-            this.roomTypes = response?.data?.items || [];
+        this.roomsService.getRoomTypes().subscribe((response: Response<ListResponse<string>>) => {
+            this.roomTypes = response.data.items ?? [];
         });
     }
 
     createRoom(): void {
-        this.roomsService.create(this.roomForm.value).subscribe((response: Response<Room>) => {
-            this.router.navigate(['/rooms/list']).then(() => {
-                this.roomNgForm.resetForm();
-            });
+        this.roomsService.create(this.roomForm.value).subscribe({
+            next: () => {
+                this._snackBar.open('Room created successfully', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+
+                this.router.navigate(['/rooms/list']).then(() => {
+                    this.roomNgForm.resetForm();
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
         });
     }
 
