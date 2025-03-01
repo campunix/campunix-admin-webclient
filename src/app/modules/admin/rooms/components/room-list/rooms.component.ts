@@ -102,8 +102,13 @@ export class RoomsComponent implements OnInit {
 
     deleteRoom(id: number) {
         this.roomsService.delete(id).subscribe({
-            next: (response) => {
-                this.rooms = this.rooms.filter(teacher => teacher.id !== id);
+            next: () => {
+                this.rooms = this.rooms.filter(it => it.id !== id);
+                if (this.rooms.length === 0 && this.pagination.currentPage > 0) {
+                    this.pagination.currentPage--;
+                    this.loadRooms();
+                }
+
                 this._snackBar.open('Room deleted', 'Close', {
                     duration: 3000,
                     horizontalPosition: 'center',

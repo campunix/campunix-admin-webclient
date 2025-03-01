@@ -101,8 +101,13 @@ export class CourseComponent implements OnInit {
 
     deleteCourse(id: number) {
         this.courseService.delete(id).subscribe({
-            next: (response) => {
-                this.courses = this.courses.filter(teacher => teacher.id !== id);
+            next: () => {
+                this.courses = this.courses.filter(it => it.id !== id);
+                if (this.courses.length === 0 && this.pagination.currentPage > 0) {
+                    this.pagination.currentPage--;
+                    this.loadCourses();
+                }
+
                 this._snackBar.open('Course deleted', 'Close', {
                     duration: 3000,
                     horizontalPosition: 'center',

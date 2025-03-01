@@ -84,8 +84,13 @@ export class TeachersComponent implements OnInit {
 
     deleteTeacher(id: number) {
         this.teachersService.delete(id).subscribe({
-            next: (response) => {
-                this.teachers = this.teachers.filter(teacher => teacher.id !== id);
+            next: () => {
+                this.teachers = this.teachers.filter(it => it.id !== id);
+                if (this.teachers.length === 0 && this.pagination.currentPage > 0) {
+                    this.pagination.currentPage--;
+                    this.loadTeachers();
+                }
+
                 this._snackBar.open('Teacher deleted', 'Close', {
                     duration: 3000,
                     horizontalPosition: 'center',

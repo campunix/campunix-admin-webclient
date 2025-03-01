@@ -110,8 +110,13 @@ export class DepartmentsComponent implements OnInit {
 
     deleteDepartment(id: number) {
         this.departmentService.delete(id).subscribe({
-            next: (response) => {
-                this.departments = this.departments.filter(teacher => teacher.id !== id);
+            next: () => {
+                this.departments = this.departments.filter(it => it.id !== id);
+                if (this.departments.length === 0 && this.pagination.currentPage > 0) {
+                    this.pagination.currentPage--;
+                    this.loadDepartments();
+                }
+
                 this._snackBar.open('Department deleted', 'Close', {
                     duration: 3000,
                     horizontalPosition: 'center',
