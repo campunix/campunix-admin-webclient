@@ -81,6 +81,9 @@ export const appRoutes: Route[] = [
         resolve: {
             initialData: initialDataResolver
         },
+        data: {
+            layout: 'empty'
+        },
         children: [
             {
                 path: 'organizations',

@@ -17,7 +17,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {FuseAlertComponent} from "../../../../@fuse/components/alert";
 import {OrganizationListComponent} from "./components/organization-list/organization-list.component";
 import {OrganizationCreateComponent} from "./components/organization-create/organization-create.component";
-
+import { FuseCardComponent } from '@fuse/components/card';
+import { UserComponent } from 'app/layout/common/user/user.component';
 
 @NgModule({
     declarations: [OrganizationListComponent, OrganizationCreateComponent],
@@ -60,7 +61,9 @@ import {OrganizationCreateComponent} from "./components/organization-create/orga
             }
         ]),
         MatMenuModule,
-        FuseAlertComponent
+        FuseAlertComponent,
+        FuseCardComponent,
+        UserComponent
     ]
 })
 export class OrganizationModule {
