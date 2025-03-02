@@ -68,6 +68,10 @@ export class OrganizationListComponent implements OnInit {
         this.router.navigate(['/departments']).then(() => {});
     }
 
+    navigateToDepartments(organizationId: number) {
+        this.router.navigate(['/departments']).then(() => {});
+    }
+
     deleteOrganization(id: number) {
         this.organizationService.delete(id).subscribe(() => {
             this.organizations = this.organizations.filter(orientation => orientation.id !== id);
