@@ -14,6 +14,10 @@ export class TeachersService {
     constructor(private http: HttpClient) {
     }
 
+    getAll(department_id: number): Observable<Response<PaginatedResponse<Teacher>>> {
+        return this.http.get<Response<PaginatedResponse<Teacher>>>(`${this.baseUrl}?department_id=${department_id}&paginate=${false}`);
+    }
+
     getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Teacher>>> {
         return this.http.get<Response<PaginatedResponse<Teacher>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }

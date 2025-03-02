@@ -146,6 +146,21 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'teacherCourses',
+                loadChildren: () => import('app/modules/admin/teacher-courses/teacher-courses.module').then(m => m.TeacherCoursesModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
                 path: 'routine',
                 loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
             },

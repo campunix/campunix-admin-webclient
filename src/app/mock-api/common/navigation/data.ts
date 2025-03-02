@@ -31,6 +31,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/courses'
     },
     {
+        id: 'teacherCourses',
+        title: 'Teacher Courses',
+        type: 'basic',
+        icon: 'heroicons_outline:square-3-stack-3d',
+        link: '/teacherCourses'
+    },
+    {
         id: 'routine',
         title: 'Routine',
         type: 'basic',
@@ -80,6 +87,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:book-open',
         link: '/courses'
+    },
+    {
+        id: 'teacherCourses',
+        title: 'Teacher Courses',
+        type: 'basic',
+        icon: 'heroicons_outline:square-3-stack-3d',
+        link: '/teacherCourses'
     },
     {
         id: 'routine',
@@ -133,6 +147,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         link: '/courses'
     },
     {
+        id: 'teacherCourses',
+        title: 'Teacher Courses',
+        type: 'basic',
+        icon: 'heroicons_outline:square-3-stack-3d',
+        link: '/teacherCourses'
+    },
+    {
         id: 'routine',
         title: 'Routine',
         type: 'basic',
@@ -182,6 +203,13 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:book-open',
         link: '/courses'
+    },
+    {
+        id: 'teacherCourses',
+        title: 'Teacher Courses',
+        type: 'basic',
+        icon: 'heroicons_outline:square-3-stack-3d',
+        link: '/teacherCourses'
     },
     {
         id: 'routine',

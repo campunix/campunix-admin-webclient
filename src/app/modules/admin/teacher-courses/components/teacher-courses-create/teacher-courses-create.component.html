@@ -1,0 +1,96 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-4xl">
+            <div class="-ml-4 sm:mt-8">
+                <a
+                        mat-button
+                        [routerLink]="['/teacherCourses/list']"
+                        [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back to Teacher Courses</span>
+                </a>
+            </div>
+            <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+                Create Teacher Course
+            </div>
+            <!-- Form -->
+            <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
+                <!-- Alert -->
+                <fuse-alert
+                        class="mb-8"
+                        *ngIf="alert"
+                        [type]="alert.type"
+                        [showIcon]="false">
+                    {{ alert.message }}
+                </fuse-alert>
+                <form
+                        class="space-y-3"
+                        [formGroup]="teacherCoursesForm"
+                        #teacherCoursesNgForm="ngForm">
+                    <mat-form-field class="w-full">
+                        <mat-label>Department</mat-label>
+                        <mat-select
+                                [formControlName]="'department_id'"
+                                [required]="true"
+                                (selectionChange)="getAllCourses($event.value); getAllTeachers($event.value)">
+                            @for (dept of departments; track dept) {
+                                <mat-option [value]="dept.id">{{ dept.name }}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherCoursesForm.get('department_id').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Course</mat-label>
+                        <mat-select
+                                [formControlName]="'course_id'"
+                                [required]="true">
+                            @for (course of courses; track course) {
+                                <mat-option [value]="course.id">{{ course.title }}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherCoursesForm.get('course_id').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Teacher</mat-label>
+                        <mat-select
+                                [formControlName]="'teacher_id'"
+                                [required]="true"
+                                multiple>
+                            @for (teacher of teachers; track teacher) {
+                                <mat-option [value]="teacher.id">{{ teacher.full_name }}</mat-option>
+                            }
+                        </mat-select>
+                        <mat-error *ngIf="teacherCoursesForm.get('teacher_id').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end">
+                        <button
+                                mat-button
+                                [color]="'accent'"
+                                [disabled]="teacherCoursesForm.pristine || teacherCoursesForm.untouched"
+                                (click)="clearForm()">
+                            Clear
+                        </button>
+                        <button
+                                class="ml-2"
+                                mat-flat-button
+                                [color]="'primary'"
+                                [disabled]="teacherCoursesForm.pristine || teacherCoursesForm.invalid"
+                                (click)="createTeacherCourses()">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

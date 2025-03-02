@@ -19,8 +19,8 @@ export class CourseService {
         return this.http.get<Response<ListResponse<string>>>(`${this.baseUrl}/courseTypes/`);
     }
 
-    getAll(): Observable<Response<ListResponse<Course>>> {
-        return this.http.get<Response<ListResponse<Course>>>(this.baseUrl);
+    getAll(department_id: number): Observable<Response<ListResponse<Course>>> {
+        return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}?paginated=${false}&department_id=${department_id}`);
     }
 
     getAllPaginated(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Course>>> {
