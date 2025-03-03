@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { AsyncPipe, CommonModule, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SyllabusUploadComponent } from './components/syllabus-upload/syllabus-upload.component';
+import { SyllabusViewComponent } from './components/syllabus-view/syllabus-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
-        SyllabusUploadComponent
+        SyllabusUploadComponent,
+        SyllabusViewComponent
     ],
     imports: [
         CommonModule,
@@ -42,14 +44,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatCheckboxModule,
         MatRippleModule,
         MatSnackBarModule,
+        MatIconModule,
         AsyncPipe,
         CurrencyPipe,
         RouterModule.forChild([
             {
                 path: '',
                 component: SyllabusUploadComponent
+            },
+            {
+                path: 'view',
+                component: SyllabusViewComponent
             }
         ]),
     ]
 })
-export class SyllabusModule { } 
+export class SyllabusModule { }

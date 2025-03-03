@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {Department} from "../../../../models/department";
 import {environment} from "../../../../../environments/environment";
 import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "../../../../models/response";
-import {Teacher} from "../../../../models/teacher";
 
 @Injectable({
     providedIn: 'root',

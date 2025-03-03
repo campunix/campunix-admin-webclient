@@ -1,0 +1,122 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+
+    <div class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto" cdkScrollable>
+
+        <ng-container *ngIf="syllabusData && syllabusData.syllabus">
+            <div *ngFor="let semester of syllabusData.syllabus.semesters" class="w-full px-8 py-4">
+                <div class="mb-8">
+                    <p class="font-bold text-center">
+                        <span>Detail Syllabus</span><br/> <span>of</span><br/> <span>{{getOrdinal(semester.year)}} Year {{getOrdinal(semester.number)}} Semester</span>
+                    </p>
+                </div>
+
+                <ng-container *ngFor="let course of semester.courses">
+                    <div style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; overflow: hidden;">
+                        <div style="background-color: #ffc107; padding: 10px; font-weight: bold;">
+                            <span>Course code: {{course.course_code}}</span>
+                            <span style="float: right;">Credit: {{course.credit}}</span>
+                        </div>
+
+                        <div style="padding: 15px;">
+                            <p><strong>Title:</strong> {{course.title}} <span style="float: right;"><strong>Prerequisite:</strong> None</span></p>
+                            <p><strong>Type:</strong> <em> {{course.type}}</em> <span style="float: right;"><strong>Contact hours:</strong> {{course.contact_hours}}</span></p>
+                            
+                            <table class="mt-8 table">
+                                <tr>
+                                    <th class="text-left font-bold px-4 py-2">Rationale</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="px-4 py-2">{{course.rationale}}</td>
+                                </tr>
+                            </table>
+                        
+                            <table *ngIf="course.course_objectives?.length > 0" class="mt-8 table">
+                                <tr>
+                                    <th class="text-left font-bold px-4 py-2">Course Objectives</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="px-8 py-2">
+                                        <ul class="list-disc">
+                                            <li *ngFor="let item of course.course_objectives">{{item}}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table *ngIf="course.outcomes?.length > 0" class="mt-8 table">
+                                <tr>
+                                    <th class="text-left font-bold px-4 py-2">Students Learning Outcomes</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="px-8 py-2">
+                                        <ul class="list-disc">
+                                            <li *ngFor="let item of course.outcomes">{{item}}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table *ngIf="course.course_description?.length > 0" class="mt-8 table">
+                                <tr>
+                                    <th colspan="2" class="text-left font-bold px-4 py-2">Course Description</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="font-bold px-4 py-2">#</td>
+                                    <td class="font-bold px-4 py-2">Descriptions</td>
+                                </tr>
+                                <ng-container *ngFor="let description of course.course_description; index as i;">
+                                    <tr [ngClass]="{'odd-row': i%2 == 1}">
+                                        <td class="px-4 py-2">{{i+1}}</td>
+                                        <td class="px-4 py-2"><b>{{description.module}}</b><br>{{description.content}}</td>
+                                    </tr>
+                                </ng-container>
+                            </table>
+
+                            <table *ngIf="course.recommended_books?.length > 0" class="mt-8 table">
+                                <tr>
+                                    <th colspan="5" class="text-left font-bold px-4 py-2">Recommended Books</th>
+                                </tr>
+                                <ng-container *ngFor="let book of course.recommended_books; index as i;">
+                                    <tr [ngClass]="{'odd-row': i%2 == 1}">
+                                        <td class="px-4 py-2">{{i+1}}</td>
+                                        <td class="px-4 py-2">{{book.title}}</td>
+                                        <td class="px-4 py-2">{{book.author}}</td>
+                                        <td class="px-4 py-2">{{book.publisher}}</td>
+                                        <td class="px-4 py-2">{{book.year}}</td>
+                                    </tr>
+                                </ng-container>
+                            </table>
+                        
+                            <table *ngIf="course.references?.length > 0" class="mt-8 table">
+                                <tr>
+                                    <th class="text-left font-bold px-4 py-2">References</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="px-4 py-2">
+                                        <ul>
+                                            <li *ngFor="let item of course.references">{{item}}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table *ngIf="course.hardware_software_requirements.HW || course.hardware_software_requirements.SW" class="mt-8 table">
+                                <tr>
+                                    <th colspan="5" class="text-left font-bold px-4 py-2">Hardware and Software Requirements</th>
+                                </tr>
+                                <tr class="odd-row">
+                                    <td class="font-bold px-4 py-2">H/W Requirements</td>
+                                    <td class="font-bold px-4 py-2">S/W Requirements</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2">{{course.hardware_software_requirements.HW}}</td>
+                                    <td class="px-4 py-2">{{course.hardware_software_requirements.SW}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
