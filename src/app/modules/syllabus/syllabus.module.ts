@@ -16,9 +16,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.component';
 
 @NgModule({
     declarations: [
+        SyllabusListComponent,
         SyllabusUploadComponent,
         SyllabusViewComponent
     ],
@@ -50,12 +52,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         RouterModule.forChild([
             {
                 path: '',
-                component: SyllabusUploadComponent
+                component: SyllabusListComponent
             },
             {
                 path: 'view',
                 component: SyllabusViewComponent
-            }
+            },
+            {
+                path: 'upload',
+                component: SyllabusUploadComponent
+            },
         ]),
     ]
 })
