@@ -55,7 +55,7 @@ import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.
                 component: SyllabusListComponent
             },
             {
-                path: 'view',
+                path: ':id/view',
                 component: SyllabusViewComponent
             },
             {

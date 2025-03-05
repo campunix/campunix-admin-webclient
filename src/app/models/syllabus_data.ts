@@ -1,4 +1,5 @@
 export interface SyllabusData {
+    id: number;
     department_id: number;
     title: string;
     description: string;
