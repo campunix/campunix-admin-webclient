@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { AsyncPipe, CommonModule, CurrencyPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SyllabusUploadComponent } from './components/syllabus-upload/syllabus-upload.component';
+import { SyllabusViewComponent } from './components/syllabus-view/syllabus-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,10 +16,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.component';
 
 @NgModule({
     declarations: [
-        SyllabusUploadComponent
+        SyllabusListComponent,
+        SyllabusUploadComponent,
+        SyllabusViewComponent
     ],
     imports: [
         CommonModule,
@@ -42,14 +46,23 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatCheckboxModule,
         MatRippleModule,
         MatSnackBarModule,
+        MatIconModule,
         AsyncPipe,
         CurrencyPipe,
         RouterModule.forChild([
             {
                 path: '',
+                component: SyllabusListComponent
+            },
+            {
+                path: ':id/view',
+                component: SyllabusViewComponent
+            },
+            {
+                path: 'upload',
                 component: SyllabusUploadComponent
-            }
+            },
         ]),
     ]
 })
-export class SyllabusModule { } 
+export class SyllabusModule { }

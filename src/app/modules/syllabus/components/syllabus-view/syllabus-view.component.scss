@@ -1,0 +1,13 @@
+/* Add CSS styles based on the attached PDF */
+.odd-row {
+    background-color: #f9f9f9;
+}
+
+.table
+{
+    width: 100%;
+    
+    th, td {
+        border: 1px solid #ddd;
+    }
+}

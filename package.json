@@ -29,6 +29,7 @@
     "luxon": "3.4.4",
     "ng-apexcharts": "1.8.0",
     "ngx-quill": "24.0.2",
+    "ordinal": "^1.0.3",
     "perfect-scrollbar": "1.5.5",
     "quill": "^2.0.2",
     "rxjs": "7.8.1",
