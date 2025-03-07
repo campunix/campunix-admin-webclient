@@ -5,19 +5,17 @@ import {ListResponse, Response} from '../../../../../models/response';
 import {Teacher} from 'app/models/teacher';
 import {Department} from 'app/models/department';
 import {DepartmentsService} from 'app/modules/admin/departments/services/departments.service';
-import {User} from 'app/models/user';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TeacherCoursesService} from "../../services/teacher-courses.service";
 import {Course} from "../../../../../models/course";
 import {TeachersService} from "../../../teachers/services/teachers.service";
 import {CourseService} from "../../../courses/services/course.service";
-import {MatSelectChange} from "@angular/material/select";
-import {TeacherCourseIn, TeacherCourses} from "../../../../../models/teacher-courses";
+import {TeacherCourseIn} from "../../../../../models/teacher-courses";
 
 @Component({
     selector: 'app-teacher-courses-create',
     templateUrl: './teacher-courses-create.component.html',
-    styleUrls: ['./teachers-courses-create.component.scss']
+    styleUrls: ['./teacher-courses-create.component.scss']
 })
 export class TeacherCoursesCreateComponent {
     @ViewChild('teacherCoursesNgForm') teacherCoursesNgForm: NgForm;

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import {Router} from '@angular/router';
@@ -11,7 +11,7 @@ import {TeacherCourses} from "../../../../../models/teacher-courses";
 @Component({
     selector: 'app-teacher-courses',
     templateUrl: './teacher-courses.component.html',
-    styleUrls: ['./teachers-courses.component.scss'],
+    styleUrls: ['./teacher-courses.component.scss'],
     animations: fuseAnimations,
 })
 export class TeacherCoursesComponent implements OnInit {
