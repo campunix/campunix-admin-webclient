@@ -17,6 +17,28 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/teachers'
     },
     {
+        id: 'courses',
+        title: 'Course Management',
+        type: 'collapsable',
+        icon: 'heroicons_outline:book-open',
+        children: [
+            {
+                id: 'courses',
+                title: 'Course List',
+                type: 'basic',
+                icon: 'heroicons_outline:book-open',
+                link: '/courses',
+            },
+            {
+                id: 'teacherCourses',
+                title: 'Course Teachers',
+                type: 'basic',
+                icon: 'heroicons_outline:square-3-stack-3d',
+                link: '/teacherCourses'
+            }
+        ]
+    },
+    {
         id: 'rooms',
         title: 'Rooms',
         type: 'basic',
@@ -24,18 +46,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/rooms'
     },
     {
-        id: 'courses',
-        title: 'Courses',
+        id: 'syllabus',
+        title: 'Syllabus',
         type: 'basic',
-        icon: 'heroicons_outline:book-open',
-        link: '/courses'
-    },
-    {
-        id: 'teacherCourses',
-        title: 'Teacher Courses',
-        type: 'basic',
-        icon: 'heroicons_outline:square-3-stack-3d',
-        link: '/teacherCourses'
+        icon: 'heroicons_outline:newspaper',
+        link: '/syllabus'
     },
     {
         id: 'routine',
@@ -43,13 +58,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:clipboard-document-list',
         link: '/routine'
-    },
-    {
-        id: 'syllabus',
-        title: 'Syllabus',
-        type: 'basic',
-        icon: 'heroicons_outline:newspaper',
-        link: '/syllabus'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
