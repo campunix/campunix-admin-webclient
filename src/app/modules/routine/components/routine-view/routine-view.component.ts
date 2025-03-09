@@ -49,9 +49,4 @@ export class RoutineViewComponent {
             this.isLoading = false;
         });
     }
-
-    getGeneByCellNumber(i: number, j: number, k: number) {
-        let cellNumber = (i * (this.semesters.length * this.slots.length)) + (j * this.slots.length) + k;
-        return this.genes.find(x => x.cell_number == cellNumber);
-    }
 }
