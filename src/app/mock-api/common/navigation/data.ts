@@ -38,6 +38,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/teacherCourses'
     },
     {
+        id: 'preferences',
+        title: 'Preferences',
+        type: 'basic',
+        icon: 'heroicons_outline:adjustments-horizontal',
+        link: '/preferences'
+    },
+    {
         id: 'routine',
         title: 'Routine',
         type: 'basic',
@@ -94,6 +101,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:square-3-stack-3d',
         link: '/teacherCourses'
+    },
+    {
+        id: 'preferences',
+        title: 'Preferences',
+        type: 'basic',
+        icon: 'heroicons_outline:adjustments-horizontal',
+        link: '/preferences'
     },
     {
         id: 'routine',
@@ -154,6 +168,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         link: '/teacherCourses'
     },
     {
+        id: 'preferences',
+        title: 'Preferences',
+        type: 'basic',
+        icon: 'heroicons_outline:adjustments-horizontal',
+        link: '/preferences'
+    },
+    {
         id: 'routine',
         title: 'Routine',
         type: 'basic',
@@ -210,6 +231,13 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:square-3-stack-3d',
         link: '/teacherCourses'
+    },
+    {
+        id: 'preferences',
+        title: 'Preferences',
+        type: 'basic',
+        icon: 'heroicons_outline:adjustments-horizontal',
+        link: '/preferences'
     },
     {
         id: 'routine',

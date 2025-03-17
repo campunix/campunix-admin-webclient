@@ -161,6 +161,21 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
+                path: 'preferences',
+                loadChildren: () => import('app/modules/admin/preferences/preferences.module').then(m => m.PreferenceModule)
+            },
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
                 path: 'routine',
                 loadChildren: () => import('app/modules/routine/routine.module').then(m => m.RoutineModule)
             },
