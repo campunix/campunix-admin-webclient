@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SyllabusService } from '../../services/syllabus.service';
-import { Response, SingleItemResponse } from 'app/models/response';
+import { Response } from 'app/models/response';
 import { SyllabusData } from 'app/models/syllabus_data';
 import ordinal from 'ordinal';
 import { ActivatedRoute } from '@angular/router';

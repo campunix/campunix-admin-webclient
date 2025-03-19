@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "../../../../models/response";
+import {ListResponse, PaginatedResponse, Response} from "../../../../models/response";
 import {Preference} from "../../../../models/preference";
 
 @Injectable({
@@ -26,16 +26,16 @@ export class PreferenceService {
         return this.http.get<Response<PaginatedResponse<Preference>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
-    get(id: number): Observable<Response<SingleItemResponse<Preference>>> {
-        return this.http.get<Response<SingleItemResponse<Preference>>>(`${this.baseUrl}/${id}`);
+    get(id: number): Observable<Response<Preference>> {
+        return this.http.get<Response<Preference>>(`${this.baseUrl}/${id}`);
     }
 
-    create(preference: Preference): Observable<Response<SingleItemResponse<Preference>>> {
-        return this.http.post<Response<SingleItemResponse<Preference>>>(this.baseUrl, preference);
+    create(preference: Preference): Observable<Response<Preference>> {
+        return this.http.post<Response<Preference>>(this.baseUrl, preference);
     }
 
-    update(id: number, preference: Preference): Observable<Response<SingleItemResponse<Preference>>> {
-        return this.http.put<Response<SingleItemResponse<Preference>>>(`${this.baseUrl}/${id}`, preference);
+    update(id: number, preference: Preference): Observable<Response<Preference>> {
+        return this.http.put<Response<Preference>>(`${this.baseUrl}/${id}`, preference);
     }
 
     delete(id: number): Observable<void> {

@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from 'environments/environment';
 import { SyllabusData } from 'app/models/syllabus_data';
-import {ListResponse, PaginatedResponse, Response, SingleItemResponse} from "app/models/response";
+import {PaginatedResponse, Response} from "app/models/response";
 
 @Injectable({
     providedIn: 'root',

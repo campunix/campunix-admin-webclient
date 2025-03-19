@@ -1,8 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Department} from "../../../../../models/department";
 import {Router} from "@angular/router";
-import {Response, SingleItemResponse} from "../../../../../models/response";
+import {Response} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {OrganizationService} from "../../services/organization.service";
 import {Organization} from "../../../../../models/organization";
@@ -37,7 +35,7 @@ export class OrganizationCreateComponent {
     createOrganization(): void {
         this.organizationService
             .create(this.organizationForm.value)
-            .subscribe((response: Response<SingleItemResponse<Organization>>) => {
+            .subscribe((response: Response<Organization>) => {
                 this.router.navigate(['/organizations/list']).then(() => {
                     this.organizationNgForm.resetForm();
                 });

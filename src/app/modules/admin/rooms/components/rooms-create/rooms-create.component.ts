@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {ListResponse, Response, SingleItemResponse} from "../../../../../models/response";
+import {ListResponse, Response} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {RoomsService} from "../../services/rooms.service";
 import {Room} from "../../../../../models/room";

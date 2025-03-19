@@ -1,9 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {Department} from "../../../../../models/department";
 import {DepartmentsService} from "../../services/departments.service";
 import {Router} from "@angular/router";
-import {ListResponse, Response, SingleItemResponse} from "../../../../../models/response";
+import {ListResponse, Response} from "../../../../../models/response";
 import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Organization} from "../../../../../models/organization";
 import {OrganizationService} from "../../../organization/services/organization.service";
