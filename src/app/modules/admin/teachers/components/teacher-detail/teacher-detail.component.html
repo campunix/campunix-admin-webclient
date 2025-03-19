@@ -1,0 +1,62 @@
+<div class="flex flex-col flex-auto min-w-0">
+    <!-- Main Content -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-5xl">
+            <div class="-ml-4 sm:mt-8">
+                <a mat-button [routerLink]="['/teachers/list']" [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back to Teachers</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+                <!-- Profile Card -->
+                <div class="p-6 shadow rounded-2xl bg-card col-span-1 text-center">
+                    <mat-icon class="w-24 h-24 mx-auto rounded-full"
+                        [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+
+                    <div class="mt-4 text-xl font-bold">{{teacher.full_name}}</div>
+
+                </div>
+                <!-- Details Section -->
+                <div class="p-6 shadow rounded-2xl bg-card col-span-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm text-gray-500">Department</div>
+                            <div class="text-lg font-semibold">Dummy Department</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Designation</div>
+                            <div class="text-lg font-semibold">{{teacher.designation}}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Status</div>
+                            <div class="text-lg font-semibold">{{teacher.status}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Additional Info -->
+            <div class="mt-6 p-6 shadow rounded-2xl bg-card">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div>
+                        <div class="text-sm text-gray-500">Email</div>
+                        <div class="text-lg font-semibold">{{teacher.email}}</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Phone</div>
+                        <div class="text-lg font-semibold">737 474 186</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Age</div>
+                        <div class="text-lg font-semibold">18</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">Gender</div>
+                        <div class="text-lg font-semibold">Male</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

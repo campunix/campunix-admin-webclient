@@ -22,8 +22,8 @@ export class TeachersService {
         return this.http.get<Response<PaginatedResponse<Teacher>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
-    get(id: number): Observable<Response<SingleItemResponse<Teacher>>> {
-        return this.http.get<Response<SingleItemResponse<Teacher>>>(`${this.baseUrl}/${id}`);
+    get(id: number): Observable<Response<Teacher>> {
+        return this.http.get<Response<Teacher>>(`${this.baseUrl}/${id}`);
     }
 
     create(teacher: Teacher): Observable<Response<SingleItemResponse<Teacher>>> {

@@ -17,9 +17,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert';
 import { TeachersComponent } from './components/teacher-list/teachers.component';
 import { TeachersCreateComponent } from './components/teachers-create/teachers-create.component';
+import {TeacherDetailComponent} from "./components/teacher-detail/teacher-detail.component";
 
 @NgModule({
-    declarations: [TeachersComponent, TeachersCreateComponent],
+    declarations: [TeachersComponent, TeachersCreateComponent, TeacherDetailComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -51,6 +52,10 @@ import { TeachersCreateComponent } from './components/teachers-create/teachers-c
             {
                 path: 'create',
                 component: TeachersCreateComponent
+            },
+            {
+                path: 'detail/:id',
+                component: TeacherDetailComponent
             }
         ])
     ]

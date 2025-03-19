@@ -76,7 +76,6 @@ export class TeachersComponent implements OnInit {
             });
     }
 
-
     createTeacher() {
         this.router.navigate(['/teachers/create']).then(() => {
         });
@@ -105,6 +104,10 @@ export class TeachersComponent implements OnInit {
                 });
             }
         });
+    }
+
+    navigateToTeacherDetails(teacherId: number) {
+        this.router.navigate(['/teachers/detail', teacherId]).then(() => {});
     }
 
     trackByFn(index: number, item: any): any {
