@@ -5,10 +5,11 @@ import {Teacher} from 'app/models/teacher';
 import {Course} from "../../../../../models/course";
 import {Pagination} from "../../../../../models/pagination";
 import {CourseService} from "../../../courses/services/course.service";
-import {DepartmentsService} from "../../../departments/services/departments.service";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {FormControl} from "@angular/forms";
+import {PreferenceService} from "../../../preferences/services/preference.service";
+import {Preference} from "../../../../../models/preference";
 
 @Component({
     selector: 'app-teacher-detail',
@@ -18,14 +19,27 @@ import {FormControl} from "@angular/forms";
 export class TeacherDetailComponent {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-    searchInputControl = new FormControl('');
+    courseListSearchInputControl = new FormControl('');
+    preferenceListSearchInputControl = new FormControl('');
+
     alert: any;
     teacherId: number | null = null;
     teacher: Teacher = {id: 0, full_name: '', designation: '', email: '', status: ''};
-    courses: Course[] = [];
 
-    isLoading: boolean = false;
-    pagination: Pagination = {
+    courses: Course[] = [];
+    preferences: Preference[] = [];
+
+    isCourseListLoading: boolean = false;
+    isPreferenceListLoading: boolean = false;
+
+    courseListPagination: Pagination = {
+        currentPage: 0,
+        totalPages: 0,
+        pageSize: 5,
+        totalItems: 0
+    };
+
+    preferenceListPagination: Pagination = {
         currentPage: 0,
         totalPages: 0,
         pageSize: 5,
@@ -35,7 +49,8 @@ export class TeacherDetailComponent {
     constructor(
         private route: ActivatedRoute,
         private teachersService: TeachersService,
-        private courseService: CourseService
+        private courseService: CourseService,
+        private preferenceService: PreferenceService,
     ) {
     }
 
@@ -43,10 +58,16 @@ export class TeacherDetailComponent {
         this.teacherId = Number(this.route.snapshot.paramMap.get('id'));
         this.getTeacherDetails();
         this.getTeacherCourses();
+        this.getTeacherPreferences();
 
-        this.searchInputControl.valueChanges.subscribe((searchQuery) => {
-            this.pagination.currentPage = 0;
+        this.courseListSearchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.courseListPagination.currentPage = 0;
             this.getTeacherCourses(searchQuery);
+        });
+
+        this.preferenceListSearchInputControl.valueChanges.subscribe((searchQuery) => {
+            this.preferenceListPagination.currentPage = 0;
+            this.getTeacherPreferences(searchQuery);
         });
     }
 
@@ -68,9 +89,9 @@ export class TeacherDetailComponent {
     }
 
     getTeacherCourses(searchQuery: string = '') {
-        this.isLoading = true;
-        const page = this.pagination.currentPage + 1;
-        const pageSize = this.pagination.pageSize;
+        this.isCourseListLoading = true;
+        const page = this.courseListPagination.currentPage + 1;
+        const pageSize = this.courseListPagination.pageSize;
 
         this.courseService
             .getAllByTeacherIdPaginated(this.teacherId, page, pageSize, searchQuery)
@@ -79,7 +100,7 @@ export class TeacherDetailComponent {
                     if (response?.status && response?.data) {
                         this.courses = response.data.items ?? [];
 
-                        this.pagination = {
+                        this.courseListPagination = {
                             currentPage: response.data.current_page - 1,
                             totalPages: response.data.total_pages,
                             pageSize: response.data.page_size,
@@ -88,16 +109,49 @@ export class TeacherDetailComponent {
                     } else {
                         this.courses = [];
                     }
-                    this.isLoading = false;
+                    this.isCourseListLoading = false;
                 },
-                error: () => this.isLoading = false
+                error: () => this.isCourseListLoading = false
             });
     }
 
-    onPageChange(event: PageEvent) {
-        this.pagination.currentPage = event.pageIndex;
-        this.pagination.pageSize = event.pageSize;
-        this.getTeacherCourses(this.searchInputControl.value);
+    getTeacherPreferences(searchQuery: string = '') {
+        this.isPreferenceListLoading = true;
+        const page = this.preferenceListPagination.currentPage + 1;
+        const pageSize = this.preferenceListPagination.pageSize;
+
+        this.preferenceService
+            .getAllByTeacherIdPaginated(this.teacherId, page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.preferences = response.data.items ?? [];
+
+                        this.preferenceListPagination = {
+                            currentPage: response.data.current_page - 1,
+                            totalPages: response.data.total_pages,
+                            pageSize: response.data.page_size,
+                            totalItems: response.data.total_items
+                        };
+                    } else {
+                        this.preferences = [];
+                    }
+                    this.isPreferenceListLoading = false;
+                },
+                error: () => this.isPreferenceListLoading = false
+            });
+    }
+
+    onCourseListPageChange(event: PageEvent) {
+        this.courseListPagination.currentPage = event.pageIndex;
+        this.courseListPagination.pageSize = event.pageSize;
+        this.getTeacherCourses(this.courseListSearchInputControl.value);
+    }
+
+    onPreferenceListPageChange(event: PageEvent) {
+        this.preferenceListPagination.currentPage = event.pageIndex;
+        this.preferenceListPagination.pageSize = event.pageSize;
+        this.getTeacherCourses(this.preferenceListSearchInputControl.value);
     }
 
     trackByFn(index: number, item: any): any {

@@ -26,6 +26,10 @@ export class PreferenceService {
         return this.http.get<Response<PaginatedResponse<Preference>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
+    getAllByTeacherIdPaginated(teacherId: number, page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Preference>>> {
+        return this.http.get<Response<PaginatedResponse<Preference>>>(`${this.baseUrl}/byTeacher?teacher_id=${teacherId}&page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
+    }
+
     get(id: number): Observable<Response<Preference>> {
         return this.http.get<Response<Preference>>(`${this.baseUrl}/${id}`);
     }
