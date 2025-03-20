@@ -26,6 +26,10 @@ export class CourseService {
         return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
+    getAllByTeacherIdPaginated(teacherId: number, page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<Course>>> {
+        return this.http.get<Response<PaginatedResponse<Course>>>(`${this.baseUrl}/byTeacher?teacher_id=${teacherId}&page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
+    }
+
     get(id: number): Observable<Response<Course>> {
         return this.http.get<Response<Course>>(`${this.baseUrl}/${id}`);
     }
