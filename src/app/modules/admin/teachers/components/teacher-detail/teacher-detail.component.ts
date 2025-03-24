@@ -24,7 +24,7 @@ export class TeacherDetailComponent {
 
     alert: any;
     teacherId: number | null = null;
-    teacher: Teacher = {id: 0, full_name: '', designation: '', email: '', status: ''};
+    teacher: Teacher = null;
 
     courses: Course[] = [];
     preferences: Preference[] = [];

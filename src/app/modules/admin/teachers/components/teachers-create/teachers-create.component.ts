@@ -16,7 +16,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     styleUrls: ['./teachers-create.component.scss']
 })
 export class TeachersCreateComponent {
-    teacher: Teacher = {id: 0, full_name: '', designation: '', email: '', status: ''};
     @ViewChild('teacherNgForm') teacherNgForm: NgForm;
 
     alert: any;

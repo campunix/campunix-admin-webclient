@@ -21,8 +21,12 @@
                 <div class="p-6 shadow rounded-2xl bg-card col-span-2">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <div class="text-sm text-gray-500">Department</div>
-                            <div class="text-lg font-semibold">Dummy Department</div>
+                            <div class="text-sm text-gray-500">Department Code</div>
+                            <div class="text-lg font-semibold">{{ teacher.department.code }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Department Name</div>
+                            <div class="text-lg font-semibold">{{ teacher.department.name }}</div>
                         </div>
                         <div>
                             <div class="text-sm text-gray-500">Designation</div>
@@ -32,28 +36,10 @@
                             <div class="text-sm text-gray-500">Status</div>
                             <div class="text-lg font-semibold">{{ teacher.status }}</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Info -->
-            <div class="mt-6 p-6 shadow rounded-2xl bg-card">
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                    <div>
-                        <div class="text-sm text-gray-500">Email</div>
-                        <div class="text-lg font-semibold">{{ teacher.email }}</div>
-                    </div>
-                    <div>
-                        <div class="text-sm text-gray-500">Phone</div>
-                        <div class="text-lg font-semibold">737 474 186</div>
-                    </div>
-                    <div>
-                        <div class="text-sm text-gray-500">Age</div>
-                        <div class="text-lg font-semibold">18</div>
-                    </div>
-                    <div>
-                        <div class="text-sm text-gray-500">Gender</div>
-                        <div class="text-lg font-semibold">Male</div>
+                        <div>
+                            <div class="text-sm text-gray-500">Email</div>
+                            <div class="text-lg font-semibold">{{ teacher.email }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
