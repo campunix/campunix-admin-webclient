@@ -14,13 +14,16 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatMenuModule} from "@angular/material/menu";
+import {MatChipsModule} from '@angular/material/chips';
 import { RoutineViewComponent } from './components/routine-view/routine-view.component';
 import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
+import { RoutineFormComponent } from './components/routine-form/routine-form.component';
 
 @NgModule({
     declarations: [
         RoutineViewComponent,
-        RoutineCellComponent
+        RoutineCellComponent,
+        RoutineFormComponent
     ],
     imports: [
         CommonModule,
@@ -54,9 +57,14 @@ import { RoutineCellComponent } from './components/routine-cell/routine-cell.com
             {
                 path: 'view',
                 component: RoutineViewComponent
+            },
+            {
+                path: 'form',
+                component: RoutineFormComponent
             }
         ]),
-        MatMenuModule
+        MatMenuModule,
+        MatChipsModule
     ]
 })
 export class RoutineModule {
