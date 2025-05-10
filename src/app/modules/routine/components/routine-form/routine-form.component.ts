@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { Course } from 'app/models/course';
+import { Teacher } from 'app/models/teacher';
+import { CourseService } from 'app/modules/admin/courses/services/course.service';
+import { TeachersService } from 'app/modules/admin/teachers/services/teachers.service';
 
 @Component({
     selector: 'app-routine-form',
@@ -12,17 +16,23 @@ export class RoutineFormComponent implements OnInit {
     
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
     timeSlots = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'];
-    teachers = ['Teacher 1', 'Teacher 2', 'Teacher 3'];
-    courses = ['Course 1', 'Course 2', 'Course 3'];
     selectedTeachers: { [key: number]: string[] } = {};
+    courses: Course[] = [];
+    teachers: Teacher[] = [];
 
-    constructor(private fb: FormBuilder) {}
+    constructor(
+        private fb: FormBuilder,
+        private courseService: CourseService,
+        private teachersService: TeachersService
+    ) {}
 
     ngOnInit(): void {
         this.routineForm = this.fb.group({
             routineEntries: this.fb.array([])
         });
         this.addEntry();
+        this.loadCourses();
+        this.loadTeachers();
     }
 
     get routineEntries() {
@@ -31,7 +41,7 @@ export class RoutineFormComponent implements OnInit {
 
     addEntry() {
         const entry = this.fb.group({
-            day: ['', Validators.required],
+            date: ['', Validators.required],
             timeSlot: ['', Validators.required],
             teacher: ['', Validators.required],
             course: ['', Validators.required]
@@ -67,8 +77,40 @@ export class RoutineFormComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.routineForm.valid) {
-            console.log(this.routineForm.value);
-        }
+        console.log(this.routineForm.value);
+    }
+
+    loadCourses(searchQuery: string = '') {
+        const page = 1;
+        const pageSize = 100;
+
+        this.courseService
+            .getAllPaginated(page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.courses = response.data.items ?? [];
+                    } else {
+                        this.courses = [];
+                    }
+                }
+            });
+    }
+
+    loadTeachers(searchQuery: string = '') {
+        const page = 1;
+        const pageSize = 100;
+
+        this.teachersService
+            .getAllPaginated(page, pageSize, searchQuery)
+            .subscribe({
+                next: (response) => {
+                    if (response?.status && response?.data) {
+                        this.teachers = response.data.items ?? [];
+                    } else {
+                        this.teachers = [];
+                    }
+                }
+            });
     }
 }

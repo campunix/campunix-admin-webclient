@@ -15,7 +15,7 @@
             <table class="min-w-full divide-y border">
                 <thead>
                     <tr class="bg-gray-50">
-                        <th class="px-4 py-3 text-left">Day</th>
+                        <th class="px-4 py-3 text-left">Date</th>
                         <th class="px-4 py-3 text-left">Course</th>
                         <th class="px-4 py-3 text-left">Teacher</th>
                         <th class="px-4 py-3 text-left">Time Slot</th>
@@ -26,18 +26,16 @@
                     <tr *ngFor="let entry of routineEntries.controls; let i = index" [formGroupName]="i">
                         <td class="px-4 py-2">
                             <mat-form-field class="w-full">
-                                <mat-select formControlName="day">
-                                    <mat-option *ngFor="let day of days" [value]="day">
-                                        {{day}}
-                                    </mat-option>
-                                </mat-select>
+                                <input formControlName="date" matInput [matDatepicker]="picker">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                         </td>
                         <td class="px-4 py-2">
                             <mat-form-field class="w-full">
                                 <mat-select formControlName="course">
                                     <mat-option *ngFor="let course of courses" [value]="course">
-                                        {{course}}
+                                        {{course.title}} ({{course.code}})
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -47,18 +45,18 @@
                                 <mat-form-field class="w-full">
                                     <mat-select formControlName="teacher">
                                         <mat-option *ngFor="let teacher of teachers" [value]="teacher">
-                                            {{teacher}}
+                                            {{teacher.full_name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <button type="button" mat-icon-button color="primary" (click)="addTeacher(i)">
+                                <button type="button" class="mb-4" mat-icon-button matSuffix color="primary" (click)="addTeacher(i)">
                                     <mat-icon>add</mat-icon>
                                 </button>
                             </div>
                             <div class="flex flex-wrap gap-2 mt-2">
                                 <mat-chip-list>
                                     <mat-chip *ngFor="let teacher of selectedTeachers[i]" (removed)="removeTeacher(i, teacher)">
-                                        {{teacher}}
+                                        {{teacher.full_name.length > 20 ? (teacher.full_name.substring(0, 20) + "...") : teacher.full_name}}
                                         <mat-icon matChipRemove>cancel</mat-icon>
                                     </mat-chip>
                                 </mat-chip-list>
@@ -83,7 +81,7 @@
             </table>
 
             <div class="mt-4">
-                <button type="submit" mat-raised-button color="primary" [disabled]="!routineForm.valid">
+                <button type="submit" mat-raised-button color="primary">
                     Submit
                 </button>
             </div>
