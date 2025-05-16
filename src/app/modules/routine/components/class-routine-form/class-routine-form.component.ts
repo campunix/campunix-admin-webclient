@@ -7,11 +7,11 @@ import { Department } from 'app/models/department';
 import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 
 @Component({
-    selector: 'app-class-routine-create',
-    templateUrl: './class-routine-create.component.html',
-    styleUrl: './class-routine-create.component.scss'
+    selector: 'app-class-routine-form',
+    templateUrl: './class-routine-form.component.html',
+    styleUrl: './class-routine-form.component.scss'
 })
-export class ClassRoutineCreateComponent {
+export class ClassRoutineFormComponent {
 
     isLoading: boolean = false;
 

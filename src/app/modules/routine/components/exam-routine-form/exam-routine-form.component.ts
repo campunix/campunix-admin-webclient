@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatChipsModule } from '@angular/material/chips';
 import { Course } from 'app/models/course';
 import { Teacher } from 'app/models/teacher';
 import { CourseService } from 'app/modules/admin/courses/services/course.service';
@@ -10,11 +9,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-routine-form',
-    templateUrl: './routine-form.component.html',
-    styleUrls: ['./routine-form.component.scss']
+    selector: 'app-exam-routine-form',
+    templateUrl: './exam-routine-form.component.html',
+    styleUrls: ['./exam-routine-form.component.scss']
 })
-export class RoutineFormComponent implements OnInit {
+export class ExamRoutineFormComponent implements OnInit {
     routineForm: FormGroup;
     
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];

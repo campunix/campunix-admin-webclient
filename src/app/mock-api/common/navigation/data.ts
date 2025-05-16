@@ -77,7 +77,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: 'Exam Routines',
                 type: 'basic',
                 icon: 'heroicons_outline:square-3-stack-3d',
-                link: '/routine/form',
+                link: '/routine/exam/list',
             }
         ]
     }
