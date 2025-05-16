@@ -20,10 +20,12 @@ import { RoutineViewComponent } from './components/routine-view/routine-view.com
 import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
 import { RoutineFormComponent } from './components/routine-form/routine-form.component';
 import { ClassRoutineCreateComponent } from './components/class-routine-create/class-routine-create.component';
+import { ClassRoutineListComponent } from './components/class-routine-list/class-routine-list.component';
 
 @NgModule({
     declarations: [
         ClassRoutineCreateComponent,
+        ClassRoutineListComponent,
         RoutineViewComponent,
         RoutineCellComponent,
         RoutineFormComponent
@@ -56,11 +58,15 @@ import { ClassRoutineCreateComponent } from './components/class-routine-create/c
             {
                 path: '',
                 pathMatch: 'full',
-                redirectTo: 'view'
+                redirectTo: 'class/list'
             },
             {
                 path: 'view',
                 component: RoutineViewComponent
+            },
+            {
+                path: 'class/list',
+                component: ClassRoutineListComponent
             },
             {
                 path: 'class/create',

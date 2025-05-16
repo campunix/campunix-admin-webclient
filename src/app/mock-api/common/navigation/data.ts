@@ -70,7 +70,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: 'Class Routines',
                 type: 'basic',
                 icon: 'heroicons_outline:book-open',
-                link: '/routine/view',
+                link: '/routine/class/list',
             },
             {
                 id: 'examRoutines',

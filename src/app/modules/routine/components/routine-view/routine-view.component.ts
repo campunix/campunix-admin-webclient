@@ -45,7 +45,8 @@ export class RoutineViewComponent {
     ngOnInit(): void
     {
         this.isLoading = true;
-        this._routineService.getRoutine().subscribe((response: any) => {
+        var departmentId = 1;
+        this._routineService.getRoutine(departmentId).subscribe((response: any) => {
             console.log(response);
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];

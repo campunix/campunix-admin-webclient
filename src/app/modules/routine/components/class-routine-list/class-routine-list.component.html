@@ -9,7 +9,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Rooms</div>
+        <div class="text-4xl font-extrabold tracking-tight">Class Routines</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -24,14 +24,14 @@
                     matInput
                     [formControl]="searchInputControl"
                     [autocomplete]="'off'"
-                    [placeholder]="'Search rooms'">
+                    [placeholder]="'Search routines'">
             </mat-form-field>
             <!-- Add product button -->
             <button
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="createRoom()">
+                (click)="createRoutine()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
@@ -43,8 +43,8 @@
 
         <!-- Products list -->
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-            <ng-container *ngIf="rooms as rooms">
-                <ng-container *ngIf="rooms.length > 0 && !isLoading; else noRooms">
+            <ng-container *ngIf="routines as items">
+                <ng-container *ngIf="items.length > 0 && !isLoading; else noRooms">
                     <div class="grid">
                         <!-- Header -->
                         <div
@@ -62,23 +62,23 @@
                             </div>
                         </div>
                         <!-- Rows -->
-                        <ng-container *ngIf="rooms as rooms">
-                            <ng-container *ngFor="let room of rooms; trackBy: trackByFn">
+                        <ng-container *ngIf="routines as items">
+                            <ng-container *ngFor="let item of items; trackBy: trackByFn">
                                 <div class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b w-full">
 
 
                                     <!-- Name -->
                                     <div class="truncate">
-                                        {{ room.name }}
+                                        {{ item.name }}
                                     </div>
 
                                     <!-- Code -->
                                     <div class="hidden sm:block">
-                                        {{ room.code }}
+                                        {{ item.code }}
                                     </div>
 
                                     <div>
-                                        <button (click)="deleteRoom(room.id)" mat-icon-button>
+                                        <button (click)="deleteClassRoutine(routine.id)" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </div>
@@ -104,8 +104,8 @@
             </ng-container>
 
             <ng-template #noRooms>
-                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no
-                    Rooms!
+                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">
+                    There are no class routines!
                 </div>
             </ng-template>
 

@@ -1,6 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { ListResponse, Response } from 'app/models/response';
+import { Department } from 'app/models/department';
+import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 
 @Component({
     selector: 'app-class-routine-create',
@@ -35,17 +39,35 @@ export class ClassRoutineCreateComponent {
     ];
 
     genes: any[] = [];
+    departments: Department[] = [];
+    departmentFormControl = new FormControl('');
     
     constructor(
         private _snackBar: MatSnackBar,
+        private _deptService: DepartmentsService,
         private readonly _routineService: RoutineService)
     {
     }
 
     ngOnInit(): void
     {
+        this.getDepartments();
+        
+        this.departmentFormControl.valueChanges.subscribe((departmentId) => {
+            console.log(departmentId);
+            this.loadRoutine(Number(departmentId));
+        });
+    }
+
+    private getDepartments() {
+        this._deptService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
+            this.departments = response.data.items ?? [];
+        });
+    }
+
+    private loadRoutine(departmentId: number) {
         this.isLoading = true;
-        this._routineService.getRoutine().subscribe((response: any) => {
+        this._routineService.getRoutine(departmentId).subscribe((response: any) => {
             console.log(response);
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];
@@ -55,12 +77,12 @@ export class ClassRoutineCreateComponent {
 
     onSubmit() {
         var data = {
-            "syllabus_id": 1,
+            "department_id": this.departmentFormControl.value,
             "title": "string",
             "description": "string",
             "calendar_year": "string",
-            "is_active": false,
-            "routine": this.genes
+            "is_active": true,
+            "routine": JSON.stringify(this.genes)
         }
 
         this._routineService.createClassRoutine(data).subscribe({
