@@ -5,6 +5,9 @@ import { Course } from 'app/models/course';
 import { Teacher } from 'app/models/teacher';
 import { CourseService } from 'app/modules/admin/courses/services/course.service';
 import { TeachersService } from 'app/modules/admin/teachers/services/teachers.service';
+import { RoutineService } from '../../services/routine.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-routine-form',
@@ -22,8 +25,11 @@ export class RoutineFormComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private courseService: CourseService,
-        private teachersService: TeachersService
+        private _courseService: CourseService,
+        private _teachersService: TeachersService,
+        private _routineService: RoutineService,
+        private _snackBar: MatSnackBar,
+        private _router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -78,13 +84,69 @@ export class RoutineFormComponent implements OnInit {
 
     onSubmit() {
         console.log(this.routineForm.value);
+        var routineRows = [];
+        this.routineForm.value["routineEntries"].forEach((element, index) => {
+            var examRoutineRow = new ExamRoutineRow();
+            examRoutineRow.date = element.date;
+            examRoutineRow.timeSlot = element.timeSlot;
+            examRoutineRow.course = {
+                id: element.course.id,
+                title: element.course.title
+            };
+            examRoutineRow.teachers = [];
+            if (this.selectedTeachers[index]) {
+                this.selectedTeachers[index].forEach((teacher: any) => {
+                    examRoutineRow.teachers.push({
+                        id: teacher.id,
+                        name: teacher.full_name
+                    });
+                });
+            }
+
+            if (element.teacher)
+            {
+                examRoutineRow.teachers.push({
+                    id: element.teacher.id,
+                    name: element.teacher.full_name
+                });
+            }
+
+            routineRows.push(examRoutineRow);
+        });
+
+        console.log(JSON.stringify(routineRows));
+        
+        var examRoutine = new ExamRoutine();
+        examRoutine.routine_id = 1;
+        examRoutine.title = "Exam Routine";
+        examRoutine.description = "Exam Routine";
+        examRoutine.calendar_year = "2023";
+        examRoutine.is_active = true;
+        examRoutine.exam_routine = JSON.stringify(routineRows);
+
+        this._routineService.createExamRoutine(examRoutine).subscribe({
+            next: () => {
+                this._snackBar.open('Exam routine created successfully', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
+        });
     }
 
     loadCourses(searchQuery: string = '') {
         const page = 1;
         const pageSize = 100;
 
-        this.courseService
+        this._courseService
             .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
@@ -101,7 +163,7 @@ export class RoutineFormComponent implements OnInit {
         const page = 1;
         const pageSize = 100;
 
-        this.teachersService
+        this._teachersService
             .getAllPaginated(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
@@ -113,4 +175,22 @@ export class RoutineFormComponent implements OnInit {
                 }
             });
     }
+}
+
+class ExamRoutineRow 
+{
+    date: string;
+    timeSlot: string;
+    teachers: any[];
+    course: any;
+}
+
+class ExamRoutine 
+{
+    routine_id: number;
+    title: string;
+    description: string;
+    calendar_year: string;
+    is_active: boolean;
+    exam_routine: string;
 }

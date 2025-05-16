@@ -19,9 +19,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker'
 import { RoutineViewComponent } from './components/routine-view/routine-view.component';
 import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
 import { RoutineFormComponent } from './components/routine-form/routine-form.component';
+import { ClassRoutineCreateComponent } from './components/class-routine-create/class-routine-create.component';
 
 @NgModule({
     declarations: [
+        ClassRoutineCreateComponent,
         RoutineViewComponent,
         RoutineCellComponent,
         RoutineFormComponent
@@ -61,7 +63,11 @@ import { RoutineFormComponent } from './components/routine-form/routine-form.com
                 component: RoutineViewComponent
             },
             {
-                path: 'form',
+                path: 'class/create',
+                component: ClassRoutineCreateComponent
+            },
+            {
+                path: 'exam/create',
                 component: RoutineFormComponent
             }
         ]),

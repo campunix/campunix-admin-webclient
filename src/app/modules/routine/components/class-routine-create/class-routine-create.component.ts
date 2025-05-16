@@ -3,11 +3,11 @@ import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-routine-view',
-    templateUrl: './routine-view.component.html',
-    styleUrl: './routine-view.component.scss'
+    selector: 'app-class-routine-create',
+    templateUrl: './class-routine-create.component.html',
+    styleUrl: './class-routine-create.component.scss'
 })
-export class RoutineViewComponent {
+export class ClassRoutineCreateComponent {
 
     isLoading: boolean = false;
 

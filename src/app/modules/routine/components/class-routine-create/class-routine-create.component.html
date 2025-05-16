@@ -1,0 +1,81 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-6xl">
+            <div class="-ml-4 sm:mt-8">
+                <a
+                    mat-button
+                    [routerLink]="['/rooms/list']"
+                    [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back to Class Routines</span>
+                </a>
+            </div>
+            <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+                Create Class Routine
+            </div>
+            <!-- Form -->
+            <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
+                <div class="flex flex-auto overflow-y-auto p-4">
+                    <div *ngIf="genes?.length > 0 else noRoutine" class="schedule-container">
+                        <!-- Time Header Row -->
+                        <div class="schedule-row">
+                            <div class="day-header"></div>
+                            <div class="time-header">10:00 - 11:00</div>
+                            <div class="time-header">11:00 - 12:00</div>
+                            <div class="time-header">12:00 - 1:00</div>
+                            <div class="time-header">2:00 - 3:00</div>
+                            <div class="time-header">3:00 - 4:00</div>
+                        </div>
+                    
+                        <div *ngFor="let day of weekDays; index as i" class="schedule-row">
+                            <div class="day-semester-side-header">
+                                <div class="day-side-header">{{day}}</div>
+                                <div class="semester-side-header">
+                                    <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
+                                        <div class="semester-cell">{{semester.year}}-{{semester.number}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="schedule-slot-container">
+                                <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
+                                    <app-routine-cell
+                                        *ngFor="let slot of slots; index as k;"
+                                        [dayNumber]="i"
+                                        [semesterNumber]="j"
+                                        [slotNumber]="k"
+                                        [totalSemesters]="semesters.length"
+                                        [totalSlots]="slots.length"
+                                        [genes]="genes">
+                                    </app-routine-cell>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No courses -->
+                    <ng-template #noRoutine>
+                        <div class="flex flex-auto flex-col items-center justify-center">
+                            <mat-icon
+                                class="icon-size-24"
+                                [svgIcon]="'heroicons_outline:document-search'"></mat-icon>
+                            <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">No routine found!</div>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <div class="flex items-center justify-end">
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="onSubmit()">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
