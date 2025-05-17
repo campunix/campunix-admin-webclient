@@ -28,6 +28,17 @@
                     </mat-select>
                 </mat-form-field>
 
+                <mat-form-field class="w-full mt-4" [subscriptSizing]="'dynamic'">
+                    <mat-label>Syllabus</mat-label>
+                    <mat-select
+                        matInput
+                        [formControl]="syllabusFormControl">
+                        @for (syllabus of syllabuses; track syllabus) {
+                            <mat-option [value]="syllabus.id">{{syllabus.syllabus.department_name}}({{syllabus.syllabus.department_code}})</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
                 <div *ngIf="genes?.length > 0 else noRoutine">
 
                     <div class="flex flex-auto overflow-y-auto p-4">

@@ -5,6 +5,7 @@ import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@
 import { ListResponse, Response } from 'app/models/response';
 import { Department } from 'app/models/department';
 import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
+import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
 
 @Component({
     selector: 'app-class-routine-form',
@@ -40,12 +41,15 @@ export class ClassRoutineFormComponent {
 
     genes: any[] = [];
     departments: Department[] = [];
+    syllabuses: any[] = [];
     departmentFormControl = new FormControl('');
+    syllabusFormControl = new FormControl('');
     
     constructor(
         private _snackBar: MatSnackBar,
         private _deptService: DepartmentsService,
-        private readonly _routineService: RoutineService)
+        private readonly _routineService: RoutineService,
+        private readonly _syllabusService: SyllabusService,)
     {
     }
 
@@ -54,8 +58,16 @@ export class ClassRoutineFormComponent {
         this.getDepartments();
         
         this.departmentFormControl.valueChanges.subscribe((departmentId) => {
-            console.log(departmentId);
-            this.loadRoutine(Number(departmentId));
+            this.genes = [];
+            this.syllabusFormControl.setValue('');
+            this.getSyllabuses(Number(departmentId));
+        });
+
+        this.syllabusFormControl.valueChanges.subscribe((syllabusId) => {
+            if (!syllabusId) return;
+
+            console.log(syllabusId);
+            this.loadRoutine(Number(syllabusId));
         });
     }
 
@@ -65,9 +77,18 @@ export class ClassRoutineFormComponent {
         });
     }
 
-    private loadRoutine(departmentId: number) {
+    private getSyllabuses(departmentId: number) {
+        this._syllabusService
+        .getAllSyllabuses(departmentId)
+        .subscribe((response: Response<ListResponse<any>>) => {
+            this.syllabuses = response.data.items ?? [];
+            console.log(this.syllabuses);
+        });
+    }
+
+    private loadRoutine(syllabusId: number) {
         this.isLoading = true;
-        this._routineService.getRoutine(departmentId).subscribe((response: any) => {
+        this._routineService.getRoutine(syllabusId).subscribe((response: any) => {
             console.log(response);
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];
@@ -77,12 +98,12 @@ export class ClassRoutineFormComponent {
 
     onSubmit() {
         var data = {
-            "department_id": this.departmentFormControl.value,
-            "title": "string",
-            "description": "string",
-            "calendar_year": "string",
+            "syllabus_id": this.syllabusFormControl.value,
+            "title": "Sample routine",
+            "description": "Sample description",
+            "calendar_year": "2025",
             "is_active": true,
-            "routine": JSON.stringify(this.genes)
+            "routine": JSON.stringify({ genes: this.genes })
         }
 
         this._routineService.createClassRoutine(data).subscribe({

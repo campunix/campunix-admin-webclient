@@ -22,6 +22,10 @@ export class SyllabusService {
         return this.http.get<Response<PaginatedResponse<SyllabusData>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
+    getAllSyllabuses(departmentId: number): Observable<Response<PaginatedResponse<SyllabusData>>> {
+        return this.http.get<Response<PaginatedResponse<SyllabusData>>>(`${this.baseUrl}?departyment_id=${departmentId}`);
+    }
+
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }

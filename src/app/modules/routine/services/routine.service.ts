@@ -12,9 +12,9 @@ export class RoutineService {
 
     constructor(private http: HttpClient) { }
 
-    getRoutine(department_id: number): any {
+    getRoutine(syllabusId: number): any {
         let url = `${this.apiBaseUrl}/routines/generate`;
-        return this.http.post<any>(url, { department_id: department_id, total_slots: 5 });
+        return this.http.post<any>(url, { syllabus_id: syllabusId, total_slots: 5 });
     }
     
     createClassRoutine(data: any): any {
@@ -28,8 +28,7 @@ export class RoutineService {
     }
 
     getPaginatedClassRoutines(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<ClassRoutine>>> {
-        return of<Response<PaginatedResponse<ClassRoutine>>>();
-        // return this.http.get<Response<PaginatedResponse<ClassRoutine>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
+        return this.http.get<Response<PaginatedResponse<ClassRoutine>>>(`${this.apiBaseUrl}/routines?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     deleteClassRoutine(id: number): Observable<void> {
