@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ClassRoutine } from "app/models/classRoutine";
+import { ExamRoutine } from "app/models/examRoutine";
 import { PaginatedResponse, Response } from "app/models/response";
 import { Observable, of } from "rxjs";
 
@@ -29,6 +30,10 @@ export class RoutineService {
 
     getPaginatedClassRoutines(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<ClassRoutine>>> {
         return this.http.get<Response<PaginatedResponse<ClassRoutine>>>(`${this.apiBaseUrl}/routines?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
+    }
+
+    getPaginatedExamRoutines(page: number, pageSize: number, searchQuery: string): Observable<Response<PaginatedResponse<ExamRoutine>>> {
+        return this.http.get<Response<PaginatedResponse<ExamRoutine>>>(`${this.apiBaseUrl}/examRoutines?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
     deleteClassRoutine(id: number): Observable<void> {

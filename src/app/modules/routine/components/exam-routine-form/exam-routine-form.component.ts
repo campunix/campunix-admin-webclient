@@ -7,6 +7,10 @@ import { TeachersService } from 'app/modules/admin/teachers/services/teachers.se
 import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
+import { Department } from 'app/models/department';
+import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
+import { ListResponse, Response } from 'app/models/response';
 
 @Component({
     selector: 'app-exam-routine-form',
@@ -19,25 +23,42 @@ export class ExamRoutineFormComponent implements OnInit {
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
     timeSlots = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'];
     selectedTeachers: { [key: number]: string[] } = {};
+    departments: Department[] = [];
+    syllabuses: any[] = [];
     courses: Course[] = [];
     teachers: Teacher[] = [];
 
     constructor(
-        private fb: FormBuilder,
-        private _courseService: CourseService,
-        private _teachersService: TeachersService,
-        private _routineService: RoutineService,
-        private _snackBar: MatSnackBar,
-        private _router: Router,
+        private readonly fb: FormBuilder,
+        private readonly _courseService: CourseService,
+        private readonly _teachersService: TeachersService,
+        private readonly _routineService: RoutineService,
+        private readonly _deptService: DepartmentsService,
+        private readonly _syllabusService: SyllabusService,
+        private readonly _snackBar: MatSnackBar,
+        private readonly _router: Router,
     ) {}
 
     ngOnInit(): void {
         this.routineForm = this.fb.group({
+            department: this.fb.control('', Validators.required),
+            syllabus: this.fb.control('', Validators.required),
             routineEntries: this.fb.array([])
         });
         this.addEntry();
-        this.loadCourses();
-        this.loadTeachers();
+
+        this.getDepartments();
+        
+        this.routineForm.get('department').valueChanges.subscribe((departmentId) => {
+            this.routineForm.get('syllabus').setValue('');
+            this.getSyllabuses(Number(departmentId));
+        });
+
+        this.routineForm.get('syllabus').valueChanges.subscribe((syllabusId) => {
+            if (!syllabusId) return;
+            this.loadCourses();
+            this.loadTeachers();
+        });
     }
 
     get routineEntries() {
@@ -83,6 +104,7 @@ export class ExamRoutineFormComponent implements OnInit {
 
     onSubmit() {
         console.log(this.routineForm.value);
+
         var routineRows = [];
         this.routineForm.value["routineEntries"].forEach((element, index) => {
             var examRoutineRow = new ExamRoutineRow();
@@ -116,12 +138,12 @@ export class ExamRoutineFormComponent implements OnInit {
         console.log(JSON.stringify(routineRows));
         
         var examRoutine = new ExamRoutine();
-        examRoutine.routine_id = 1;
+        examRoutine.syllabus_id = this.routineForm.value.syllabus;
         examRoutine.title = "Exam Routine";
         examRoutine.description = "Exam Routine";
         examRoutine.calendar_year = "2023";
         examRoutine.is_active = true;
-        examRoutine.exam_routine = JSON.stringify(routineRows);
+        examRoutine.exam_routine = JSON.stringify({routine: routineRows});
 
         this._routineService.createExamRoutine(examRoutine).subscribe({
             next: () => {
@@ -140,6 +162,21 @@ export class ExamRoutineFormComponent implements OnInit {
             }
         });
     }
+
+    private getDepartments() {
+        this._deptService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
+            this.departments = response.data.items ?? [];
+        });
+    }
+
+    private getSyllabuses(departmentId: number) {
+            this._syllabusService
+            .getAllSyllabuses(departmentId)
+            .subscribe((response: Response<ListResponse<any>>) => {
+                this.syllabuses = response.data.items ?? [];
+                console.log(this.syllabuses);
+            });
+        }
 
     loadCourses(searchQuery: string = '') {
         const page = 1;
@@ -186,7 +223,7 @@ class ExamRoutineRow
 
 class ExamRoutine 
 {
-    routine_id: number;
+    syllabus_id: number;
     title: string;
     description: string;
     calendar_year: string;

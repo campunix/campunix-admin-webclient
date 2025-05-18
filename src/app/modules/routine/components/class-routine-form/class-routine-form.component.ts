@@ -103,7 +103,7 @@ export class ClassRoutineFormComponent {
             "description": "Sample description",
             "calendar_year": "2025",
             "is_active": true,
-            "routine": JSON.stringify({ genes: this.genes })
+            "routine": JSON.stringify({ routine: this.genes })
         }
 
         this._routineService.createClassRoutine(data).subscribe({

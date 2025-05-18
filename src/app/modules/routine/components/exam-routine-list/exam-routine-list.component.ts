@@ -76,7 +76,7 @@ export class ExamRoutineListComponent implements OnInit {
         const pageSize = this.pagination.pageSize;
 
         this._routineService
-            .getPaginatedClassRoutines(page, pageSize, searchQuery)
+            .getPaginatedExamRoutines(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {

@@ -5,14 +5,30 @@
 
     <div class="flex-auto p-6 sm:p-10">
         <form [formGroup]="routineForm" (ngSubmit)="onSubmit()">
-            <div class="mb-4">
-                <button type="button" mat-raised-button color="primary" (click)="addEntry()">
-                    <mat-icon>add</mat-icon>
-                    Add Row
-                </button>
-            </div>
 
-            <table class="min-w-full divide-y border">
+            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>Department</mat-label>
+                    <mat-select
+                        matInput
+                        formControlName="department">
+                        @for (dept of departments; track dept) {
+                            <mat-option [value]="dept.id">{{dept.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+            <mat-form-field class="w-full mt-4" [subscriptSizing]="'dynamic'">
+                <mat-label>Syllabus</mat-label>
+                <mat-select
+                    matInput
+                    formControlName="syllabus">
+                    @for (syllabus of syllabuses; track syllabus) {
+                        <mat-option [value]="syllabus.id">{{syllabus.syllabus.department_name}}({{syllabus.syllabus.department_code}})</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <table class="min-w-full divide-y border mt-6">
                 <thead>
                     <tr class="bg-gray-50">
                         <th class="px-4 py-3 text-left">Date</th>
@@ -77,10 +93,19 @@
                             </button>
                         </td>
                     </tr>
+
+                    <tr>
+                        <div class="ml-4 mb-4">
+                            <button type="button" mat-raised-button color="primary" (click)="addEntry()">
+                                <mat-icon>add</mat-icon>
+                                Add Row
+                            </button>
+                        </div>
+                    </tr>
                 </tbody>
             </table>
 
-            <div class="mt-4">
+            <div class="flex items-center justify-end mt-6">
                 <button type="submit" mat-raised-button color="primary">
                     Submit
                 </button>
