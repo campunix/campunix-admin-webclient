@@ -1,4 +1,6 @@
 export interface ExamRoutine {
     id: number;
-    name: string;
+    title: string;
+    description: string;
+    calendar_year: string;
 }

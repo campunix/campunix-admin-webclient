@@ -43,6 +43,9 @@ export class ExamRoutineFormComponent implements OnInit {
         this.routineForm = this.fb.group({
             department: this.fb.control('', Validators.required),
             syllabus: this.fb.control('', Validators.required),
+            title: this.fb.control('', Validators.required),
+            description: this.fb.control(''),
+            calendar_year: this.fb.control('', Validators.required),
             routineEntries: this.fb.array([])
         });
         this.addEntry();
@@ -139,8 +142,8 @@ export class ExamRoutineFormComponent implements OnInit {
         
         var examRoutine = new ExamRoutine();
         examRoutine.syllabus_id = this.routineForm.value.syllabus;
-        examRoutine.title = "Exam Routine";
-        examRoutine.description = "Exam Routine";
+        examRoutine.title = this.routineForm.value.title;
+        examRoutine.description = this.routineForm.value.description;
         examRoutine.calendar_year = "2023";
         examRoutine.is_active = true;
         examRoutine.exam_routine = JSON.stringify({routine: routineRows});

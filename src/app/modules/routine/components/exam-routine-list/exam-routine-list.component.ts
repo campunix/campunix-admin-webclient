@@ -8,6 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { Pagination } from 'app/models/pagination';
 import { ClassRoutine } from 'app/models/classRoutine';
 import { RoutineService } from '../../services/routine.service';
+import { ExamRoutine } from 'app/models/examRoutine';
 
 @Component({
     selector: 'app-exam-routine-list',
@@ -39,7 +40,7 @@ export class ExamRoutineListComponent implements OnInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
-    routines: ClassRoutine[] = [];
+    routines: ExamRoutine[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
         currentPage: 0,

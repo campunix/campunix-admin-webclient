@@ -51,11 +51,11 @@
                             class="inventory-grid z-10 sticky top-0 grid grid-cols-3 gap-6 py-4 px-8 md:px-12 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                             matSort
                             matSortDisableClear>
-                            <div [mat-sort-header]="'name'">Name</div>
+                            <div [mat-sort-header]="'name'">Title</div>
                             <div
                                 class="hidden sm:block"
                                 [mat-sort-header]="'code'">
-                                Code
+                                Calendar Year
                             </div>
                             <div>
                                 Action
@@ -69,12 +69,12 @@
 
                                     <!-- Name -->
                                     <div class="truncate">
-                                        {{ item.name }}
+                                        {{ item.title }}
                                     </div>
 
                                     <!-- Code -->
                                     <div class="hidden sm:block">
-                                        {{ item.code }}
+                                        {{ item.calendar_year }}
                                     </div>
 
                                     <div>
