@@ -75,12 +75,18 @@ export class ExamRoutineFormComponent implements OnInit {
 
     addEntry() {
         const entry = this.fb.group({
+            index: [this.routineEntries.length],
             date: ['', Validators.required],
-            timeSlot: ['', Validators.required],
+            course: ['', Validators.required],
             teacher: ['', Validators.required],
-            course: ['', Validators.required]
+            timeSlot: ['', Validators.required],
         });
         this.routineEntries.push(entry);
+
+        entry.get('course').valueChanges.subscribe((course) => {
+            var index = Number(entry.get('index').value);
+            console.log(index);
+        });
     }
 
     removeEntry(index: number) {
