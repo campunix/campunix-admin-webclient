@@ -1,4 +1,5 @@
 export interface ClassRoutine {
     id: number;
-    name: string;
+    title: string;
+    calendar_year: string;
 }

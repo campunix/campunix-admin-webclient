@@ -48,14 +48,17 @@
                     <div class="grid">
                         <!-- Header -->
                         <div
-                            class="inventory-grid z-10 sticky top-0 grid grid-cols-3 gap-6 py-4 px-8 md:px-12 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                            class="inventory-grid z-10 sticky top-0 grid grid-cols-4 gap-6 py-4 px-8 md:px-12 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                             matSort
                             matSortDisableClear>
-                            <div [mat-sort-header]="'name'">Name</div>
+                            <div [mat-sort-header]="'title'">Title</div>
                             <div
-                                class="hidden sm:block"
-                                [mat-sort-header]="'code'">
-                                Code
+                                [mat-sort-header]="'calendarYear'">
+                                Calendar Year
+                            </div>
+                            <div
+                                [mat-sort-header]="'status'">
+                                Status
                             </div>
                             <div>
                                 Action
@@ -64,21 +67,24 @@
                         <!-- Rows -->
                         <ng-container *ngIf="routines as items">
                             <ng-container *ngFor="let item of items; trackBy: trackByFn">
-                                <div class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b w-full">
-
+                                <div class="inventory-grid grid grid-cols-4 items-center gap-4 py-3 px-6 md:px-8 border-b w-full">
 
                                     <!-- Name -->
                                     <div class="truncate">
-                                        {{ item.name }}
+                                        {{ item.title }}
                                     </div>
 
                                     <!-- Code -->
-                                    <div class="hidden sm:block">
-                                        {{ item.code }}
+                                    <div>
+                                        {{ item.calendar_year }}
                                     </div>
 
                                     <div>
-                                        <button (click)="deleteClassRoutine(routine.id)" mat-icon-button>
+                                        {{ item.is_active ? 'Active' : 'Inactive' }}
+                                    </div>
+
+                                    <div>
+                                        <button (click)="deleteRoutine(item.id)" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </div>

@@ -37,6 +37,10 @@ export class RoutineService {
     }
 
     deleteClassRoutine(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiBaseUrl}/${id}`);
+        return this.http.delete<void>(`${this.apiBaseUrl}/routines/${id}`);
+    }
+
+    deleteExamRoutine(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiBaseUrl}/examRoutines/${id}`);
     }
 }

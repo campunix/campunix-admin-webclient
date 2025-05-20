@@ -104,7 +104,7 @@ export class ExamRoutineListComponent implements OnInit {
     }
 
     deleteRoutine(id: number) {
-        this._routineService.deleteClassRoutine(id).subscribe({
+        this._routineService.deleteExamRoutine(id).subscribe({
             next: () => {
                 this.routines = this.routines.filter(it => it.id !== id);
                 if (this.routines.length === 0 && this.pagination.currentPage > 0) {

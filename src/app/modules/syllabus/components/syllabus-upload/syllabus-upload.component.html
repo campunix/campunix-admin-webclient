@@ -17,45 +17,80 @@
         <div class="max-w-3xl">
             <div class="bg-card shadow rounded-2xl overflow-hidden">
                 <div class="flex flex-col p-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                        <div class="flex-1">
+                    <form [formGroup]="syllabusForm">
+                        <mat-form-field class="w-full mt-4">
                             <input
-                                type="file"
-                                accept=".xml"
-                                (change)="onFileSelected($event)"
-                                #fileInput
-                                class="hidden">
-                            
-                            <button
-                                mat-raised-button
-                                color="primary"
-                                class="mb-4 sm:mb-0"
-                                (click)="fileInput.click()">
-                                <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
-                                Select XML File
-                            </button>
-                        </div>
+                                matInput
+                                formControlName="title"
+                                [required]="true">
+                            <mat-label>Title</mat-label>
+                            <mat-error *ngIf="syllabusForm.get('title').hasError('required')">
+                                Required
+                            </mat-error>
+                        </mat-form-field>
 
-                        <button
-                            mat-raised-button
-                            color="accent"
-                            [disabled]="!selectedFile || isUploading"
-                            (click)="uploadSyllabus()">
-                            <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_outline:paper-airplane'"></mat-icon>
-                            Upload Syllabus
-                        </button>
-                    </div>
+                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Calendar Year</mat-label>
+                            <mat-select
+                                matInput
+                                formControlName="calendar_year">
+                                @for (item of calendarYears; track item) {
+                                    <mat-option [value]="item">{{item}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
 
-                    <!-- File info -->
-                    <div class="mt-6" *ngIf="selectedFile">
-                        <div class="flex items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
-                            <mat-icon class="icon-size-7 mr-3 text-primary" [svgIcon]="'heroicons_outline:document-text'"></mat-icon>
-                            <div class="flex-1">
-                                <div class="font-medium">{{ selectedFile.name }}</div>
-                                <div class="text-sm text-secondary">{{ (selectedFile.size / 1024).toFixed(2) }} KB</div>
+                        <mat-form-field class="w-full mt-4">
+                            <textarea
+                                matInput
+                                formControlName="description"
+                                rows="5"></textarea>
+                            <mat-label>Description</mat-label>
+                            <mat-error *ngIf="syllabusForm.get('description').hasError('required')">
+                                Required
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- File info -->
+                        <div class="mt-6" *ngIf="selectedFile">
+                            <div class="flex items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
+                                <mat-icon class="icon-size-7 mr-3 text-primary" [svgIcon]="'heroicons_outline:document-text'"></mat-icon>
+                                <div class="flex-1">
+                                    <div class="font-medium">{{ selectedFile.name }}</div>
+                                    <div class="text-sm text-secondary">{{ (selectedFile.size / 1024).toFixed(2) }} KB</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-6">
+                            <div class="flex-1">
+                                <input
+                                    type="file"
+                                    accept=".xml"
+                                    (change)="onFileSelected($event)"
+                                    #fileInput
+                                    class="hidden">
+                                
+                                <button
+                                    mat-raised-button
+                                    color="primary"
+                                    class="mb-4 sm:mb-0"
+                                    (click)="fileInput.click()">
+                                    <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
+                                    Select XML File
+                                </button>
+                            </div>
+
+                            <button
+                                mat-raised-button
+                                color="accent"
+                                [disabled]="!selectedFile || isUploading || syllabusForm.invalid"
+                                (click)="uploadSyllabus()">
+                                <mat-icon class="icon-size-5 mr-2" [svgIcon]="'heroicons_outline:paper-airplane'"></mat-icon>
+                                Upload Syllabus
+                            </button>
+                        </div>
+                    </form>
 
                     <!-- Progress bar -->
                     <div class="mt-4" *ngIf="isUploading">

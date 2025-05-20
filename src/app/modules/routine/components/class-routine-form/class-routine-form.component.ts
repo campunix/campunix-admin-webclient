@@ -6,6 +6,7 @@ import { ListResponse, Response } from 'app/models/response';
 import { Department } from 'app/models/department';
 import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-class-routine-form',
@@ -40,12 +41,14 @@ export class ClassRoutineFormComponent {
     ];
 
     genes: any[] = [];
-    departments: Department[] = [];
     syllabuses: any[] = [];
-    departmentFormControl = new FormControl('');
-    syllabusFormControl = new FormControl('');
+    calendarYears: string[] = [];
+    departments: Department[] = [];
+    routineForm: UntypedFormGroup;
     
     constructor(
+        private fb: UntypedFormBuilder,
+        private _router: Router,
         private _snackBar: MatSnackBar,
         private _deptService: DepartmentsService,
         private readonly _routineService: RoutineService,
@@ -55,15 +58,27 @@ export class ClassRoutineFormComponent {
 
     ngOnInit(): void
     {
+        this.routineForm = this.fb.group({
+            department: this.fb.control('', Validators.required),
+            syllabus: this.fb.control('', Validators.required),
+            title: this.fb.control('', Validators.required),
+            calendar_year: this.fb.control('', Validators.required),
+            description: this.fb.control(''),
+        });
+
+        for(let i = 2023; i <= 2050; i++) {
+            this.calendarYears.push(`${i} - ${i + 1}`);
+        }
+
         this.getDepartments();
         
-        this.departmentFormControl.valueChanges.subscribe((departmentId) => {
+        this.routineForm.get("department").valueChanges.subscribe((departmentId) => {
             this.genes = [];
-            this.syllabusFormControl.setValue('');
+            this.routineForm.get("syllabus").setValue('');
             this.getSyllabuses(Number(departmentId));
         });
 
-        this.syllabusFormControl.valueChanges.subscribe((syllabusId) => {
+        this.routineForm.get("syllabus").valueChanges.subscribe((syllabusId) => {
             if (!syllabusId) return;
 
             console.log(syllabusId);
@@ -97,11 +112,12 @@ export class ClassRoutineFormComponent {
     }
 
     onSubmit() {
+        var formValues = this.routineForm.value;
         var data = {
-            "syllabus_id": this.syllabusFormControl.value,
-            "title": "Sample routine",
-            "description": "Sample description",
-            "calendar_year": "2025",
+            "syllabus_id": formValues.syllabus,
+            "title": formValues.title,
+            "description": formValues.description,
+            "calendar_year": formValues.calendar_year,
             "is_active": true,
             "routine": JSON.stringify({ routine: this.genes })
         }
@@ -113,6 +129,8 @@ export class ClassRoutineFormComponent {
                     horizontalPosition: 'center',
                     verticalPosition: 'bottom'
                 });
+
+                this._router.navigate(['/routine/class/list']).then(() => {});
             },
             error: (error) => {
                 this._snackBar.open('Failed: ' + error.message, 'Close', {

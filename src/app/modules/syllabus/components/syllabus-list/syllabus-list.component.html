@@ -48,10 +48,20 @@
                     <div class="grid">
                         <!-- Header -->
                         <div
-                            class="inventory-grid z-10 sticky top-0 grid grid-cols-3 gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                            class="inventory-grid z-10 sticky top-0 grid grid-cols-4 gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                             matSort
                             matSortDisableClear>
-                            <div [mat-sort-header]="'syllabusName'">Name</div>
+                            <div [mat-sort-header]="'syllabusTitle'">Title</div>
+                            <div
+                                class="hidden sm:block"
+                                [mat-sort-header]="'syllabusCalendarYear'">
+                                Calendar Year
+                            </div>
+                            <div
+                                class="hidden sm:block"
+                                [mat-sort-header]="'syllabusStatus'">
+                                Status
+                            </div>
                             <div>
                                 Action
                             </div>
@@ -60,14 +70,20 @@
                         <ng-container *ngIf="syllabuses as syllabuses">
                             <ng-container *ngFor="let syllabus of syllabuses; trackBy: trackByFn">
                                 <div
-                                    class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b">
+                                    class="inventory-grid grid grid-cols-4 items-center gap-4 py-3 px-6 md:px-8 border-b">
 
-
-                                    <!-- Name -->
                                     <div class="truncate">
                                         <a [routerLink]="['/syllabus', syllabus.id, 'view']" class="text-blue-500 hover:underline">
-                                            {{ syllabus.syllabus.department_name }}
+                                            {{ syllabus.title }}
                                         </a>
+                                    </div>
+
+                                    <div class="truncate">
+                                        {{ syllabus.calendar_year }}
+                                    </div>
+
+                                    <div class="truncate">
+                                        {{ syllabus.is_active ? 'Active' : 'Inactive' }}
                                     </div>
 
                                     <div>

@@ -29,4 +29,10 @@ export class SyllabusService {
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
+
+    uploadSyllabus(payload: any, formData: FormData): Observable<Response<SyllabusData>> {
+        return this.http.post<Response<SyllabusData>>(
+            `${this.baseUrl}/upload?title=${payload.title}&description=${payload.description}&calendar_year=${payload.calendar_year}&is_active=true`,
+             formData);
+    }
 }

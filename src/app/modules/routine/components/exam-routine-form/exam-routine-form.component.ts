@@ -27,6 +27,7 @@ export class ExamRoutineFormComponent implements OnInit {
     syllabuses: any[] = [];
     courses: Course[] = [];
     teachers: Teacher[] = [];
+    calendarYears: string[] = [];
 
     constructor(
         private readonly fb: FormBuilder,
@@ -44,11 +45,15 @@ export class ExamRoutineFormComponent implements OnInit {
             department: this.fb.control('', Validators.required),
             syllabus: this.fb.control('', Validators.required),
             title: this.fb.control('', Validators.required),
-            description: this.fb.control(''),
             calendar_year: this.fb.control('', Validators.required),
+            description: this.fb.control(''),
             routineEntries: this.fb.array([])
         });
         this.addEntry();
+
+        for(let i = 2023; i <= 2050; i++) {
+            this.calendarYears.push(`${i} - ${i + 1}`);
+        }
 
         this.getDepartments();
         
@@ -106,8 +111,6 @@ export class ExamRoutineFormComponent implements OnInit {
     }
 
     onSubmit() {
-        console.log(this.routineForm.value);
-
         var routineRows = [];
         this.routineForm.value["routineEntries"].forEach((element, index) => {
             var examRoutineRow = new ExamRoutineRow();
@@ -138,13 +141,11 @@ export class ExamRoutineFormComponent implements OnInit {
             routineRows.push(examRoutineRow);
         });
 
-        console.log(JSON.stringify(routineRows));
-        
         var examRoutine = new ExamRoutine();
         examRoutine.syllabus_id = this.routineForm.value.syllabus;
         examRoutine.title = this.routineForm.value.title;
         examRoutine.description = this.routineForm.value.description;
-        examRoutine.calendar_year = "2023";
+        examRoutine.calendar_year = this.routineForm.value.calendar_year;
         examRoutine.is_active = true;
         examRoutine.exam_routine = JSON.stringify({routine: routineRows});
 
@@ -155,6 +156,8 @@ export class ExamRoutineFormComponent implements OnInit {
                     horizontalPosition: 'center',
                     verticalPosition: 'bottom'
                 });
+
+                this._router.navigate(['/routine/exam/list']).then(() => {});
             },
             error: (error) => {
                 this._snackBar.open('Failed: ' + error.message, 'Close', {

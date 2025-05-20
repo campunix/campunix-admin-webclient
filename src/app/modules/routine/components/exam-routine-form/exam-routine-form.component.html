@@ -37,7 +37,7 @@
                             matInput
                             formControlName="syllabus">
                             @for (syllabus of syllabuses; track syllabus) {
-                                <mat-option [value]="syllabus.id">{{syllabus.syllabus.department_name}}({{syllabus.syllabus.department_code}})</mat-option>
+                                <mat-option [value]="syllabus.id">{{syllabus.title}} ({{syllabus.calendar_year}})</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
@@ -51,6 +51,17 @@
                         <mat-error *ngIf="routineForm.get('title').hasError('required')">
                             Required
                         </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                        <mat-label>Calendar Year</mat-label>
+                        <mat-select
+                            matInput
+                            formControlName="calendar_year">
+                            @for (item of calendarYears; track item) {
+                                <mat-option [value]="item">{{item}}</mat-option>
+                            }
+                        </mat-select>
                     </mat-form-field>
 
                     <table class="min-w-full divide-y border mt-6">
@@ -134,7 +145,7 @@
                         <textarea
                             matInput
                             formControlName="description"
-                            [required]="true" rows="5"></textarea>
+                            rows="5"></textarea>
                         <mat-label>Description</mat-label>
                         <mat-error *ngIf="routineForm.get('description').hasError('required')">
                             Required
