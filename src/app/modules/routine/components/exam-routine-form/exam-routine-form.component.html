@@ -71,7 +71,6 @@
                                 <th class="px-4 py-3 text-left">Course</th>
                                 <th class="px-4 py-3 text-left">Teacher</th>
                                 <th class="px-4 py-3 text-left">Time Slot</th>
-                                <th class="px-4 py-3 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y" formArrayName="routineEntries">
@@ -123,7 +122,7 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </td>
-                                <td class="px-4 py-2">
+                                <td *ngIf="routineEntries.length > 1" class="px-4 py-2">
                                     <button type="button" mat-icon-button color="warn" (click)="removeEntry(i)">
                                         <mat-icon>delete</mat-icon>
                                     </button>
@@ -153,7 +152,7 @@
                     </mat-form-field>
 
                     <div class="flex items-center justify-end mt-4">
-                        <button type="submit" mat-raised-button color="primary">
+                        <button type="submit" mat-raised-button color="primary" [disabled]="routineForm.invalid">
                             Submit
                         </button>
                     </div>

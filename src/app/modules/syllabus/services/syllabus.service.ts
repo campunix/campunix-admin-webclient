@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from 'environments/environment';
 import { SyllabusData } from 'app/models/syllabus_data';
-import {PaginatedResponse, Response} from "app/models/response";
+import {ListResponse, PaginatedResponse, Response} from "app/models/response";
+import { Course } from 'app/models/course';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +25,10 @@ export class SyllabusService {
 
     getAllSyllabuses(departmentId: number): Observable<Response<PaginatedResponse<SyllabusData>>> {
         return this.http.get<Response<PaginatedResponse<SyllabusData>>>(`${this.baseUrl}?departyment_id=${departmentId}`);
+    }
+
+    getSyllabusCourses(syllabusId: Number): Observable<Response<ListResponse<Course>>> {
+        return this.http.get<Response<ListResponse<Course>>>(`${this.baseUrl}/${syllabusId}/course_list`);
     }
 
     delete(id: number): Observable<void> {

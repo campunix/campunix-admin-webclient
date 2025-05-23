@@ -21,7 +21,13 @@ export class ExamRoutineFormComponent implements OnInit {
     routineForm: FormGroup;
     
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-    timeSlots = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM'];
+    timeSlots: string[] = [
+        "10:00 - 11:00",
+        "11:00 - 12:00",
+        "12:00 - 1:00",
+        "2:00 - 3:00",
+        "3:00 - 4:00",
+    ];
     selectedTeachers: { [key: number]: string[] } = {};
     departments: Department[] = [];
     syllabuses: any[] = [];
@@ -60,12 +66,12 @@ export class ExamRoutineFormComponent implements OnInit {
         this.routineForm.get('department').valueChanges.subscribe((departmentId) => {
             this.routineForm.get('syllabus').setValue('');
             this.getSyllabuses(Number(departmentId));
+            this.loadTeachers();
         });
 
         this.routineForm.get('syllabus').valueChanges.subscribe((syllabusId) => {
             if (!syllabusId) return;
             this.loadCourses();
-            this.loadTeachers();
         });
     }
 
@@ -75,21 +81,32 @@ export class ExamRoutineFormComponent implements OnInit {
 
     addEntry() {
         const entry = this.fb.group({
-            index: [this.routineEntries.length],
             date: ['', Validators.required],
             course: ['', Validators.required],
-            teacher: ['', Validators.required],
+            teacher: [''],
             timeSlot: ['', Validators.required],
         });
         this.routineEntries.push(entry);
 
         entry.get('course').valueChanges.subscribe((course) => {
-            var index = Number(entry.get('index').value);
-            console.log(index);
+            const index = this.routineEntries.controls.findIndex(ctrl => ctrl === entry);
+
+            this.selectedTeachers[index] = [];
+            course["course_teachers"] ??= [];
+            course["course_teachers"].forEach((teacher: any) => {
+                if (!this.selectedTeachers[index].includes(teacher)) {
+                    this.selectedTeachers[index].push(teacher);
+                }
+            });
         });
     }
 
     removeEntry(index: number) {
+        var totalEntries = this.routineEntries.length;
+        for (let i = index; i < totalEntries-1; i++) {
+            this.selectedTeachers[i] = this.selectedTeachers[i + 1];
+        }
+        this.selectedTeachers[totalEntries - 1] = [];
         this.routineEntries.removeAt(index);
     }
 
@@ -97,15 +114,14 @@ export class ExamRoutineFormComponent implements OnInit {
         const teacherControl = this.routineEntries.at(index).get('teacher');
         const selectedTeacher = teacherControl.value;
         
-        if (selectedTeacher) {
-            if (!this.selectedTeachers[index]) {
-                this.selectedTeachers[index] = [];
-            }
-            
-            if (!this.selectedTeachers[index].includes(selectedTeacher)) {
-                this.selectedTeachers[index].push(selectedTeacher);
-                teacherControl.setValue(''); // Clear the select after adding
-            }
+        if (!selectedTeacher) {
+            return;
+        }
+
+        this.selectedTeachers[index] ??= [];
+        if (!this.selectedTeachers[index].find((x: any) => x.id === selectedTeacher.id)) {
+            this.selectedTeachers[index].push(selectedTeacher);
+            teacherControl.setValue('');
         }
     }
 
@@ -176,7 +192,8 @@ export class ExamRoutineFormComponent implements OnInit {
     }
 
     private getDepartments() {
-        this._deptService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
+        this._deptService.getAll()
+        .subscribe((response: Response<ListResponse<Department>>) => {
             this.departments = response.data.items ?? [];
         });
     }
@@ -190,19 +207,27 @@ export class ExamRoutineFormComponent implements OnInit {
             });
         }
 
+    // loadCourses(syllabus_id: Number) {
+    //     this._syllabusService
+    //         .getSyllabusCourses(syllabus_id)
+    //         .subscribe((response: any) => {
+    //             this.courses = (response.data ?? []).map((item: any) => {
+    //                 return item.course;
+    //             });
+    //         });
+    // }
+
     loadCourses(searchQuery: string = '') {
         const page = 1;
         const pageSize = 100;
 
         this._courseService
             .getAllPaginated(page, pageSize, searchQuery)
-            .subscribe({
-                next: (response) => {
-                    if (response?.status && response?.data) {
-                        this.courses = response.data.items ?? [];
-                    } else {
-                        this.courses = [];
-                    }
+            .subscribe((response) => {
+                if (response?.status && response?.data) {
+                    this.courses = response.data.items ?? [];
+                } else {
+                    this.courses = [];
                 }
             });
     }
@@ -223,6 +248,7 @@ export class ExamRoutineFormComponent implements OnInit {
                 }
             });
     }
+
 }
 
 class ExamRoutineRow 
