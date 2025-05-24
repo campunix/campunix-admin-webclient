@@ -98,8 +98,11 @@ export class ClassRoutineListComponent implements OnInit {
     }
 
     createRoutine() {
-        this.router.navigate(['/routine/class/create']).then(() => {
-        });
+        this.router.navigate(['/routine/class/create']).then(() => {});
+    }
+
+    viewRoutine() {
+        this.router.navigate(['/routine/class/view']).then(() => {});
     }
 
     deleteRoutine(id: number) {

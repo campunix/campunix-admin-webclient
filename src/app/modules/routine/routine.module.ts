@@ -16,7 +16,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepickerModule} from '@angular/material/datepicker'
-import { RoutineViewComponent } from './components/routine-view/routine-view.component';
+import { ClassRoutineViewComponent } from './components/routine-view/class-routine-view.component';
 import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
 import { ExamRoutineFormComponent } from './components/exam-routine-form/exam-routine-form.component';
 import { ClassRoutineFormComponent } from './components/class-routine-form/class-routine-form.component';
@@ -27,7 +27,7 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
     declarations: [
         ClassRoutineFormComponent,
         ClassRoutineListComponent,
-        RoutineViewComponent,
+        ClassRoutineViewComponent,
         RoutineCellComponent,
         ExamRoutineFormComponent,
         ExamRoutineListComponent
@@ -63,24 +63,34 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
                 redirectTo: 'class/list'
             },
             {
-                path: 'view',
-                component: RoutineViewComponent
+                path: 'class',
+                children: [
+                    {
+                        path: 'list',
+                        component: ClassRoutineListComponent
+                    },
+                    {
+                        path: 'create',
+                        component: ClassRoutineFormComponent
+                    },
+                    {
+                        path: 'view',
+                        component: ClassRoutineViewComponent
+                    },
+                ]
             },
             {
-                path: 'class/list',
-                component: ClassRoutineListComponent
-            },
-            {
-                path: 'class/create',
-                component: ClassRoutineFormComponent
-            },
-            {
-                path: 'exam/list',
-                component: ExamRoutineListComponent
-            },
-            {
-                path: 'exam/create',
-                component: ExamRoutineFormComponent
+                path: 'exam',
+                children: [
+                    {
+                        path: 'list',
+                        component: ExamRoutineListComponent
+                    },
+                    {
+                        path: 'create',
+                        component: ExamRoutineFormComponent
+                    }
+                ]
             }
         ]),
         MatMenuModule,

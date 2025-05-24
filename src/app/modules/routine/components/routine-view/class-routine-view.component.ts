@@ -3,11 +3,11 @@ import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-routine-view',
-    templateUrl: './routine-view.component.html',
-    styleUrl: './routine-view.component.scss'
+    selector: 'app-class-routine-view',
+    templateUrl: './class-routine-view.component.html',
+    styleUrl: './class-routine-view.component.scss'
 })
-export class RoutineViewComponent {
+export class ClassRoutineViewComponent {
 
     isLoading: boolean = false;
 
@@ -51,34 +51,6 @@ export class RoutineViewComponent {
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];
             this.isLoading = false;
-        });
-    }
-
-    onSubmit() {
-        var data = {
-            "syllabus_id": 1,
-            "title": "string",
-            "description": "string",
-            "calendar_year": "string",
-            "is_active": false,
-            "routine": this.genes
-        }
-
-        this._routineService.createClassRoutine(data).subscribe({
-            next: () => {
-                this._snackBar.open('Class routine created successfully', 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'bottom'
-                });
-            },
-            error: (error) => {
-                this._snackBar.open('Failed: ' + error.message, 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'bottom'
-                });
-            }
         });
     }
 }
