@@ -111,7 +111,7 @@
                                 class="ml-2"
                                 mat-flat-button
                                 [color]="'primary'"
-                                [disabled]="isLoading"
+                                [disabled]="isLoading || routineForm.invalid"
                                 (click)="onSubmit()">
                                 Submit
                             </button>
