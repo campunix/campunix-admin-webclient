@@ -20,13 +20,9 @@ import { ListResponse, Response } from 'app/models/response';
 export class ExamRoutineFormComponent implements OnInit {
     routineForm: FormGroup;
     
-    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
     timeSlots: string[] = [
-        "10:00 - 11:00",
-        "11:00 - 12:00",
-        "12:00 - 1:00",
-        "2:00 - 3:00",
-        "3:00 - 4:00",
+        "10:00 AM - 1:00 PM",
+        "2:00 PM - 5:00 PM",
     ];
     selectedTeachers: { [key: number]: string[] } = {};
     departments: Department[] = [];
@@ -51,7 +47,6 @@ export class ExamRoutineFormComponent implements OnInit {
             department: this.fb.control('', Validators.required),
             syllabus: this.fb.control('', Validators.required),
             title: this.fb.control('', Validators.required),
-            calendar_year: this.fb.control('', Validators.required),
             description: this.fb.control(''),
             routineEntries: this.fb.array([])
         });
@@ -163,11 +158,12 @@ export class ExamRoutineFormComponent implements OnInit {
             routineRows.push(examRoutineRow);
         });
 
+        var formValues = this.routineForm.value;
         var examRoutine = new ExamRoutine();
-        examRoutine.syllabus_id = this.routineForm.value.syllabus;
-        examRoutine.title = this.routineForm.value.title;
-        examRoutine.description = this.routineForm.value.description;
-        examRoutine.calendar_year = this.routineForm.value.calendar_year;
+        examRoutine.syllabus_id = formValues.syllabus.id;
+        examRoutine.calendar_year = formValues.syllabus.calendar_year;
+        examRoutine.title = formValues.title;
+        examRoutine.description = formValues.description;
         examRoutine.is_active = true;
         examRoutine.exam_routine = JSON.stringify({routine: routineRows});
 

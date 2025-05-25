@@ -25,12 +25,7 @@ export class ClassRoutineFormComponent {
         "Thursday",
     ];
 
-    semesters: string[] = [
-        "1-1",
-        "2-1",
-        "3-1",
-        "4-1",
-    ];
+    semesters: string[] = [];
 
     slots: string[] = [
         "10:00 - 11:00",
@@ -62,7 +57,6 @@ export class ClassRoutineFormComponent {
             department: this.fb.control('', Validators.required),
             syllabus: this.fb.control('', Validators.required),
             title: this.fb.control('', Validators.required),
-            calendar_year: this.fb.control('', Validators.required),
             description: this.fb.control(''),
         });
 
@@ -78,11 +72,11 @@ export class ClassRoutineFormComponent {
             this.getSyllabuses(Number(departmentId));
         });
 
-        this.routineForm.get("syllabus").valueChanges.subscribe((syllabusId) => {
-            if (!syllabusId) return;
+        this.routineForm.get("syllabus").valueChanges.subscribe((syllabus: any) => {
+            if (!syllabus) return;
 
-            console.log(syllabusId);
-            this.loadRoutine(Number(syllabusId));
+            console.log(syllabus.id);
+            this.loadRoutine(Number(syllabus.id));
         });
     }
 
@@ -104,7 +98,6 @@ export class ClassRoutineFormComponent {
     private loadRoutine(syllabusId: number) {
         this.isLoading = true;
         this._routineService.getRoutine(syllabusId).subscribe((response: any) => {
-            console.log(response);
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];
             this.isLoading = false;
@@ -114,12 +107,12 @@ export class ClassRoutineFormComponent {
     onSubmit() {
         var formValues = this.routineForm.value;
         var data = {
-            "syllabus_id": formValues.syllabus,
+            "syllabus_id": formValues.syllabus.id,
+            "calendar_year": formValues.syllabus.calendar_year,
             "title": formValues.title,
             "description": formValues.description,
-            "calendar_year": formValues.calendar_year,
             "is_active": true,
-            "routine": JSON.stringify({ routine: this.genes })
+            "routine": JSON.stringify({ genes: this.genes })
         }
 
         this._routineService.createClassRoutine(data).subscribe({

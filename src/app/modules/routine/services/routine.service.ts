@@ -17,6 +17,11 @@ export class RoutineService {
         let url = `${this.apiBaseUrl}/routines/generate`;
         return this.http.post<any>(url, { syllabus_id: syllabusId, total_slots: 5 });
     }
+
+    getRoutineById(id: number): Observable<Response<ClassRoutine>> {
+        let url = `${this.apiBaseUrl}/routines/${id}`;
+        return this.http.get<Response<ClassRoutine>>(url);
+    }
     
     createClassRoutine(data: any): any {
         let url = `${this.apiBaseUrl}/routines`;

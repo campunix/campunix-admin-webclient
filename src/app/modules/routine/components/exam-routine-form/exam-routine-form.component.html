@@ -6,10 +6,10 @@
             <div class="-ml-4 sm:mt-8">
                 <a
                     mat-button
-                    [routerLink]="['/rooms/list']"
+                    [routerLink]="['/routine/exam/list']"
                     [color]="'primary'">
                     <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
-                    <span class="ml-2">Back to Department</span>
+                    <span class="ml-2">Back to exam routines</span>
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
@@ -37,7 +37,7 @@
                             matInput
                             formControlName="syllabus">
                             @for (syllabus of syllabuses; track syllabus) {
-                                <mat-option [value]="syllabus.id">{{syllabus.title}} ({{syllabus.calendar_year}})</mat-option>
+                                <mat-option [value]="syllabus">{{syllabus.title}} ({{syllabus.calendar_year}})</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
@@ -51,17 +51,6 @@
                         <mat-error *ngIf="routineForm.get('title').hasError('required')">
                             Required
                         </mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                        <mat-label>Calendar Year</mat-label>
-                        <mat-select
-                            matInput
-                            formControlName="calendar_year">
-                            @for (item of calendarYears; track item) {
-                                <mat-option [value]="item">{{item}}</mat-option>
-                            }
-                        </mat-select>
                     </mat-form-field>
 
                     <table class="min-w-full divide-y border mt-6">

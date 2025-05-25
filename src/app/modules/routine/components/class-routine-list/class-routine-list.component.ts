@@ -101,8 +101,8 @@ export class ClassRoutineListComponent implements OnInit {
         this.router.navigate(['/routine/class/create']).then(() => {});
     }
 
-    viewRoutine() {
-        this.router.navigate(['/routine/class/view']).then(() => {});
+    viewRoutine(routineId: number) {
+        this.router.navigate([`/routine/class/${routineId}/view`]).then(() => {});
     }
 
     deleteRoutine(id: number) {
