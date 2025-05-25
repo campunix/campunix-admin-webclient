@@ -104,30 +104,30 @@ export class SyllabusListComponent implements OnInit {
         });
     }
 
-    // deleteSyllabus(id: number) {
-    //     this.syllabusService.delete(id).subscribe({
-    //         next: () => {
-    //             this.syllabuses = this.syllabuses.filter(it => it.id !== id);
-    //             if (this.syllabuses.length === 0 && this.pagination.currentPage > 0) {
-    //                 this.pagination.currentPage--;
-    //                 this.loadSyllabuses();
-    //             }
+    deleteSyllabus(id: number) {
+        this.syllabusService.delete(id).subscribe({
+            next: () => {
+                this.syllabuses = this.syllabuses.filter(it => it.id !== id);
+                if (this.syllabuses.length === 0 && this.pagination.currentPage > 0) {
+                    this.pagination.currentPage--;
+                    this.loadSyllabuses();
+                }
 
-    //             this._snackBar.open('Syllabus deleted', 'Close', {
-    //                 duration: 3000,
-    //                 horizontalPosition: 'center',
-    //                 verticalPosition: 'bottom'
-    //             });
-    //         },
-    //         error: (error) => {
-    //             this._snackBar.open('Failed: ' + error.message, 'Close', {
-    //                 duration: 3000,
-    //                 horizontalPosition: 'center',
-    //                 verticalPosition: 'bottom'
-    //             });
-    //         }
-    //     });
-    // }
+                this._snackBar.open('Syllabus deleted', 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            },
+            error: (error) => {
+                this._snackBar.open('Failed: ' + error.message, 'Close', {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom'
+                });
+            }
+        });
+    }
 
     trackByFn(index: number, item: any): any {
         return item.syllabusID || index;
