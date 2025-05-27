@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {TeachersService} from '../../services/teachers.service';
 import {fuseAnimations} from '../../../../../../@fuse/animations';
 import {Pagination} from '../../../../../models/pagination';
@@ -29,6 +29,7 @@ export class TeachersComponent implements OnInit {
     constructor(
         private teachersService: TeachersService,
         private router: Router,
+        private route: ActivatedRoute,
         private _snackBar: MatSnackBar
     ) {
         this.isLoading = true;
@@ -79,6 +80,10 @@ export class TeachersComponent implements OnInit {
     createTeacher() {
         this.router.navigate(['/teachers/create']).then(() => {
         });
+    }
+
+    editTeacher(id: number) {
+        this.router.navigate(['/teachers/edit', id], { relativeTo: this.route }).then(() => {});
     }
 
     deleteTeacher(id: number) {
