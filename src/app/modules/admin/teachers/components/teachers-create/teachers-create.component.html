@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
-                Create Teacher
+                {{ isEditMode ? 'Edit Teacher' : 'Create Teacher' }}
             </div>
             <!-- Form -->
             <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
@@ -46,7 +46,8 @@
                         <mat-label>User</mat-label>
                         <mat-select
                             [formControlName]="'user_id'"
-                            [required]="true">
+                            [required]="true"
+                            [disabled]="isEditMode">
                             @for (user of users; track user) {
                                 <mat-option [value]="user.id">{{user.full_name}}</mat-option>
                             }
@@ -96,8 +97,8 @@
                             mat-flat-button
                             [color]="'primary'"
                             [disabled]="teacherForm.pristine || teacherForm.invalid"
-                            (click)="createTeacher()">
-                            Submit
+                            (click)="isEditMode ? updateTeacher() : createTeacher()">
+                            {{ isEditMode ? 'Update' : 'Submit' }}
                         </button>
                     </div>
                 </form>

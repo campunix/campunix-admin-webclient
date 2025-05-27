@@ -29,7 +29,6 @@ import {RoomsCreateComponent} from "./components/rooms-create/rooms-create.compo
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-        FormsModule,
         ReactiveFormsModule,
         MatButtonModule,
         MatSortModule,
@@ -56,6 +55,10 @@ import {RoomsCreateComponent} from "./components/rooms-create/rooms-create.compo
             },
             {
                 path: 'create',
+                component: RoomsCreateComponent
+            },
+            {
+                path: 'edit/:id',
                 component: RoomsCreateComponent
             }
         ]),

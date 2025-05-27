@@ -17,6 +17,7 @@ import {MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatMenuModule} from "@angular/material/menu";
 import {FuseAlertComponent} from "../../../../@fuse/components/alert";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -57,10 +58,15 @@ import {FuseAlertComponent} from "../../../../@fuse/components/alert";
             {
                 path: 'create',
                 component: DepartmentsCreateComponent
+            },
+            {
+                path: 'edit/:id',
+                component: DepartmentsCreateComponent
             }
         ]),
         MatMenuModule,
-        FuseAlertComponent
+        FuseAlertComponent,
+        MatTooltipModule
     ]
 })
 export class DepartmentsModule {

@@ -18,7 +18,6 @@ import {FuseAlertComponent} from "../../../../@fuse/components/alert";
 import {PreferenceCreateComponent} from "./components/preference-create/preference-create.component";
 import {PreferenceComponent} from "./components/preference-list/preference.component";
 
-
 @NgModule({
     declarations: [PreferenceComponent, PreferenceCreateComponent],
     imports: [
@@ -56,6 +55,10 @@ import {PreferenceComponent} from "./components/preference-list/preference.compo
             },
             {
                 path: 'create',
+                component: PreferenceCreateComponent
+            },
+            {
+                path: 'edit/:id',
                 component: PreferenceCreateComponent
             }
         ]),

@@ -5,7 +5,7 @@
         class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
         <!-- Loader -->
         <div
-            class="absolute inset-x-0 bottom-0" *ngIf="isLoading">>
+            class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
@@ -26,7 +26,7 @@
                     [autocomplete]="'off'"
                     [placeholder]="'Search departments'">
             </mat-form-field>
-            <!-- Add product button -->
+            <!-- Add department button -->
             <button
                 class="ml-4"
                 mat-flat-button
@@ -41,7 +41,7 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
 
-        <!-- Products list -->
+        <!-- Departments list -->
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
             <ng-container *ngIf="departments as departments">
                 <ng-container *ngIf="departments.length > 0 && !isLoading; else noDepartments">
@@ -67,10 +67,11 @@
                                 <div
                                     class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b">
 
-
-                                    <!-- Name -->
+                                    <!-- Name (clickable for edit) -->
                                     <div class="truncate">
-                                        {{ department.name }}
+                                        <a [routerLink]="['/departments/edit', department.id]" class="hover:underline text-primary">
+                                            {{ department.name }}
+                                        </a>
                                     </div>
 
                                     <!-- Code -->
@@ -79,7 +80,17 @@
                                     </div>
 
                                     <div>
-                                        <button (click)="deleteDepartment(department.id)" mat-icon-button>
+                                        <button
+                                            (click)="editDepartment(department.id)"
+                                            mat-icon-button
+                                            [matTooltip]="'Edit'"
+                                            class="mr-2">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <button
+                                            (click)="deleteDepartment(department.id)"
+                                            mat-icon-button
+                                            [matTooltip]="'Delete'">
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </div>

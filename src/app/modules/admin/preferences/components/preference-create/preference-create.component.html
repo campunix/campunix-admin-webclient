@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
-                Create Preferences
+                {{ isEditMode ? 'Edit Preference' : 'Create Preferences' }}
             </div>
             <!-- Form -->
             <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
@@ -35,7 +35,7 @@
                         <mat-select
                             [formControlName]="'department_id'"
                             [required]="true"
-                            (selectionChange)="getAllTeachers($event.value); getAllTeachers($event.value)">
+                            (selectionChange)="getAllTeachers($event.value)">
                             @for (dept of departments; track dept) {
                                 <mat-option [value]="dept.id">{{ dept.name }}</mat-option>
                             }
@@ -97,12 +97,22 @@
                             Clear
                         </button>
                         <button
+                            *ngIf="!isEditMode"
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
                             [disabled]="preferenceForm.pristine || preferenceForm.invalid"
                             (click)="createPreference()">
                             Submit
+                        </button>
+                        <button
+                            *ngIf="isEditMode"
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="preferenceForm.pristine || preferenceForm.invalid"
+                            (click)="updatePreference()">
+                            Update
                         </button>
                     </div>
                 </form>

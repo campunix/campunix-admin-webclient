@@ -65,8 +65,6 @@
                         <ng-container *ngIf="rooms as rooms">
                             <ng-container *ngFor="let room of rooms; trackBy: trackByFn">
                                 <div class="inventory-grid grid grid-cols-3 items-center gap-4 py-3 px-6 md:px-8 border-b w-full">
-
-
                                     <!-- Name -->
                                     <div class="truncate">
                                         {{ room.name }}
@@ -77,14 +75,15 @@
                                         {{ room.code }}
                                     </div>
 
-                                    <div>
+                                    <div class="flex items-center gap-2">
+                                        <button (click)="editRoom(room.id)" mat-icon-button>
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
                                         <button (click)="deleteRoom(room.id)" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </div>
-
                                 </div>
-
                             </ng-container>
                         </ng-container>
                     </div>

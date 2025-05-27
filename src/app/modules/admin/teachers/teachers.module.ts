@@ -18,6 +18,7 @@ import { FuseAlertComponent } from '../../../../@fuse/components/alert';
 import { TeachersComponent } from './components/teacher-list/teachers.component';
 import { TeachersCreateComponent } from './components/teachers-create/teachers-create.component';
 import {TeacherDetailComponent} from "./components/teacher-detail/teacher-detail.component";
+import {DepartmentsCreateComponent} from "../departments/components/departments-create/departments-create.component";
 
 @NgModule({
     declarations: [TeachersComponent, TeachersCreateComponent, TeacherDetailComponent],
@@ -56,6 +57,10 @@ import {TeacherDetailComponent} from "./components/teacher-detail/teacher-detail
             {
                 path: 'detail/:id',
                 component: TeacherDetailComponent
+            },
+            {
+                path: 'edit/:id',
+                component: TeachersCreateComponent
             }
         ])
     ]

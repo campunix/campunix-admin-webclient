@@ -84,14 +84,15 @@
                                         {{ teacher.status }}
                                     </div>
 
-                                    <div>
+                                    <div class="flex items-center gap-2">
+                                        <button (click)="editTeacher(teacher.id)" mat-icon-button>
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
                                         <button (click)="deleteTeacher(teacher.id)" mat-icon-button>
                                             <mat-icon>delete</mat-icon>
                                         </button>
                                     </div>
-
                                 </div>
-
                             </ng-container>
                         </ng-container>
                     </div>

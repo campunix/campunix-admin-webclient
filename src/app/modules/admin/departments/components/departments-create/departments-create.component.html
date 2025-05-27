@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
-                Create Departments
+                {{ isEditMode ? 'Edit Department' : 'Create Departments' }}
             </div>
             <!-- Form -->
             <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
@@ -28,7 +28,7 @@
                 <form
                     class="space-y-3"
                     [formGroup]="departmentForm"
-                    #supportNgForm="ngForm">
+                    #departmentNgForm="ngForm">
                     <!-- Name -->
                     <mat-form-field class="w-full">
                         <input
@@ -40,7 +40,7 @@
                             Required
                         </mat-error>
                     </mat-form-field>
-                    <!-- Email -->
+                    <!-- Code -->
                     <mat-form-field class="w-full">
                         <input
                             matInput
@@ -81,8 +81,8 @@
                             mat-flat-button
                             [color]="'primary'"
                             [disabled]="departmentForm.pristine || departmentForm.invalid"
-                            (click)="createDepartment()">
-                            Submit
+                            (click)="saveDepartment()">
+                            {{ isEditMode ? 'Update' : 'Submit' }}
                         </button>
                     </div>
                 </form>

@@ -3,7 +3,7 @@ import {PaginatedResponse, Response} from "../../../../../models/response";
 import {fuseAnimations} from "../../../../../../@fuse/animations";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Pagination} from "../../../../../models/pagination";
 import {Room} from "../../../../../models/room";
@@ -49,7 +49,12 @@ export class RoomsComponent implements OnInit {
         totalItems: 0
     };
 
-    constructor(private roomsService: RoomsService, private router: Router, private _snackBar: MatSnackBar) {
+    constructor(
+        private roomsService: RoomsService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private _snackBar: MatSnackBar
+    ) {
         this.isLoading = true;
     }
 
@@ -96,8 +101,11 @@ export class RoomsComponent implements OnInit {
     }
 
     createRoom() {
-        this.router.navigate(['/rooms/create']).then(() => {
-        });
+        this.router.navigate(['/rooms/create']).then(() => {});
+    }
+
+    editRoom(id: number) {
+        this.router.navigate(['/rooms/edit', id], { relativeTo: this.route }).then(() => {});
     }
 
     deleteRoom(id: number) {
