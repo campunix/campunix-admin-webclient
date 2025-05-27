@@ -108,6 +108,11 @@ export class DepartmentsComponent implements OnInit {
         });
     }
 
+    editDepartment(id: number) {
+        this.router.navigate(['/departments/edit', id]).then(() => {
+        });
+    }
+
     deleteDepartment(id: number) {
         this.departmentService.delete(id).subscribe({
             next: () => {
