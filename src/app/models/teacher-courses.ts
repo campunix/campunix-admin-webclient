@@ -1,5 +1,4 @@
 import {Teacher} from "./teacher";
-import {Course} from "./course";
 
 export interface TeacherCourseIn {
     course_id: number;
@@ -8,6 +7,12 @@ export interface TeacherCourseIn {
 
 export interface TeacherCourses {
     id: number;
-    teacher: Teacher;
-    course: Course;
+    course: CourseDetails;
+}
+
+export interface CourseDetails {
+    id: number;
+    title: string;
+    code: string;
+    course_teachers: Teacher[]
 }
