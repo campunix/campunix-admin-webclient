@@ -98,6 +98,11 @@ export class PreferenceComponent implements OnInit {
         });
     }
 
+    editPreference(id: number) {
+        this.router.navigate(['/preferences/edit', id]).then(() => {
+        });
+    }
+
     deletePreference(id: number) {
         this.preferenceService.delete(id).subscribe({
             next: () => {
