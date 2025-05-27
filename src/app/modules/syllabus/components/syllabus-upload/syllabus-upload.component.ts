@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SyllabusService } from '../../services/syllabus.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-syllabus-upload',
@@ -19,7 +19,7 @@ export class SyllabusUploadComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _http: HttpClient,
+    private _router: Router,
     private _snackBar: MatSnackBar,
     private readonly _syllabusService: SyllabusService
   ) {}
@@ -75,6 +75,8 @@ export class SyllabusUploadComponent implements OnInit {
             horizontalPosition: 'center',
             verticalPosition: 'bottom'
           });
+
+          this._router.navigate(['/syllabus']).then(() => {});
         },
         error: (error) => {
           this.isUploading = false;
