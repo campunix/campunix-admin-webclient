@@ -1,0 +1,152 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-6xl">
+            <div class="-ml-4 sm:mt-8">
+                <a
+                    mat-button
+                    [routerLink]="['/routine/exam/list']"
+                    [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back to exam routines</span>
+                </a>
+            </div>
+            <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+                Create Exam Routine
+            </div>
+            <!-- Form -->
+            <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
+                
+                <form [formGroup]="routineForm" (ngSubmit)="onSubmit()">
+
+                    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Department</mat-label>
+                            <mat-select
+                                matInput
+                                formControlName="department">
+                                @for (dept of departments; track dept) {
+                                    <mat-option [value]="dept.id">{{dept.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+
+                    <mat-form-field class="w-full mt-4" [subscriptSizing]="'dynamic'">
+                        <mat-label>Syllabus</mat-label>
+                        <mat-select
+                            matInput
+                            formControlName="syllabus">
+                            @for (syllabus of syllabuses; track syllabus) {
+                                <mat-option [value]="syllabus">{{syllabus.title}} ({{syllabus.calendar_year}})</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full mt-4">
+                        <input
+                            matInput
+                            formControlName="title"
+                            [required]="true">
+                        <mat-label>Title</mat-label>
+                        <mat-error *ngIf="routineForm.get('title').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <table class="min-w-full divide-y border mt-6">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left">Date</th>
+                                <th class="px-4 py-3 text-left">Course</th>
+                                <th class="px-4 py-3 text-left">Teacher</th>
+                                <th class="px-4 py-3 text-left">Time Slot</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y" formArrayName="routineEntries">
+                            <tr *ngFor="let entry of routineEntries.controls; let i = index" [formGroupName]="i">
+                                <td class="px-4 py-2">
+                                    <mat-form-field class="w-full">
+                                        <input formControlName="date" matInput [matDatepicker]="picker">
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="course">
+                                            <mat-option *ngFor="let course of courses" [value]="course">
+                                                {{course.title}} ({{course.code}})
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <div class="flex items-center gap-2">
+                                        <mat-form-field class="w-full">
+                                            <mat-select formControlName="teacher">
+                                                <mat-option *ngFor="let teacher of teachers" [value]="teacher">
+                                                    {{teacher.full_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <button type="button" class="mb-4" mat-icon-button matSuffix color="primary" (click)="addTeacher(i)">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-2">
+                                        <mat-chip-list>
+                                            <mat-chip *ngFor="let teacher of selectedTeachers[i]" (removed)="removeTeacher(i, teacher)">
+                                                {{teacher.full_name.length > 20 ? (teacher.full_name.substring(0, 20) + "...") : teacher.full_name}}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-list>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <mat-form-field class="w-full">
+                                        <mat-select formControlName="timeSlot">
+                                            <mat-option *ngFor="let slot of timeSlots" [value]="slot">
+                                                {{slot}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                                <td *ngIf="routineEntries.length > 1" class="px-4 py-2">
+                                    <button type="button" mat-icon-button color="warn" (click)="removeEntry(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <div class="ml-4 mb-4">
+                                    <button type="button" mat-raised-button color="primary" (click)="addEntry()">
+                                        <mat-icon>add</mat-icon>
+                                        Add Row
+                                    </button>
+                                </div>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <mat-form-field class="w-full mt-4">
+                        <textarea
+                            matInput
+                            formControlName="description"
+                            rows="5"></textarea>
+                        <mat-label>Description</mat-label>
+                        <mat-error *ngIf="routineForm.get('description').hasError('required')">
+                            Required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="flex items-center justify-end mt-4">
+                        <button type="submit" mat-raised-button color="primary" [disabled]="routineForm.invalid">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
