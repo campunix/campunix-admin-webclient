@@ -3,6 +3,6 @@ export interface Preference {
     teacher_id: number;
     teacher_name: string;
     department_id?: number;
-    day: string;
-    slot_no: number;
+    day?: string;
+    slot_no?: number;
 }

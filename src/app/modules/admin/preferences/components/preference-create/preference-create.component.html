@@ -61,31 +61,26 @@
 
                     <mat-form-field class="w-full">
                         <mat-label>Day</mat-label>
-                        <mat-select
-                            [formControlName]="'day'"
-                            [required]="true">
+                        <mat-select [formControlName]="'day'">
                             @for (day of days; track day) {
                                 <mat-option [value]="day">{{ day }}</mat-option>
                             }
                         </mat-select>
-                        <mat-error *ngIf="preferenceForm.get('day').hasError('required')">
-                            Required
-                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="w-full">
                         <mat-label>Slot</mat-label>
-                        <mat-select
-                            [formControlName]="'slot_no'"
-                            [required]="true">
+                        <mat-select [formControlName]="'slot_no'">
                             @for (slot_no of slots; track slot_no) {
                                 <mat-option [value]="slot_no">{{ slot_no }}</mat-option>
                             }
                         </mat-select>
-                        <mat-error *ngIf="preferenceForm.get('slot_no').hasError('required')">
-                            Required
-                        </mat-error>
                     </mat-form-field>
+
+                    <!-- At least one selection error -->
+                    <div *ngIf="preferenceForm.hasError('atLeastOne') && (preferenceForm.dirty || preferenceForm.touched)">
+                        <mat-error>At least Day or Slot must be selected.</mat-error>
+                    </div>
 
                     <!-- Actions -->
                     <div class="flex items-center justify-end">

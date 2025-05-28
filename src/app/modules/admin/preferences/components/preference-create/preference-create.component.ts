@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ListResponse, Response} from "../../../../../models/response";
-import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {NgForm, UntypedFormBuilder, UntypedFormGroup, Validators, ValidationErrors, ValidatorFn, AbstractControl} from "@angular/forms";
 import {PreferenceService} from "../../services/preference.service";
 import {DepartmentsService} from "../../../departments/services/departments.service";
 import {Department} from "../../../../../models/department";
@@ -42,9 +42,9 @@ export class PreferenceCreateComponent implements OnInit {
         this.preferenceForm = this._formBuilder.group({
             department_id: ['', Validators.required],
             teacher_id: ['', Validators.required],
-            day: [[], Validators.required],
-            slot_no: [[], Validators.required]
-        });
+            day: [null],
+            slot_no: [null],
+        }, { validators: this.atLeastOneDayOrSlot() });
 
         this.departmentsService.getAll().subscribe((response: Response<ListResponse<Department>>) => {
             this.departments = response.data.items ?? [];
@@ -71,8 +71,8 @@ export class PreferenceCreateComponent implements OnInit {
                 const preference = response.data;
                 this.preferenceForm.patchValue({
                     department_id: preference.department_id ?? '',
-                    day: preference.day ?? '',
-                    slot_no: preference.slot_no ?? ''
+                    day: preference.day ?? null,
+                    slot_no: preference.slot_no ?? null
                 });
                 // Load teachers and patch teacher_id after teachers are loaded
                 this.getAllTeachers(preference.department_id, preference.teacher_id);
@@ -97,6 +97,7 @@ export class PreferenceCreateComponent implements OnInit {
     }
 
     createPreference(): void {
+        if (this.preferenceForm.invalid) return;
         this.preferenceService.create(this.preferenceForm.value).subscribe({
             next: () => {
                 this._snackBar.open('Preference created successfully', 'Close', {
@@ -120,7 +121,7 @@ export class PreferenceCreateComponent implements OnInit {
     }
 
     updatePreference(): void {
-        if (this.preferenceId) {
+        if (this.preferenceId && !this.preferenceForm.invalid) {
             this.preferenceService.update(this.preferenceId, this.preferenceForm.value).subscribe({
                 next: () => {
                     this._snackBar.open('Preference updated successfully', 'Close', {
@@ -146,5 +147,17 @@ export class PreferenceCreateComponent implements OnInit {
 
     clearForm(): void {
         this.preferenceNgForm.resetForm();
+    }
+
+    // Custom Validator: At least one of day or slot_no must be filled
+    atLeastOneDayOrSlot(): ValidatorFn {
+        return (group: AbstractControl): ValidationErrors | null => {
+            const day = group.get('day')?.value;
+            const slot_no = group.get('slot_no')?.value;
+            if (!day && !slot_no) {
+                return { atLeastOne: true };
+            }
+            return null;
+        };
     }
 }
