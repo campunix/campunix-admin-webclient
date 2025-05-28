@@ -62,6 +62,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Day</mat-label>
                         <mat-select [formControlName]="'day'">
+                            <mat-option [value]="">{{ 'Any' }}</mat-option>
                             @for (day of days; track day) {
                                 <mat-option [value]="day">{{ day }}</mat-option>
                             }
@@ -71,6 +72,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Slot</mat-label>
                         <mat-select [formControlName]="'slot_no'">
+                            <mat-option [value]="">{{ 'Any' }}</mat-option>
                             @for (slot_no of slots; track slot_no) {
                                 <mat-option [value]="slot_no">{{ slot_no }}</mat-option>
                             }
