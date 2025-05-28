@@ -70,7 +70,10 @@
                                 </div>
 
                                 <!-- Action -->
-                                <div>
+                                <div class="flex gap-2">
+                                    <button (click)="editTeacherCourses(item.id)" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
                                     <button (click)="deleteTeacherCourses(item.id)" mat-icon-button>
                                         <mat-icon>delete</mat-icon>
                                     </button>

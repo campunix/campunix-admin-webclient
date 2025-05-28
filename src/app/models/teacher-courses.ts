@@ -10,6 +10,14 @@ export interface TeacherCourses {
     course: CourseDetails;
 }
 
+export interface TeacherCoursesCustom {
+    course_id: number;
+    title: string;
+    code: string;
+    teachers: number[];
+    department_id: number;
+}
+
 export interface CourseDetails {
     id: number;
     title: string;
