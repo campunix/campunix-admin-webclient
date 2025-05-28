@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {PageEvent} from '@angular/material/paginator';
-import {Router} from '@angular/router';
-import {fuseAnimations} from '../../../../../../@fuse/animations';
-import {Pagination} from '../../../../../models/pagination';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {TeacherCoursesService} from "../../services/teacher-courses.service";
-import {TeacherCourses} from "../../../../../models/teacher-courses";
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '../../../../../../@fuse/animations';
+import { Pagination } from '../../../../../models/pagination';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TeacherCoursesService } from "../../services/teacher-courses.service";
+import { TeacherCourses } from "../../../../../models/teacher-courses";
 
 @Component({
     selector: 'app-teacher-courses',
@@ -77,8 +77,12 @@ export class TeacherCoursesComponent implements OnInit {
     }
 
     createTeacherCourses() {
-        this.router.navigate(['/teacherCourses/create']).then(() => {
-        });
+        this.router.navigate(['/teacherCourses/create']).then(() => { });
+    }
+
+    // ADD: Navigate to the edit page for a specific teacher course
+    editTeacherCourses(id: number) {
+        this.router.navigate(['/teacherCourses/edit', id]).then(() => { });
     }
 
     deleteTeacherCourses(id: number) {

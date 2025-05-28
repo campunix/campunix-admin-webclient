@@ -17,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FuseAlertComponent } from '../../../../@fuse/components/alert';
 import {TeacherCoursesComponent} from "./components/teacher-courses-list/teacher-courses.component";
 import {TeacherCoursesCreateComponent} from "./components/teacher-courses-create/teacher-courses-create.component";
+import {PreferenceCreateComponent} from "../preferences/components/preference-create/preference-create.component";
 
 @NgModule({
     declarations: [TeacherCoursesComponent, TeacherCoursesCreateComponent],
@@ -50,6 +51,10 @@ import {TeacherCoursesCreateComponent} from "./components/teacher-courses-create
             },
             {
                 path: 'create',
+                component: TeacherCoursesCreateComponent
+            },
+            {
+                path: 'edit/:id',
                 component: TeacherCoursesCreateComponent
             }
         ])

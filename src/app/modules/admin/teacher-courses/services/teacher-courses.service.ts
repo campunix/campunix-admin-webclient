@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../../../environments/environment';
 import {ListResponse, PaginatedResponse, Response} from '../../../../models/response';
-import {TeacherCourseIn, TeacherCourses} from "../../../../models/teacher-courses";
+import {TeacherCourseIn, TeacherCourses, TeacherCoursesCustom} from "../../../../models/teacher-courses";
 
 @Injectable({
     providedIn: 'root',
@@ -18,15 +18,15 @@ export class TeacherCoursesService {
         return this.http.get<Response<PaginatedResponse<TeacherCourses>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
-    get(id: number): Observable<Response<TeacherCourses>> {
-        return this.http.get<Response<TeacherCourses>>(`${this.baseUrl}/${id}`);
+    get(id: number): Observable<Response<TeacherCoursesCustom>> {
+        return this.http.get<Response<TeacherCoursesCustom>>(`${this.baseUrl}/${id}`);
     }
 
     create(teacherCourse: TeacherCourseIn): Observable<Response<TeacherCourses>> {
         return this.http.post<Response<TeacherCourses>>(this.baseUrl, teacherCourse);
     }
 
-    update(id: number, teacher: TeacherCourses): Observable<Response<TeacherCourses>> {
+    update(id: number, teacher: TeacherCourseIn): Observable<Response<TeacherCourses>> {
         return this.http.put<Response<TeacherCourses>>(`${this.baseUrl}/${id}`, teacher);
     }
 
