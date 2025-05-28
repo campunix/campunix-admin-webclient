@@ -3,7 +3,8 @@ export interface SyllabusData {
     department_id: number;
     title: string;
     description: string;
-    is_active: null;
+    calendar_year: string;
+    is_active: boolean;
     syllabus: Syllabus;
 }
 

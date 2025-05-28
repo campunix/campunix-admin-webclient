@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SyllabusService} from "../../services/syllabus.service";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Router} from "@angular/router";
@@ -7,12 +6,14 @@ import {FormControl} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import { fuseAnimations } from '@fuse/animations';
 import { Pagination } from 'app/models/pagination';
-import { SyllabusData } from 'app/models/syllabus_data';
+import { ClassRoutine } from 'app/models/classRoutine';
+import { RoutineService } from '../../services/routine.service';
+import { ExamRoutine } from 'app/models/examRoutine';
 
 @Component({
-    selector: 'app-syllabus-list',
-    templateUrl: './syllabus-list.component.html',
-    styleUrl: './syllabus-list.component.scss',
+    selector: 'app-exam-routine-list',
+    templateUrl: './exam-routine-list.component.html',
+    styleUrl: './exam-routine-list.component.scss',
     styles: [
         /* language=SCSS */
         `
@@ -35,13 +36,11 @@ import { SyllabusData } from 'app/models/syllabus_data';
     ],
     animations: fuseAnimations,
 })
-export class SyllabusListComponent implements OnInit {
-
+export class ExamRoutineListComponent implements OnInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     searchInputControl = new FormControl('');
-    syllabuses: SyllabusData[] = [];
-
+    routines: ExamRoutine[] = [];
     isLoading: boolean = false;
     pagination: Pagination = {
         currentPage: 0,
@@ -51,38 +50,38 @@ export class SyllabusListComponent implements OnInit {
     };
 
     constructor(
-        private syllabusService: SyllabusService,
+        private _routineService: RoutineService,
         private router: Router,
-        private _snackBar: MatSnackBar
-    ) {
+        private _snackBar: MatSnackBar) {
         this.isLoading = true;
     }
 
     ngOnInit() {
-        this.loadSyllabuses();
+        this.loadRoutines();
+
         this.searchInputControl.valueChanges.subscribe((searchQuery) => {
             this.pagination.currentPage = 0;
-            this.loadSyllabuses(searchQuery);
+            this.loadRoutines(searchQuery);
         });
     }
 
     onPageChange(event: PageEvent) {
         this.pagination.currentPage = event.pageIndex;
         this.pagination.pageSize = event.pageSize;
-        this.loadSyllabuses(this.searchInputControl.value);
+        this.loadRoutines(this.searchInputControl.value);
     }
 
-    loadSyllabuses(searchQuery: string = '') {
+    loadRoutines(searchQuery: string = '') {
         this.isLoading = true;
         const page = this.pagination.currentPage + 1;
         const pageSize = this.pagination.pageSize;
 
-        this.syllabusService
-            .getAllPaginated(page, pageSize, searchQuery)
+        this._routineService
+            .getPaginatedExamRoutines(page, pageSize, searchQuery)
             .subscribe({
                 next: (response) => {
                     if (response?.status && response?.data) {
-                        this.syllabuses = response.data.items ?? [];
+                        this.routines = response.data.items ?? [];
 
                         this.pagination = {
                             currentPage: response.data.current_page - 1,
@@ -91,7 +90,7 @@ export class SyllabusListComponent implements OnInit {
                             totalItems: response.data.total_items
                         };
                     } else {
-                        this.syllabuses = [];
+                        this.routines = [];
                     }
                     this.isLoading = false;
                 },
@@ -99,21 +98,21 @@ export class SyllabusListComponent implements OnInit {
             });
     }
 
-    redirectToUploadSyllabus() {
-        this.router.navigate(['/syllabus/upload']).then(() => {
+    createRoutine() {
+        this.router.navigate(['/routine/exam/create']).then(() => {
         });
     }
 
-    deleteSyllabus(id: number) {
-        this.syllabusService.delete(id).subscribe({
+    deleteRoutine(id: number) {
+        this._routineService.deleteExamRoutine(id).subscribe({
             next: () => {
-                this.syllabuses = this.syllabuses.filter(it => it.id !== id);
-                if (this.syllabuses.length === 0 && this.pagination.currentPage > 0) {
+                this.routines = this.routines.filter(it => it.id !== id);
+                if (this.routines.length === 0 && this.pagination.currentPage > 0) {
                     this.pagination.currentPage--;
-                    this.loadSyllabuses();
+                    this.loadRoutines();
                 }
 
-                this._snackBar.open('Syllabus deleted', 'Close', {
+                this._snackBar.open('Routine deleted', 'Close', {
                     duration: 3000,
                     horizontalPosition: 'center',
                     verticalPosition: 'bottom'
@@ -130,6 +129,6 @@ export class SyllabusListComponent implements OnInit {
     }
 
     trackByFn(index: number, item: any): any {
-        return item.syllabusID || index;
+        return item.id || index;
     }
 }

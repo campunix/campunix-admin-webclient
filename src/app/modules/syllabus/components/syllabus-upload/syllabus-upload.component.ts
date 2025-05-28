@@ -1,6 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SyllabusService } from '../../services/syllabus.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-syllabus-upload',
@@ -8,15 +10,32 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./syllabus-upload.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SyllabusUploadComponent {
+export class SyllabusUploadComponent implements OnInit {
   selectedFile: File | null = null;
   isUploading: boolean = false;
   uploadProgress: number = 0;
+  syllabusForm: FormGroup;
+  calendarYears: string[] = [];
 
   constructor(
+    private _fb: FormBuilder,
+    private _router: Router,
     private _snackBar: MatSnackBar,
-    private _http: HttpClient
+    private readonly _syllabusService: SyllabusService
   ) {}
+
+  ngOnInit(): void {
+    this.syllabusForm = this._fb.group({
+        title: this._fb.control('', Validators.required),
+        description: this._fb.control(''),
+        calendar_year: this._fb.control('', Validators.required),
+        routineEntries: this._fb.array([])
+    });
+
+    for(let i = 2023; i <= 2050; i++) {
+      this.calendarYears.push(`${i} - ${i + 1}`);
+    }
+  }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -43,10 +62,11 @@ export class SyllabusUploadComponent {
     }
 
     this.isUploading = true;
+
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    this._http.post('http://127.0.0.1:8000/syllabus/upload', formData)
+    this._syllabusService.uploadSyllabus(this.syllabusForm.value, formData)
       .subscribe({
         next: (response) => {
           this.isUploading = false;
@@ -55,6 +75,8 @@ export class SyllabusUploadComponent {
             horizontalPosition: 'center',
             verticalPosition: 'bottom'
           });
+
+          this._router.navigate(['/syllabus']).then(() => {});
         },
         error: (error) => {
           this.isUploading = false;

@@ -23,14 +23,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:book-open',
         children: [
             {
-                id: 'courses',
+                id: 'coursesList',
                 title: 'Course List',
                 type: 'basic',
                 icon: 'heroicons_outline:book-open',
                 link: '/courses',
             },
             {
-                id: 'teacherCourses',
+                id: 'courseTeachers',
                 title: 'Course Teachers',
                 type: 'basic',
                 icon: 'heroicons_outline:square-3-stack-3d',
@@ -60,11 +60,26 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/preferences'
     },
     {
-        id: 'routine',
-        title: 'Routine',
-        type: 'basic',
-        icon: 'heroicons_outline:clipboard-document-list',
-        link: '/routine'
+        id: 'routiineManagement',
+        title: 'Routine Management',
+        type: 'collapsable',
+        icon: 'heroicons_outline:book-open',
+        children: [
+            {
+                id: 'classRoutines',
+                title: 'Class Routines',
+                type: 'basic',
+                icon: 'heroicons_outline:book-open',
+                link: '/routine/class/list',
+            },
+            {
+                id: 'examRoutines',
+                title: 'Exam Routines',
+                type: 'basic',
+                icon: 'heroicons_outline:square-3-stack-3d',
+                link: '/routine/exam/list',
+            }
+        ]
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [

@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from 'environments/environment';
 import { SyllabusData } from 'app/models/syllabus_data';
-import {PaginatedResponse, Response} from "app/models/response";
+import {ListResponse, PaginatedResponse, Response} from "app/models/response";
+import { Course } from 'app/models/course';
 
 @Injectable({
     providedIn: 'root',
@@ -22,7 +23,21 @@ export class SyllabusService {
         return this.http.get<Response<PaginatedResponse<SyllabusData>>>(`${this.baseUrl}?page=${page}&page_size=${pageSize}&search_query=${searchQuery}`);
     }
 
+    getAllSyllabuses(departmentId: number): Observable<Response<PaginatedResponse<SyllabusData>>> {
+        return this.http.get<Response<PaginatedResponse<SyllabusData>>>(`${this.baseUrl}?departyment_id=${departmentId}`);
+    }
+
+    getSyllabusCourses(syllabusId: Number): Observable<Response<ListResponse<Course>>> {
+        return this.http.get<Response<ListResponse<Course>>>(`${this.baseUrl}/${syllabusId}/course_list`);
+    }
+
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    }
+
+    uploadSyllabus(payload: any, formData: FormData): Observable<Response<SyllabusData>> {
+        return this.http.post<Response<SyllabusData>>(
+            `${this.baseUrl}/upload?title=${payload.title}&description=${payload.description}&calendar_year=${payload.calendar_year}&is_active=true`,
+             formData);
     }
 }
