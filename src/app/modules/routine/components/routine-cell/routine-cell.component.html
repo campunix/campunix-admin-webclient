@@ -1,5 +1,6 @@
-<div *ngIf="!previousGene?.is_lab" class="schedule-cell" [ngClass]="{'w-50-p': !selectedGene?.is_lab, 'w-100-p': selectedGene?.is_lab}">
+<div *ngIf="!previousGene?.course?.is_lab" class="schedule-cell" [ngClass]="{'w-50-p': !selectedGene?.course?.is_lab, 'w-100-p': selectedGene?.course?.is_lab}">
     <span *ngIf="selectedGene">
-        {{selectedGene?.course_code}}  {{selectedGene?.is_lab ? "(Lab)" : ""}} - {{selectedGene?.course_teacher}}
+        {{selectedGene?.course?.code}}  {{selectedGene?.course?.is_lab ? "(Lab)" : ""}} - 
+        <span *ngFor="let teacher of selectedGene?.course?.teachers">{{teacher.full_name}}</span><br/>
     </span>
 </div>
