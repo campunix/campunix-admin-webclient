@@ -99,6 +99,15 @@
                                 class="ml-2"
                                 mat-flat-button
                                 [color]="'primary'"
+                                [disabled]="isLoading"
+                                (click)="reloadRoutine()">
+                                Reload Routine
+                            </button>
+
+                            <button
+                                class="ml-2"
+                                mat-flat-button
+                                [color]="'primary'"
                                 [disabled]="isLoading || routineForm.invalid"
                                 (click)="onSubmit()">
                                 Submit

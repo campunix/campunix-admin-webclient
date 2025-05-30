@@ -23,12 +23,7 @@ export class ClassRoutineViewComponent {
         "Thursday",
     ];
 
-    semesters: any[] = [
-        {year: 1, number: 1},
-        {year: 2, number: 1},
-        {year: 3, number: 1},
-        {year: 4, number: 1},
-    ];
+    semesters: any[] = [];
 
     slots: string[] = [
         "10:00 - 11:00",
@@ -38,6 +33,7 @@ export class ClassRoutineViewComponent {
         "3:00 - 4:00",
     ];
 
+    routineData: any = {};
     genes: any[] = [];
     private departmentId: number = 1;
     @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
@@ -59,7 +55,9 @@ export class ClassRoutineViewComponent {
 
     private getRoutineById() {
         this._routineService.getRoutineById(this.departmentId).subscribe((response: any) => {
-            this.genes = response?.data?.routine?.genes || [];
+            this.routineData = response?.data || {};
+            this.semesters = this.routineData?.routine?.semesters || [];
+            this.genes = this.routineData?.routine?.genes || [];
             this.isLoading = false;
 
             // this.getSyllabusById(response.data.syllabus_id);

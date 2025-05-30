@@ -40,6 +40,7 @@ export class ClassRoutineFormComponent {
     calendarYears: string[] = [];
     departments: Department[] = [];
     routineForm: UntypedFormGroup;
+    syllabusId: number = 0;
     
     constructor(
         private fb: UntypedFormBuilder,
@@ -76,8 +77,15 @@ export class ClassRoutineFormComponent {
             if (!syllabus) return;
 
             console.log(syllabus.id);
-            this.loadRoutine(Number(syllabus.id));
+            this.syllabusId = Number(syllabus.id);
+            this.loadRoutine(this.syllabusId);
         });
+    }
+
+    reloadRoutine() {
+        if (this.syllabusId) {
+            this.loadRoutine(this.syllabusId);
+        }
     }
 
     private getDepartments() {
@@ -112,7 +120,7 @@ export class ClassRoutineFormComponent {
             "title": formValues.title,
             "description": formValues.description,
             "is_active": true,
-            "routine": JSON.stringify({ genes: this.genes })
+            "routine": JSON.stringify({ genes: this.genes, semesters: this.semesters })
         }
 
         this._routineService.createClassRoutine(data).subscribe({
