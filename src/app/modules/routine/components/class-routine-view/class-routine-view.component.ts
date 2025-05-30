@@ -1,8 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
     selector: 'app-class-routine-view',
@@ -38,6 +40,7 @@ export class ClassRoutineViewComponent {
 
     genes: any[] = [];
     private departmentId: number = 1;
+    @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
     constructor(
         private route: ActivatedRoute,
@@ -70,4 +73,29 @@ export class ClassRoutineViewComponent {
     //         this.semesters = response.data.syllabus.semesters;
     //     });
     // }
+
+    downloadPDF(): void {
+        const DATA = this.pdfContent.nativeElement;
+
+        html2canvas(DATA).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdfWidth = DATA.offsetWidth;
+            const pdfHeight = DATA.offsetHeight;
+
+            // Convert px to mm (1 px = 0.264583 mm)
+            const mmWidth = pdfWidth * 0.264583;
+            const mmHeight = pdfHeight * 0.264583;
+
+            const pdf = new jsPDF({
+                orientation: mmWidth > mmHeight ? 'l' : 'p',
+                unit: 'mm',
+                format: [mmWidth, mmHeight],
+            });
+
+            pdf.addImage(imgData, 'PNG', 0, 0, mmWidth, mmHeight);
+            pdf.save('class-routine.pdf');
+        });
+    }
 }
+
