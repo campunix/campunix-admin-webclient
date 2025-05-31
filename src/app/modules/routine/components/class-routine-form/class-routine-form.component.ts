@@ -105,7 +105,7 @@ export class ClassRoutineFormComponent {
 
     private loadRoutine(syllabusId: number) {
         this.isLoading = true;
-        this._routineService.getRoutine(syllabusId).subscribe((response: any) => {
+        this._routineService.getGeneratedClassRoutine(syllabusId).subscribe((response: any) => {
             this.semesters = response?.semesters || [];
             this.genes = response?.routine?.genes || [];
             this.isLoading = false;

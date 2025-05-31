@@ -13,14 +13,19 @@ export class RoutineService {
 
     constructor(private http: HttpClient) { }
 
-    getRoutine(syllabusId: number): any {
+    getGeneratedClassRoutine(syllabusId: number): any {
         let url = `${this.apiBaseUrl}/routines/generate`;
         return this.http.post<any>(url, { syllabus_id: syllabusId, total_slots: 5 });
     }
 
-    getRoutineById(id: number): Observable<Response<ClassRoutine>> {
+    getClassRoutineById(id: number): Observable<Response<ClassRoutine>> {
         let url = `${this.apiBaseUrl}/routines/${id}`;
         return this.http.get<Response<ClassRoutine>>(url);
+    }
+
+    getExamRoutineById(id: number): Observable<Response<ExamRoutine>> {
+        let url = `${this.apiBaseUrl}/examRoutines/${id}`;
+        return this.http.get<Response<ExamRoutine>>(url);
     }
     
     createClassRoutine(data: any): any {

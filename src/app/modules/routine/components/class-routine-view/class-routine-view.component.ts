@@ -35,7 +35,7 @@ export class ClassRoutineViewComponent {
 
     routineData: any = {};
     genes: any[] = [];
-    private departmentId: number = 1;
+    private routineId: number = 1;
     @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
     constructor(
@@ -48,19 +48,17 @@ export class ClassRoutineViewComponent {
         this.isLoading = true;
         this.route.paramMap.subscribe(params => {
             const id = params.get('id');
-            this.departmentId = id ? +id : 1;
+            this.routineId = id ? +id : 1;
             this.getRoutineById();
         });
     }
 
     private getRoutineById() {
-        this._routineService.getRoutineById(this.departmentId).subscribe((response: any) => {
+        this._routineService.getClassRoutineById(this.routineId).subscribe((response: any) => {
             this.routineData = response?.data || {};
             this.semesters = this.routineData?.routine?.semesters || [];
             this.genes = this.routineData?.routine?.genes || [];
             this.isLoading = false;
-
-            // this.getSyllabusById(response.data.syllabus_id);
         });
     }
 

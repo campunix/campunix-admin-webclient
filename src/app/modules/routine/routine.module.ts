@@ -22,6 +22,7 @@ import { ExamRoutineFormComponent } from './components/exam-routine-form/exam-ro
 import { ClassRoutineFormComponent } from './components/class-routine-form/class-routine-form.component';
 import { ClassRoutineListComponent } from './components/class-routine-list/class-routine-list.component';
 import { ExamRoutineListComponent } from './components/exam-routine-list/exam-routine-list.component';
+import { ExamRoutineViewComponent } from './components/exam-routine-view/exam-routine-view.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
         ClassRoutineViewComponent,
         ClassRoutineCellComponent,
         ExamRoutineFormComponent,
-        ExamRoutineListComponent
+        ExamRoutineListComponent,
+        ExamRoutineViewComponent
     ],
     imports: [
         CommonModule,
@@ -89,7 +91,11 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
                     {
                         path: 'create',
                         component: ExamRoutineFormComponent
-                    }
+                    },
+                    {
+                        path: ':id/view',
+                        component: ExamRoutineViewComponent
+                    },
                 ]
             }
         ]),

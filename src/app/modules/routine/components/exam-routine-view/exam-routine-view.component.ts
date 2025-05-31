@@ -6,18 +6,18 @@ import { CourseService } from 'app/modules/admin/courses/services/course.service
 import { TeachersService } from 'app/modules/admin/teachers/services/teachers.service';
 import { RoutineService } from '../../services/routine.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 import { Department } from 'app/models/department';
 import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
 import { ListResponse, Response } from 'app/models/response';
 
 @Component({
-    selector: 'app-exam-routine-form',
-    templateUrl: './exam-routine-form.component.html',
-    styleUrls: ['./exam-routine-form.component.scss']
+    selector: 'app-exam-routine-view',
+    templateUrl: './exam-routine-view.component.html',
+    styleUrls: ['./exam-routine-view.component.scss']
 })
-export class ExamRoutineFormComponent implements OnInit {
+export class ExamRoutineViewComponent implements OnInit {
     routineForm: FormGroup;
     
     timeSlots: string[] = [
@@ -31,7 +31,13 @@ export class ExamRoutineFormComponent implements OnInit {
     teachers: Teacher[] = [];
     calendarYears: string[] = [];
 
+    private routineId: number = 1;
+    isLoading: boolean = false;
+    routineData: any = {};
+
+
     constructor(
+        private route: ActivatedRoute,
         private readonly fb: FormBuilder,
         private readonly _courseService: CourseService,
         private readonly _teachersService: TeachersService,
@@ -43,6 +49,13 @@ export class ExamRoutineFormComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.isLoading = true;
+        this.route.paramMap.subscribe(params => {
+            const id = params.get('id');
+            this.routineId = id ? +id : 1;
+            this.getRoutineById();
+        });
+
         this.routineForm = this.fb.group({
             department: this.fb.control('', Validators.required),
             syllabus: this.fb.control('', Validators.required),
@@ -50,23 +63,12 @@ export class ExamRoutineFormComponent implements OnInit {
             description: this.fb.control(''),
             routineEntries: this.fb.array([])
         });
-        this.addEntry();
+    }
 
-        for(let i = 2023; i <= 2050; i++) {
-            this.calendarYears.push(`${i} - ${i + 1}`);
-        }
-
-        this.getDepartments();
-        
-        this.routineForm.get('department').valueChanges.subscribe((departmentId) => {
-            this.routineForm.get('syllabus').setValue('');
-            this.getSyllabuses(Number(departmentId));
-            this.loadTeachers();
-        });
-
-        this.routineForm.get('syllabus').valueChanges.subscribe((syllabusId) => {
-            if (!syllabusId) return;
-            this.loadCourses();
+    private getRoutineById() {
+        this._routineService.getExamRoutineById(this.routineId).subscribe((response: any) => {
+            this.routineData = response?.data || {};
+            this.isLoading = false;
         });
     }
 
@@ -165,7 +167,7 @@ export class ExamRoutineFormComponent implements OnInit {
         examRoutine.title = formValues.title;
         examRoutine.description = formValues.description;
         examRoutine.is_active = true;
-        examRoutine.exam_routine = JSON.stringify({routineRows: routineRows});
+        examRoutine.exam_routine = JSON.stringify({routine: routineRows});
 
         this._routineService.createExamRoutine(examRoutine).subscribe({
             next: () => {
