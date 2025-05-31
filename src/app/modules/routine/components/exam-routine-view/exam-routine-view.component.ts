@@ -1,16 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Course } from 'app/models/course';
 import { Teacher } from 'app/models/teacher';
-import { CourseService } from 'app/modules/admin/courses/services/course.service';
-import { TeachersService } from 'app/modules/admin/teachers/services/teachers.service';
 import { RoutineService } from '../../services/routine.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DepartmentsService } from 'app/modules/admin/departments/services/departments.service';
 import { Department } from 'app/models/department';
-import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
-import { ListResponse, Response } from 'app/models/response';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
     selector: 'app-exam-routine-view',
@@ -34,18 +30,12 @@ export class ExamRoutineViewComponent implements OnInit {
     private routineId: number = 1;
     isLoading: boolean = false;
     routineData: any = {};
-
+    @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
     constructor(
         private route: ActivatedRoute,
         private readonly fb: FormBuilder,
-        private readonly _courseService: CourseService,
-        private readonly _teachersService: TeachersService,
-        private readonly _routineService: RoutineService,
-        private readonly _deptService: DepartmentsService,
-        private readonly _syllabusService: SyllabusService,
-        private readonly _snackBar: MatSnackBar,
-        private readonly _router: Router,
+        private readonly _routineService: RoutineService
     ) {}
 
     ngOnInit(): void {
@@ -54,14 +44,6 @@ export class ExamRoutineViewComponent implements OnInit {
             const id = params.get('id');
             this.routineId = id ? +id : 1;
             this.getRoutineById();
-        });
-
-        this.routineForm = this.fb.group({
-            department: this.fb.control('', Validators.required),
-            syllabus: this.fb.control('', Validators.required),
-            title: this.fb.control('', Validators.required),
-            description: this.fb.control(''),
-            routineEntries: this.fb.array([])
         });
     }
 
@@ -72,179 +54,28 @@ export class ExamRoutineViewComponent implements OnInit {
         });
     }
 
-    get routineEntries() {
-        return this.routineForm.get('routineEntries') as FormArray;
-    }
+    downloadPDF(): void {
+        const DATA = this.pdfContent.nativeElement;
 
-    addEntry() {
-        const entry = this.fb.group({
-            date: ['', Validators.required],
-            course: ['', Validators.required],
-            teacher: [''],
-            timeSlot: ['', Validators.required],
-        });
-        this.routineEntries.push(entry);
+        html2canvas(DATA).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
 
-        entry.get('course').valueChanges.subscribe((course) => {
-            const index = this.routineEntries.controls.findIndex(ctrl => ctrl === entry);
+            const pdfWidth = DATA.offsetWidth;
+            const pdfHeight = DATA.offsetHeight;
 
-            this.selectedTeachers[index] = [];
-            course["course_teachers"] ??= [];
-            course["course_teachers"].forEach((teacher: any) => {
-                if (!this.selectedTeachers[index].includes(teacher)) {
-                    this.selectedTeachers[index].push(teacher);
-                }
+            // Convert px to mm (1 px = 0.264583 mm)
+            const mmWidth = pdfWidth * 0.264583;
+            const mmHeight = pdfHeight * 0.264583;
+
+            const pdf = new jsPDF({
+                orientation: mmWidth > mmHeight ? 'l' : 'p',
+                unit: 'mm',
+                format: [mmWidth, mmHeight],
             });
+
+            pdf.addImage(imgData, 'PNG', 0, 0, mmWidth, mmHeight);
+            pdf.save('exam-routine.pdf');
         });
-    }
-
-    removeEntry(index: number) {
-        var totalEntries = this.routineEntries.length;
-        for (let i = index; i < totalEntries-1; i++) {
-            this.selectedTeachers[i] = this.selectedTeachers[i + 1];
-        }
-        this.selectedTeachers[totalEntries - 1] = [];
-        this.routineEntries.removeAt(index);
-    }
-
-    addTeacher(index: number): void {
-        const teacherControl = this.routineEntries.at(index).get('teacher');
-        const selectedTeacher = teacherControl.value;
-        
-        if (!selectedTeacher) {
-            return;
-        }
-
-        this.selectedTeachers[index] ??= [];
-        if (!this.selectedTeachers[index].find((x: any) => x.id === selectedTeacher.id)) {
-            this.selectedTeachers[index].push(selectedTeacher);
-            teacherControl.setValue('');
-        }
-    }
-
-    removeTeacher(index: number, teacher: string): void {
-        const teacherIndex = this.selectedTeachers[index].indexOf(teacher);
-        if (teacherIndex >= 0) {
-            this.selectedTeachers[index].splice(teacherIndex, 1);
-        }
-    }
-
-    onSubmit() {
-        var routineRows = [];
-        this.routineForm.value["routineEntries"].forEach((element, index) => {
-            var examRoutineRow = new ExamRoutineRow();
-            examRoutineRow.date = element.date;
-            examRoutineRow.timeSlot = element.timeSlot;
-            examRoutineRow.course = {
-                id: element.course.id,
-                title: element.course.title
-            };
-            examRoutineRow.teachers = [];
-            if (this.selectedTeachers[index]) {
-                this.selectedTeachers[index].forEach((teacher: any) => {
-                    examRoutineRow.teachers.push({
-                        id: teacher.id,
-                        name: teacher.full_name
-                    });
-                });
-            }
-
-            if (element.teacher)
-            {
-                examRoutineRow.teachers.push({
-                    id: element.teacher.id,
-                    name: element.teacher.full_name
-                });
-            }
-
-            routineRows.push(examRoutineRow);
-        });
-
-        var formValues = this.routineForm.value;
-        var examRoutine = new ExamRoutine();
-        examRoutine.syllabus_id = formValues.syllabus.id;
-        examRoutine.calendar_year = formValues.syllabus.calendar_year;
-        examRoutine.title = formValues.title;
-        examRoutine.description = formValues.description;
-        examRoutine.is_active = true;
-        examRoutine.exam_routine = JSON.stringify({routine: routineRows});
-
-        this._routineService.createExamRoutine(examRoutine).subscribe({
-            next: () => {
-                this._snackBar.open('Exam routine created successfully', 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'bottom'
-                });
-
-                this._router.navigate(['/routine/exam/list']).then(() => {});
-            },
-            error: (error) => {
-                this._snackBar.open('Failed: ' + error.message, 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'bottom'
-                });
-            }
-        });
-    }
-
-    private getDepartments() {
-        this._deptService.getAll()
-        .subscribe((response: Response<ListResponse<Department>>) => {
-            this.departments = response.data.items ?? [];
-        });
-    }
-
-    private getSyllabuses(departmentId: number) {
-            this._syllabusService
-            .getAllSyllabuses(departmentId)
-            .subscribe((response: Response<ListResponse<any>>) => {
-                this.syllabuses = response.data.items ?? [];
-                console.log(this.syllabuses);
-            });
-        }
-
-    // loadCourses(syllabus_id: Number) {
-    //     this._syllabusService
-    //         .getSyllabusCourses(syllabus_id)
-    //         .subscribe((response: any) => {
-    //             this.courses = (response.data ?? []).map((item: any) => {
-    //                 return item.course;
-    //             });
-    //         });
-    // }
-
-    loadCourses(searchQuery: string = '') {
-        const page = 1;
-        const pageSize = 100;
-
-        this._courseService
-            .getAllPaginated(page, pageSize, searchQuery)
-            .subscribe((response) => {
-                if (response?.status && response?.data) {
-                    this.courses = response.data.items ?? [];
-                } else {
-                    this.courses = [];
-                }
-            });
-    }
-
-    loadTeachers(searchQuery: string = '') {
-        const page = 1;
-        const pageSize = 100;
-
-        this._teachersService
-            .getAllPaginated(page, pageSize, searchQuery)
-            .subscribe({
-                next: (response) => {
-                    if (response?.status && response?.data) {
-                        this.teachers = response.data.items ?? [];
-                    } else {
-                        this.teachers = [];
-                    }
-                }
-            });
     }
 
 }

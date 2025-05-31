@@ -1,6 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import { RoutineService } from '../../services/routine.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
 import jsPDF from 'jspdf';
