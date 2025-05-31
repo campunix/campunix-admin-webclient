@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-    selector: 'app-routine-cell',
-    templateUrl: './routine-cell.component.html',
-    styleUrl: './routine-cell.component.scss'
+    selector: 'app-class-routine-cell',
+    templateUrl: './class-routine-cell.component.html',
+    styleUrl: './class-routine-cell.component.scss'
 })
-export class RoutineCellComponent {
+export class ClassRoutineCellComponent {
 
     @Input() totalSemesters: number;
     @Input() totalSlots: number;

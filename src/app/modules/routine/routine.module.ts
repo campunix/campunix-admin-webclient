@@ -17,7 +17,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepickerModule} from '@angular/material/datepicker'
 import { ClassRoutineViewComponent } from './components/class-routine-view/class-routine-view.component';
-import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
+import { ClassRoutineCellComponent } from './components/class-routine-cell/class-routine-cell.component';
 import { ExamRoutineFormComponent } from './components/exam-routine-form/exam-routine-form.component';
 import { ClassRoutineFormComponent } from './components/class-routine-form/class-routine-form.component';
 import { ClassRoutineListComponent } from './components/class-routine-list/class-routine-list.component';
@@ -28,7 +28,7 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
         ClassRoutineFormComponent,
         ClassRoutineListComponent,
         ClassRoutineViewComponent,
-        RoutineCellComponent,
+        ClassRoutineCellComponent,
         ExamRoutineFormComponent,
         ExamRoutineListComponent
     ],

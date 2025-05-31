@@ -79,7 +79,7 @@
 
                                     <div class="schedule-slot-container">
                                         <div *ngFor="let semester of semesters; index as j" class="schedule-slot-row">
-                                            <app-routine-cell
+                                            <app-class-routine-cell
                                                 *ngFor="let slot of slots; index as k;"
                                                 [dayNumber]="i"
                                                 [semesterNumber]="j"
@@ -87,7 +87,7 @@
                                                 [totalSemesters]="semesters.length"
                                                 [totalSlots]="slots.length"
                                                 [genes]="genes">
-                                            </app-routine-cell>
+                                            </app-class-routine-cell>
                                         </div>
                                     </div>
                                 </div>
