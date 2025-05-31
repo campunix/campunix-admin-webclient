@@ -1,10 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Course } from 'app/models/course';
-import { Teacher } from 'app/models/teacher';
 import { RoutineService } from '../../services/routine.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Department } from 'app/models/department';
+import { ActivatedRoute } from '@angular/router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -14,18 +10,6 @@ import jsPDF from 'jspdf';
     styleUrls: ['./exam-routine-view.component.scss']
 })
 export class ExamRoutineViewComponent implements OnInit {
-    routineForm: FormGroup;
-    
-    timeSlots: string[] = [
-        "10:00 AM - 1:00 PM",
-        "2:00 PM - 5:00 PM",
-    ];
-    selectedTeachers: { [key: number]: string[] } = {};
-    departments: Department[] = [];
-    syllabuses: any[] = [];
-    courses: Course[] = [];
-    teachers: Teacher[] = [];
-    calendarYears: string[] = [];
 
     private routineId: number = 1;
     isLoading: boolean = false;
@@ -34,7 +18,6 @@ export class ExamRoutineViewComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private readonly fb: FormBuilder,
         private readonly _routineService: RoutineService
     ) {}
 
@@ -78,22 +61,4 @@ export class ExamRoutineViewComponent implements OnInit {
         });
     }
 
-}
-
-class ExamRoutineRow 
-{
-    date: string;
-    timeSlot: string;
-    teachers: any[];
-    course: any;
-}
-
-class ExamRoutine 
-{
-    syllabus_id: number;
-    title: string;
-    description: string;
-    calendar_year: string;
-    is_active: boolean;
-    exam_routine: string;
 }
