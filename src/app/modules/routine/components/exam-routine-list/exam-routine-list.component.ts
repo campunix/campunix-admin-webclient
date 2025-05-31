@@ -103,6 +103,10 @@ export class ExamRoutineListComponent implements OnInit {
         });
     }
 
+    viewRoutine(routineId: number) {
+        this.router.navigate([`/routine/exam/${routineId}/view`]).then(() => {});
+    }
+
     deleteRoutine(id: number) {
         this._routineService.deleteExamRoutine(id).subscribe({
             next: () => {

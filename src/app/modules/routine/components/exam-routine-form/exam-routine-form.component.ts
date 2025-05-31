@@ -165,7 +165,7 @@ export class ExamRoutineFormComponent implements OnInit {
         examRoutine.title = formValues.title;
         examRoutine.description = formValues.description;
         examRoutine.is_active = true;
-        examRoutine.exam_routine = JSON.stringify({routine: routineRows});
+        examRoutine.exam_routine = JSON.stringify({routineRows: routineRows});
 
         this._routineService.createExamRoutine(examRoutine).subscribe({
             next: () => {
