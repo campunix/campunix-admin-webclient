@@ -57,7 +57,7 @@ export class ExamRoutineViewComponent implements OnInit {
     downloadPDF(): void {
         const DATA = this.pdfContent.nativeElement;
 
-        html2canvas(DATA).then((canvas) => {
+        html2canvas(DATA, {scale: 2, useCORS: true}).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
 
             const pdfWidth = DATA.offsetWidth;
