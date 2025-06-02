@@ -17,20 +17,22 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepickerModule} from '@angular/material/datepicker'
 import { ClassRoutineViewComponent } from './components/class-routine-view/class-routine-view.component';
-import { RoutineCellComponent } from './components/routine-cell/routine-cell.component';
+import { ClassRoutineCellComponent } from './components/class-routine-cell/class-routine-cell.component';
 import { ExamRoutineFormComponent } from './components/exam-routine-form/exam-routine-form.component';
 import { ClassRoutineFormComponent } from './components/class-routine-form/class-routine-form.component';
 import { ClassRoutineListComponent } from './components/class-routine-list/class-routine-list.component';
 import { ExamRoutineListComponent } from './components/exam-routine-list/exam-routine-list.component';
+import { ExamRoutineViewComponent } from './components/exam-routine-view/exam-routine-view.component';
 
 @NgModule({
     declarations: [
         ClassRoutineFormComponent,
         ClassRoutineListComponent,
         ClassRoutineViewComponent,
-        RoutineCellComponent,
+        ClassRoutineCellComponent,
         ExamRoutineFormComponent,
-        ExamRoutineListComponent
+        ExamRoutineListComponent,
+        ExamRoutineViewComponent
     ],
     imports: [
         CommonModule,
@@ -89,7 +91,11 @@ import { ExamRoutineListComponent } from './components/exam-routine-list/exam-ro
                     {
                         path: 'create',
                         component: ExamRoutineFormComponent
-                    }
+                    },
+                    {
+                        path: ':id/view',
+                        component: ExamRoutineViewComponent
+                    },
                 ]
             }
         ]),

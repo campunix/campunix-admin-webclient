@@ -1,46 +1,24 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RoutineService } from '../../services/routine.service';
 import { ActivatedRoute } from '@angular/router';
-import { SyllabusService } from 'app/modules/syllabus/services/syllabus.service';
-import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
-    selector: 'app-class-routine-view',
-    templateUrl: './class-routine-view.component.html',
-    styleUrl: './class-routine-view.component.scss'
+    selector: 'app-exam-routine-view',
+    templateUrl: './exam-routine-view.component.html',
+    styleUrls: ['./exam-routine-view.component.scss']
 })
-export class ClassRoutineViewComponent {
+export class ExamRoutineViewComponent implements OnInit {
 
-    isLoading: boolean = false;
-
-    weekDays: string[] = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-    ];
-
-    semesters: any[] = [];
-
-    slots: string[] = [
-        "10:00 - 11:00",
-        "11:00 - 12:00",
-        "12:00 - 1:00",
-        "2:00 - 3:00",
-        "3:00 - 4:00",
-    ];
-
-    routineData: any = {};
-    genes: any[] = [];
     private routineId: number = 1;
+    isLoading: boolean = false;
+    routineData: any = {};
     @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
     constructor(
         private route: ActivatedRoute,
-        private readonly _syllabusService: SyllabusService,
-        private readonly _routineService: RoutineService,
+        private readonly _routineService: RoutineService
     ) {}
 
     ngOnInit(): void {
@@ -53,21 +31,11 @@ export class ClassRoutineViewComponent {
     }
 
     private getRoutineById() {
-        this._routineService.getClassRoutineById(this.routineId).subscribe((response: any) => {
+        this._routineService.getExamRoutineById(this.routineId).subscribe((response: any) => {
             this.routineData = response?.data || {};
-            this.semesters = this.routineData?.routine?.semesters || [];
-            this.genes = this.routineData?.routine?.genes || [];
             this.isLoading = false;
         });
     }
-
-    // getSyllabusById(syllabusId: number)
-    // {
-    //     this._syllabusService.get(syllabusId).subscribe(response => {
-    //         console.log(response);
-    //         this.semesters = response.data.syllabus.semesters;
-    //     });
-    // }
 
     downloadPDF(): void {
         const DATA = this.pdfContent.nativeElement;
@@ -89,8 +57,8 @@ export class ClassRoutineViewComponent {
             });
 
             pdf.addImage(imgData, 'PNG', 0, 0, mmWidth, mmHeight);
-            pdf.save('class-routine.pdf');
+            pdf.save('exam-routine.pdf');
         });
     }
-}
 
+}

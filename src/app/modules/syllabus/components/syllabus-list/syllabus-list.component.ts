@@ -100,8 +100,11 @@ export class SyllabusListComponent implements OnInit {
     }
 
     redirectToUploadSyllabus() {
-        this.router.navigate(['/syllabus/upload']).then(() => {
-        });
+        this.router.navigate(['/syllabus/upload']).then(() => {});
+    }
+
+    viewSyllabus(id: number) {
+        this.router.navigate([`/syllabus/${id}/view`]).then(() => {});
     }
 
     deleteSyllabus(id: number) {
