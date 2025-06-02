@@ -1,4 +1,5 @@
 import {Department} from "./department";
+import {Course} from "./course";
 
 export interface Teacher {
     id: number;
@@ -7,4 +8,5 @@ export interface Teacher {
     designation: string;
     status: string;
     department: Department;
+    courses: Course[]
 }
