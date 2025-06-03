@@ -18,6 +18,7 @@ import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.component';
 import { SyllabusFormComponent } from './components/syllabus-form/syllabus-form.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { SyllabusFormComponent } from './components/syllabus-form/syllabus-form.
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatMenuModule,
         FormsModule,
         ReactiveFormsModule,
         MatButtonModule,
