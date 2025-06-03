@@ -17,12 +17,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.component';
+import { SyllabusFormComponent } from './components/syllabus-form/syllabus-form.component';
 
 @NgModule({
     declarations: [
         SyllabusListComponent,
         SyllabusUploadComponent,
-        SyllabusViewComponent
+        SyllabusViewComponent,
+        SyllabusFormComponent,
     ],
     imports: [
         CommonModule,
@@ -53,6 +55,10 @@ import { SyllabusListComponent } from './components/syllabus-list/syllabus-list.
             {
                 path: '',
                 component: SyllabusListComponent
+            },
+            {
+                path: 'create',
+                component: SyllabusFormComponent
             },
             {
                 path: ':id/view',

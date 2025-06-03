@@ -31,6 +31,11 @@ export class SyllabusService {
         return this.http.get<Response<ListResponse<Course>>>(`${this.baseUrl}/${syllabusId}/course_list`);
     }
 
+    create(payload: any): Observable<Response<SyllabusData>>
+    {
+        return this.http.post<Response<SyllabusData>>(`${this.baseUrl}`, payload);
+    }
+
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }

@@ -1,0 +1,205 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex flex-col flex-auto items-center p-6 sm:p-10">
+        <div class="flex flex-col w-full max-w-6xl">
+            <div class="-ml-4 sm:mt-8">
+                <a
+                    mat-button
+                    [routerLink]="['/routine/exam/list']"
+                    [color]="'primary'">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
+                    <span class="ml-2">Back</span>
+                </a>
+            </div>
+            <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
+                Create Syllabus
+            </div>
+            <!-- Form -->
+            <div class="mt-8 sm:mt-12 p-6 pb-7 sm:p-10 sm:pb-7 shadow rounded-2xl bg-card">
+                <form [formGroup]="syllabusForm" (ngSubmit)="onSubmit()">
+                    <mat-form-field appearance="outline" class="w-full mb-4">
+                        <mat-label>Department ID</mat-label>
+                        <mat-select
+                            matInput
+                            formControlName="department_id">
+                            @for (dept of departments; track dept) {
+                                <mat-option [value]="dept.id">{{dept.name}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full mb-4">
+                        <mat-label>Title</mat-label>
+                        <input matInput type="text" formControlName="title">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full mb-4">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-full mb-4">
+                        <mat-label>Calendar Year</mat-label>
+                        <mat-select
+                            matInput
+                            formControlName="calendar_year">
+                            @for (item of calendarYears; track item) {
+                                <mat-option [value]="item">{{item}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-checkbox formControlName="is_active" class="mb-6">Is Active</mat-checkbox>
+
+                    <div formArrayName="semesters">
+                        <div *ngFor="let semester of semesters.controls; let i = index" [formGroupName]="i" class="mb-8 p-4 border rounded">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-lg font-bold">Semester {{i+1}}</h3>
+                                <button mat-icon-button color="warn" type="button" (click)="removeSemester(i)">
+                                <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+
+                            <mat-form-field appearance="outline" class="w-full mb-4">
+                                <mat-label>Semester ID</mat-label>
+                                <input matInput type="number" formControlName="id">
+                            </mat-form-field>
+
+                            <div formArrayName="courses">
+                                <div *ngFor="let course of courses(i).controls; let j = index" [formGroupName]="j" class="mb-6 p-4 border border-gray-200 rounded">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-semibold">Course {{j+1}}</h4>
+                                        <button mat-icon-button color="warn" type="button" (click)="removeCourse(i, j)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                    <mat-form-field appearance="outline" class="w-full mb-2">
+                                        <mat-label>Course ID</mat-label>
+                                        <mat-select
+                                            [formControlName]="'id'"
+                                            [required]="true">
+                                            @for (course of courseList; track course) {
+                                                <mat-option [value]="course.id">{{ course.title }}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-full mb-2">
+                                        <mat-label>Credit</mat-label>
+                                        <input matInput type="number" formControlName="credit">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-full mb-2">
+                                        <mat-label>Prerequisite</mat-label>
+                                        <input matInput type="text" formControlName="prerequisite">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-full mb-2">
+                                        <mat-label>Contact Hours</mat-label>
+                                        <input matInput type="number" formControlName="contact_hours">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-full mb-2">
+                                        <mat-label>Rationale</mat-label>
+                                        <textarea matInput formControlName="rationale"></textarea>
+                                    </mat-form-field>
+
+                                    <!-- Dynamic Arrays -->
+                                    <div class="mb-4">
+                                        <label class="font-medium mb-4">Course Objectives</label>
+                                        <div class="mt-4" formArrayName="course_objectives">
+                                            <div *ngFor="let obj of getCourseArray(i, j, 'course_objectives').controls; let k = index" class="flex items-center mb-1">
+                                                <mat-form-field appearance="outline" class="flex-1 mr-2">
+                                                    <input matInput [formControlName]="k">
+                                                </mat-form-field>
+                                                <button mat-icon-button color="warn" type="button" (click)="removeArrayItem(i, j, 'course_objectives', k)">
+                                                    <mat-icon>remove_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                            <button mat-raised-button color="primary" type="button" (click)="addArrayItem(i, j, 'course_objectives')">
+                                                <mat-icon>add</mat-icon> Add Objective
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="font-medium">Outcomes</label>
+                                        <div class="mt-4" formArrayName="outcomes">
+                                            <div *ngFor="let out of getCourseArray(i, j, 'outcomes').controls; let k = index" class="flex items-center mb-1">
+                                                <mat-form-field appearance="outline" class="flex-1 mr-2">
+                                                    <input matInput [formControlName]="k">
+                                                </mat-form-field>
+                                                <button mat-icon-button color="warn" type="button" (click)="removeArrayItem(i, j, 'outcomes', k)">
+                                                    <mat-icon>remove_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                            <button mat-raised-button color="primary" type="button" (click)="addArrayItem(i, j, 'outcomes')">
+                                                <mat-icon>add</mat-icon> Add Outcome
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="font-medium">Course Description</label>
+                                        <div class="mt-4" formArrayName="course_description">
+                                            <div *ngFor="let desc of getCourseArray(i, j, 'course_description').controls; let k = index" class="flex items-center mb-1">
+                                                <mat-form-field appearance="outline" class="flex-1 mr-2">
+                                                    <input matInput [formControlName]="k">
+                                                </mat-form-field>
+                                                <button mat-icon-button color="warn" type="button" (click)="removeArrayItem(i, j, 'course_description', k)">
+                                                    <mat-icon>remove_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                            <button mat-raised-button color="primary" type="button" (click)="addArrayItem(i, j, 'course_description')">
+                                                <mat-icon>add</mat-icon> Add Description
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="font-medium">Recommended Books</label>
+                                        <div class="mt-4" formArrayName="recommended_books">
+                                            <div *ngFor="let book of getCourseArray(i, j, 'recommended_books').controls; let k = index" class="flex items-center mb-1">
+                                                <mat-form-field appearance="outline" class="flex-1 mr-2">
+                                                <input matInput [formControlName]="k">
+                                                </mat-form-field>
+                                                <button mat-icon-button color="warn" type="button" (click)="removeArrayItem(i, j, 'recommended_books', k)">
+                                                <mat-icon>remove_circle</mat-icon>
+                                                </button>
+                                            </div>
+                                            <button mat-raised-button color="primary" type="button" (click)="addArrayItem(i, j, 'recommended_books')">
+                                                <mat-icon>add</mat-icon> Add Book
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div formGroupName="hardware_software_requirements" class="mb-4">
+                                        <mat-form-field appearance="outline" class="w-full mb-2">
+                                            <mat-label>Hardware Requirements</mat-label>
+                                            <textarea matInput formControlName="HW"></textarea>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" class="w-full mb-2">
+                                            <mat-label>Software Requirements</mat-label>
+                                            <textarea matInput formControlName="SW"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <button mat-raised-button color="primary" type="button" (click)="addCourse(i)">
+                                    <mat-icon>add</mat-icon> Add Course
+                                </button>
+                            </div>
+                        </div>
+
+                        <button mat-raised-button color="primary" type="button" (click)="addSemester()">
+                            <mat-icon>add</mat-icon> Add Semester
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-end mt-8">
+                        <button type="submit" mat-raised-button color="primary" [disabled]="syllabusForm.invalid">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
