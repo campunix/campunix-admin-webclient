@@ -19,7 +19,7 @@ export class PreferenceCreateComponent implements OnInit {
     departments: Array<Department> = [];
     teachers: Array<Teacher> = [];
     days: Array<string> = [];
-    slots: Array<number> = [1, 2, 3, 4, 5, 6];
+    slots: Array<number> = [1, 2, 3, 4, 5];
     @ViewChild('preferenceNgForm') preferenceNgForm: NgForm;
 
     alert: any;
