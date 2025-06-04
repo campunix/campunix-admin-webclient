@@ -4,9 +4,11 @@ import {AuthUtils} from 'app/core/auth/auth.utils';
 import {UserService} from 'app/core/user/user.service';
 import {catchError, Observable, of, switchMap, throwError} from 'rxjs';
 import {environment} from "../../../environments/environment";
+import {ListResponse, Response} from "../../models/response";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+    private baseUrl = `${environment.apiUrl}`;
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
@@ -36,16 +38,11 @@ export class AuthService {
      * @param email
      */
     forgotPassword(email: string): Observable<any> {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return this._httpClient.post(`${this.baseUrl}/forgot-password`, {email});
     }
 
-    /**
-     * Reset password
-     *
-     * @param password
-     */
-    resetPassword(password: string): Observable<any> {
-        return this._httpClient.post('api/auth/reset-password', password);
+    resetPassword(data: { token: string; new_password: string; confirm_password: string }): Observable<any> {
+        return this._httpClient.post(`${this.baseUrl}/reset-password`, data);
     }
 
     /**
