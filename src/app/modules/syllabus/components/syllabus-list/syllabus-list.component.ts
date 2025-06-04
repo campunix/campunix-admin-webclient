@@ -99,6 +99,10 @@ export class SyllabusListComponent implements OnInit {
             });
     }
 
+    redirectToCreateForm() {
+        this.router.navigate(['/syllabus/create']).then(() => {});
+    }
+
     redirectToUploadSyllabus() {
         this.router.navigate(['/syllabus/upload']).then(() => {});
     }

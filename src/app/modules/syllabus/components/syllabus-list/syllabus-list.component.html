@@ -26,15 +26,21 @@
                     [autocomplete]="'off'"
                     [placeholder]="'Search syllabuses'">
             </mat-form-field>
+
             <!-- Add syllabus button -->
             <button
                 class="ml-4"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="redirectToUploadSyllabus()">
+                [matMenuTriggerFor]="menu">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">Upload a new syllabus</span>
+                <span class="ml-2 mr-1">Add a new syllabus</span>
             </button>
+
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="redirectToCreateForm()">Create Syllabus</button>
+                <button mat-menu-item (click)="redirectToUploadSyllabus()">Upload Syllabus</button>
+            </mat-menu>
         </div>
     </div>
 

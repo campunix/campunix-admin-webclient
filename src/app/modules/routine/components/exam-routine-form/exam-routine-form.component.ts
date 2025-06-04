@@ -29,7 +29,6 @@ export class ExamRoutineFormComponent implements OnInit {
     syllabuses: any[] = [];
     courses: Course[] = [];
     teachers: Teacher[] = [];
-    calendarYears: string[] = [];
 
     constructor(
         private readonly fb: FormBuilder,
@@ -51,10 +50,6 @@ export class ExamRoutineFormComponent implements OnInit {
             routineEntries: this.fb.array([])
         });
         this.addEntry();
-
-        for(let i = 2023; i <= 2050; i++) {
-            this.calendarYears.push(`${i} - ${i + 1}`);
-        }
 
         this.getDepartments();
         
