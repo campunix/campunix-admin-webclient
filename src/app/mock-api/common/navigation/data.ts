@@ -80,6 +80,21 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/routine/exam/list',
             }
         ]
+    },
+    {
+        id: 'settings',
+        title: 'Settings',
+        type: 'collapsable',
+        icon: 'heroicons_outline:cog-6-tooth',
+        children: [
+            {
+                id: 'changePassword',
+                title: 'Change Password',
+                type: 'basic',
+                icon: 'heroicons_outline:lock-closed',
+                link: '/changePassword',
+            }
+        ]
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -145,6 +160,21 @@ export const compactNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:newspaper',
         link: '/syllabus'
+    },
+    {
+        id: 'settings',
+        title: 'Settings',
+        type: 'collapsable',
+        icon: 'heroicons_outline:cog-6-tooth',
+        children: [
+            {
+                id: 'changePassword',
+                title: 'Change Password',
+                type: 'basic',
+                icon: 'heroicons_outline:lock-closed',
+                link: '/changePassword',
+            }
+        ]
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -210,6 +240,21 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:newspaper',
         link: '/syllabus'
+    },
+    {
+        id: 'settings',
+        title: 'Settings',
+        type: 'collapsable',
+        icon: 'heroicons_outline:cog-6-tooth',
+        children: [
+            {
+                id: 'changePassword',
+                title: 'Change Password',
+                type: 'basic',
+                icon: 'heroicons_outline:lock-closed',
+                link: '/changePassword',
+            }
+        ]
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -275,5 +320,20 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:newspaper',
         link: '/syllabus'
+    },
+    {
+        id: 'settings',
+        title: 'Settings',
+        type: 'collapsable',
+        icon: 'heroicons_outline:cog-6-tooth',
+        children: [
+            {
+                id: 'changePassword',
+                title: 'Change Password',
+                type: 'basic',
+                icon: 'heroicons_outline:lock-closed',
+                link: '/changePassword',
+            }
+        ]
     }
 ];

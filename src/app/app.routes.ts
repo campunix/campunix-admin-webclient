@@ -195,5 +195,20 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/syllabus/syllabus.module').then(m => m.SyllabusModule)
             }
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {
+                path: 'changePassword',
+                loadChildren: () => import('app/modules/auth/change-password/change-password.module').then(m => m.ChangePasswordModule)
+            }
+        ]
     }
 ];
